@@ -14,6 +14,8 @@ public class Register extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.register);
 
+        //Add a Spinner to show all the city available in the app
+
         Spinner mySpinner = (Spinner) findViewById(R.id.spinner);
 
         ArrayAdapter<String> myAdapter = new ArrayAdapter<String>(Register.this,

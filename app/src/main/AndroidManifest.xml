@@ -14,7 +14,7 @@
             android:label="@string/title_activity_test"></activity>
             -->
         <activity android:name=".HomeConected" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".LoadingScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -22,6 +22,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".Register"></activity>
+        <activity android:name=".MainActivity"></activity>
     </application>
 
 </manifest>

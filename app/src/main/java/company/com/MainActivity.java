@@ -45,12 +45,13 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    //This method allows to start the Register Activity
     public void launchRegister(){
 
         Intent intent = new Intent(this, Register.class);
         startActivity(intent);
-
     }
+    //This method allows to start the HomeConected Activity
     public void launchHome(){
         Intent intent = new Intent(this, HomeConected.class);
         startActivity(intent);
