@@ -9,9 +9,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity
+        <!--<activity
             android:name=".ui.login.TestActivity"
             android:label="@string/title_activity_test"></activity>
+            -->
         <activity android:name=".HomeConected" />
         <activity android:name=".MainActivity">
             <intent-filter>
@@ -20,6 +21,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".Register"></activity>
     </application>
 
 </manifest>
