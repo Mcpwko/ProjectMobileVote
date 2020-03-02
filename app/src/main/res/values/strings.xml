@@ -14,4 +14,27 @@
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
+    <string name="no_account_yet">No account yet ?</string>
+    <string name="city">City :</string>
+    <string name="name">Name</string>
+    <string name="register">REGISTER</string>
+    <string name="firstname">Firstname</string>
+    <string name="birthdate">Birthdate</string>
+    <string name="address">Address</string>
+    <string name="create">CREATE</string>
+    <string name="repeat_password">Repeat Password</string>
+    <string name="password">Password</string>
+    <string name="mail">Mail</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="registerbtn">registerbtn</string>
+
+    <string-array name="names">
+        <item>Sion</item>
+        <item>Sierre</item>
+        <item>Martigny</item>
+        <item>Monthey</item>
+        <item>Brig</item>
+        <item>Crans-Montana</item>
+    </string-array>
+
 </resources>
