@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ProjectMobileVote</string>
+    <string name="app_name">APPNAME</string>
     <string name="title_app">MCVoteApp</string>
     <string name="button_connect">Log in</string>
     <string name="Label_username">Username</string>
@@ -26,7 +26,7 @@
     <string name="password">Password</string>
     <string name="mail">Mail</string>
     <string name="phone_number">Phone Number</string>
-    <string name="registerbtn">registerbtn</string>
+    <string name="registerbtn">Register</string>
 
     <string-array name="names">
         <item>Sion</item>

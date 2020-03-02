@@ -19,40 +19,17 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //Go to Home Page
-
-        mBtLaunchHome = (Button) findViewById(R.id.buttonLogin);
-
-        mBtLaunchHome.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                launchHome();
-            }
-        });
-
-
-        //Go to Register Page
-        mBtLaunchRegister = (Button) findViewById(R.id.buttonRegister);
-
-        mBtLaunchRegister.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                launchRegister();
-            }
-        });
 
     }
 
     //This method allows to start the Register Activity
-    public void launchRegister(){
+    public void launchRegister(View view){
 
         Intent intent = new Intent(this, Register.class);
         startActivity(intent);
     }
     //This method allows to start the HomeConected Activity
-    public void launchHome(){
+    public void launchHome(View view){
         Intent intent = new Intent(this, HomeConected.class);
         startActivity(intent);
     }
