@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -15,7 +14,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.Date;
 
 public class Register extends AppCompatActivity {
-    public Button mBtLaunchRegister21;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
