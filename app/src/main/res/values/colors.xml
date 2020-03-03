@@ -11,6 +11,8 @@
     <color name="primaryTitleColor">#212121</color>
     <color name="primaryTitleColorNight">#FFFFFF</color>
 
+    <color name="c1">#000000</color>
+
 
 
 </resources>

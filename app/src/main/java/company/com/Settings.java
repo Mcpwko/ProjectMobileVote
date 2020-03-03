@@ -5,18 +5,14 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Switch;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
 public class Settings extends AppCompatActivity {
 
-    private EditText et1, et2;
-    private TextView tv1;
     private Switch aSwitch;
 
     public static final String MyPREFERENCE = "nightModePrefs";

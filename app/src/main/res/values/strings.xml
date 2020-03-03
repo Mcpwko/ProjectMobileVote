@@ -27,6 +27,8 @@
     <string name="mail">Mail</string>
     <string name="phone_number">Phone Number</string>
     <string name="registerbtn">Register</string>
+    <string name="drawerOpen">drawerOpen</string>
+    <string name="drawerClose">drawerClose</string>
 
     <string-array name="names">
         <item>Sion</item>
