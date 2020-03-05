@@ -54,8 +54,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         startActivity(intent);
     }
 
-    public void launchSettings(View view){
+    public void launchSettings(MenuItem menuItem){
         Intent intent = new Intent(this, Settings.class);
+        startActivity(intent);
+    }
+
+    public void launchAbout(MenuItem menuItem){
+        Intent intent = new Intent(this, About.class);
         startActivity(intent);
     }
 
@@ -70,6 +75,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.logout:
                 Toast.makeText(MainActivity.this, "Logout Selected", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.about:
+                Toast.makeText(MainActivity.this, "About Selected", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.settings:
+                Toast.makeText(MainActivity.this, "Settings Selected", Toast.LENGTH_SHORT).show();
                 break;
             default:
                 break;

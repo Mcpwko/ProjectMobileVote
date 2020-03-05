@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class LoadingScreen extends AppCompatActivity {
 
-    private static int SPLASH_TIME = 3000;
+    private static int SPLASH_TIME = 1000;
 
     protected void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

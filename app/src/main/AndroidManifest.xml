@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="company.com">
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"></uses-permission>
 
     <application
         android:allowBackup="true"
@@ -23,7 +24,8 @@
         </activity>
         <activity android:name=".Register"></activity>
         <activity android:name=".MainActivity"></activity>
-       <activity android:name =".Settings"></activity>
+        <activity android:label="Settings" android:name=".Settings"/>
+        <activity android:label="About" android:name=".About"/>
     </application>
 
 </manifest>
