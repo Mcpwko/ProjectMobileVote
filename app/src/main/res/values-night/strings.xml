@@ -1,45 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">APPNAME</string>
-    <string name="title_app">MCVoteApp</string>
-    <string name="button_connect">Log in</string>
+    <string name="button_connect">Connect</string>
     <string name="Label_username">Username</string>
     <string name="Label_Password">Password</string>
+    <string name="title_app">MCJACK</string>
     <string name="Description_Logo">Logo</string>
-    <string name="title_activity_test">Sign in</string>
-    <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password</string>
-    <string name="action_sign_in">Sign in or register</string>
-    <string name="action_sign_in_short">Sign in</string>
-    <string name="welcome">"Welcome !"</string>
-    <string name="invalid_username">Not a valid username</string>
-    <string name="invalid_password">Password must be >5 characters</string>
-    <string name="login_failed">"Login failed"</string>
     <string name="no_account_yet">No account yet ?</string>
-    <string name="city">City :</string>
-    <string name="name">Name</string>
-    <string name="register">REGISTER</string>
-    <string name="firstname">Firstname</string>
-    <string name="birthdate">Birthdate</string>
-    <string name="address">Address</string>
-    <string name="create">CREATE</string>
-    <string name="repeat_password">Repeat Password</string>
-    <string name="password">Password</string>
-    <string name="mail">Mail</string>
-    <string name="phone_number">Phone Number</string>
     <string name="registerbtn">Register</string>
-
-    <string-array name="names">
-        <item>Sion</item>
-        <item>Sierre</item>
-        <item>Martigny</item>
-        <item>Monthey</item>
-        <item>Brig</item>
-        <item>Crans-Montana</item>
-    </string-array>
-
-    <string-array name="language">
-        <item>FR</item>
-        <item>EN</item>
-    </string-array>
-
+    <string name="firstname">Firstname</string>
+    <string name="name">Name</string>
+    <string name="address">Address</string>
+    <string name="city">City</string>
+    <string name="mail">Mail</string>
+    <string name="password">Password</string>
+    <string name="repeat_password">Repeat Password</string>
+    <string name="create">Create</string>
+    <string name="menu_logout">Logout</string>
 </resources>
