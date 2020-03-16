@@ -1,6 +1,7 @@
 package com.example.mytestapp.ui.settings;
 
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -101,6 +102,15 @@ public class SettingsFragment extends Fragment {
 
 
         return root;
+    }
+
+
+
+
+    public void onBackPressed()
+    {
+        FragmentManager fm = getActivity().getSupportFragmentManager();
+        fm.popBackStack();
     }
 
 

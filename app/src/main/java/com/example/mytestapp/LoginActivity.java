@@ -1,24 +1,28 @@
 package com.example.mytestapp;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
-import com.example.mytestapp.ui.home.HomeFragment;
+import com.example.mytestapp.ui.about.AboutFragment;
+import com.example.mytestapp.ui.login.LoginFragment;
 import com.example.mytestapp.ui.settings.SettingsFragment;
 import com.google.android.material.navigation.NavigationView;
 
 public class LoginActivity extends AppCompatActivity {
+
+    private AppBarConfiguration mAppBarConfiguration;
 
 
     @Override
@@ -29,6 +33,20 @@ public class LoginActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarguest);
         setSupportActionBar(toolbar);
+
+        /*mAppBarConfiguration = new AppBarConfiguration.Builder(
+                R.id.nav_login, R.id.nav_settings, R.id.nav_about)
+                .build();
+
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_guest_fragment);
+        NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
+        NavigationUI.setupWithNavController(toolbar,navController);
+
+
+        navController.setGraph(R.navigation.guest_navigation);*/
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.guest_layout, new LoginFragment(), null).commit();
+
 
 
     }
@@ -45,16 +63,40 @@ public class LoginActivity extends AppCompatActivity {
 
     //This method allows to start the Register Activity
 
-    public void connect(View view){
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-        finish();
-
-    }
-
     public void register(View view){
         Intent intent = new Intent(this, RegisterActivity.class);
         startActivity(intent);
+    }
+
+    public void connect(View view){
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
+
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        FragmentTransaction transaction;
+        transaction = getSupportFragmentManager().beginTransaction();
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                //getFragmentManager().beginTransaction().commit();
+                transaction.replace(R.id.guest_layout, new SettingsFragment(), null).commit();
+                break;
+            case R.id.action_about:
+                //getFragmentManager().beginTransaction().commit();
+                transaction.replace(R.id.guest_layout, new AboutFragment(), null).commit();
+                break;
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
+    public void apply(View view){
+        FragmentTransaction transaction;
+        transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.guest_layout, new LoginFragment()).commit();
     }
 
 }

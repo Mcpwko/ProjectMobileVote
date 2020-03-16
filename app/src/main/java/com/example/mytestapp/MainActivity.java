@@ -48,7 +48,6 @@ public class MainActivity extends AppCompatActivity {
     private Switch aSwitch;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         navController.setGraph(R.navigation.mobile_navigation);
+        navController.getGraph();
 
         sharedPreferences = getSharedPreferences(MyPREFERENCE, Context.MODE_PRIVATE);
 
@@ -88,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
 
          MenuItem menuItem = navigationView.getMenu().findItem(R.id.darkMode); // This is the menu item that contains your switch
         aSwitch = menuItem.getActionView().findViewById(R.id.drawer_switch);
+
 
 
         checkNightModeActivated();
@@ -117,6 +118,14 @@ public class MainActivity extends AppCompatActivity {
         Fragment f = getSupportFragmentManager().findFragmentById(R.id.fragment_container_view_tag);
         Toast.makeText(MainActivity.this,"There is no back action",Toast.LENGTH_LONG).show();
         return;
+    }
+
+
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
     }
 
 

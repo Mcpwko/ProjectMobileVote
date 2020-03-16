@@ -16,4 +16,5 @@
     <string name="repeat_password">Repeat Password</string>
     <string name="create">Create</string>
     <string name="menu_logout">Logout</string>
+    <string name="menu_login">Login</string>
 </resources>
