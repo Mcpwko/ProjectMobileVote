@@ -1,29 +1,30 @@
 package com.example.mytestapp;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.Toast;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
+import com.example.mytestapp.ui.addVote.ChooseVoteFragment;
+import com.example.mytestapp.ui.addVote.meeting.MeetingFragment;
+import com.example.mytestapp.ui.addVote.poll.PollFragment;
+import com.example.mytestapp.ui.addVote.poll.PollStep2Fragment;
+import com.example.mytestapp.ui.home.HomeFragment;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.appcompat.app.AppCompatDelegate;
-import androidx.appcompat.widget.SwitchCompat;
-import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
-import androidx.navigation.NavGraph;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
@@ -32,7 +33,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 public class MainActivity extends AppCompatActivity {
-
+    private int cpt = 2;
     private AppBarConfiguration mAppBarConfiguration;
 
 
@@ -122,11 +123,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
+    
 
 
 
@@ -157,6 +154,60 @@ public class MainActivity extends AppCompatActivity {
             aSwitch.setChecked(false);
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         }
+    }
+
+    public void addVote(View view){
+        FragmentTransaction transaction;
+        transaction = getSupportFragmentManager().beginTransaction();
+
+
+
+        transaction.replace(R.id.home, new ChooseVoteFragment()).commit();
+    }
+
+
+    public void nextStep(View view){
+        FragmentTransaction transaction;
+        transaction = getSupportFragmentManager().beginTransaction();
+
+
+
+        transaction.replace(R.id.home, new PollStep2Fragment()).commit();
+    }
+
+    public void selectPoll(View view){
+        FragmentTransaction transaction;
+        transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.home, new PollFragment()).commit();
+    }
+
+
+
+    public void selectMeeting(View view){
+        FragmentTransaction transaction;
+        transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.home, new MeetingFragment()).commit();
+    }
+
+    public void addAnswer(View view){
+        EditText answer = new EditText(this);
+        cpt = cpt+1;
+        answer.setHint("Answer " + cpt);
+        LinearLayout ll = findViewById(R.id.linearLayoutAnswers);
+        ll.addView(answer);
+
+    }
+
+    public void donePoll(View view){
+        FragmentTransaction transaction;
+        transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.home, new HomeFragment()).commit();
+    }
+
+    public void doneMeeting(View view){
+        FragmentTransaction transaction;
+        transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.home, new HomeFragment()).commit();
     }
 
 

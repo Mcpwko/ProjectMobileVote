@@ -14,6 +14,9 @@
     <string name="drawerOpen">drawerOpen</string>
     <string name="drawerClose">drawerClose</string>
 
+    <string name="Meeting">Meeting</string>
+    <string name="Poll">Poll</string>
+
     <string-array name="names">
         <item>Sion</item>
         <item>Sierre</item>
@@ -21,6 +24,15 @@
         <item>Monthey</item>
         <item>Brig</item>
         <item>Crans-Montana</item>
+    </string-array>
+
+
+    <string-array name="category">
+        <item>Politics</item>
+        <item>Leisure</item>
+        <item>Business</item>
+        <item>School</item>
+        <item>Sport</item>
     </string-array>
 
 
@@ -48,4 +60,21 @@
     <string name="create">Create</string>
     <string name="menu_logout">Logout</string>
     <string name="menu_login">Login</string>
+    <string name="chooseOption">Choose a type of vote :</string>
+    <string name="TitlePollStep1">Step 1 : What is your question ?</string>
+    <string name="TitleQuestion">Title</string>
+    <string name="titlecategory">Category</string>
+    <string name="addDecription">Add a description</string>
+    <string name="next">Next</string>
+    <string name="titlestep2">Step 2 : Choose the answers !</string>
+    <string name="addanswer">Add an answer</string>
+    <string name="answer1">Answer 1</string>
+    <string name="answer2">Answer 2</string>
+    <string name="finish">Done</string>
+    <string name="titlemeeting">Create your meeting</string>
+    <string name="subjectmeeting">Title of meeting</string>
+    <string name="description">Add a description</string>
+    <string name="place">Add a place</string>
+    <string name="done">Done</string>
+    <string name="deadline">Deadline</string>
 </resources>
