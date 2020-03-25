@@ -13,15 +13,25 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 import android.content.Context;
+import android.os.AsyncTask;
+import android.provider.ContactsContract;
+import android.provider.ContactsContract.CommonDataKinds.Note;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
 
+import com.example.mytestapp.AppExecutors;
 import com.example.mytestapp.db.dao.UserDao;
+import com.example.mytestapp.db.entities.Category;
+import com.example.mytestapp.db.entities.Meeting;
+import com.example.mytestapp.db.entities.Poll;
+import com.example.mytestapp.db.entities.PossibleAnswers;
 import com.example.mytestapp.db.entities.User;
+import com.example.mytestapp.db.entities.Vote;
 
 import java.util.List;
 
-@Database(entities = {User.class, ProductFtsEntity.class, CommentEntity.class}, version = 2)
+@Database(entities = {User.class, Category.class, Meeting.class, Poll.class, PossibleAnswers.class, Vote.class}, version = 2)
 @TypeConverters(DateConverter.class)
 public abstract class AppDatabase extends RoomDatabase {
 
@@ -63,18 +73,16 @@ public abstract class AppDatabase extends RoomDatabase {
                             // Add a delay to simulate a long-running operation
                             addDelay();
                             // Generate the data for pre-population
-                            AppDatabase database = AppDatabase.getInstance(appContext, executors);
-                            List<User> products = DataGenerator.generateProducts();
-                            List<CommentEntity> comments =
-                                    DataGenerator.generateCommentsForProducts(products);
+                            AppDatabase database = AppDatabase.getInstance(appContext,null);
+                            List<User> users = DataGenerator.generateUsers();
 
-                            insertData(database, products, comments);
+
+                            insertData(database, users);
                             // notify that the database was created and it's ready to be used
                             database.setDatabaseCreated();
                         });
                     }
                 })
-                .addMigrations(MIGRATION_1_2)
                 .build();
     }
 
@@ -91,11 +99,9 @@ public abstract class AppDatabase extends RoomDatabase {
         mIsDatabaseCreated.postValue(true);
     }
 
-    private static void insertData(final AppDatabase database, final List<User> products,
-                                   final List<CommentEntity> comments) {
+    private static void insertData(final AppDatabase database, final List<User> users) {
         database.runInTransaction(() -> {
-            database.userDao().insertAll(products);
-            database.commentDao().insertAll(comments);
+            database.userDao().insertUsers(users);
         });
     }
 
@@ -110,15 +116,6 @@ public abstract class AppDatabase extends RoomDatabase {
         return mIsDatabaseCreated;
     }
 
-    private static final Migration MIGRATION_1_2 = new Migration(1, 2) {
 
-        @Override
-        public void migrate(@NonNull SupportSQLiteDatabase database) {
-            database.execSQL("CREATE VIRTUAL TABLE IF NOT EXISTS `productsFts` USING FTS4("
-                    + "`name` TEXT, `description` TEXT, content=`products`)");
-            database.execSQL("INSERT INTO productsFts (`rowid`, `name`, `description`) "
-                    + "SELECT `id`, `name`, `description` FROM products");
 
-        }
-    };
 }

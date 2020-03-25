@@ -31,6 +31,8 @@ import static androidx.room.ForeignKey.CASCADE;
 
 public class Vote {
 
+    @PrimaryKey
+    public int vid;
 
     @ColumnInfo(name="tbl_uid")
     public int uid;

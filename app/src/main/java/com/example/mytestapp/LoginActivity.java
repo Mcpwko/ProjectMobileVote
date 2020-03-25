@@ -9,7 +9,10 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteDatabaseLockedException;
 import android.nfc.Tag;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -17,14 +20,18 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
+import com.example.mytestapp.db.AppDatabase;
 import com.example.mytestapp.db.entities.Attendance;
+import com.example.mytestapp.db.entities.User;
 import com.example.mytestapp.ui.about.AboutFragment;
 import com.example.mytestapp.ui.home.HomeFragment;
 import com.example.mytestapp.ui.login.LoginFragment;
 import com.example.mytestapp.ui.register.RegisterFragment;
 import com.example.mytestapp.ui.settings.SettingsFragment;
 import com.google.android.material.navigation.NavigationView;
+
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -85,14 +92,26 @@ public class LoginActivity extends AppCompatActivity {
     public void connect(View view){
 
         //DB
-        /**User user = user.getUserByEmail(String email);
-         * **** controler le mdp pour la connexion
-         */
+        AppDatabase db;
+
+        db = AppDatabase.getInstance(this,null);
+
+
+        EditText userName = findViewById(R.id.userName);
+
+        User user = db.userDao().getUserByEmail(userName.getText().toString());
+
+        EditText password = (EditText) findViewById(R.id.password);
 
 
 
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
+        if(user.getPassword().equals(password.getText().toString())){
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+        }
+
+
+
 
     }
 
@@ -131,6 +150,22 @@ public class LoginActivity extends AppCompatActivity {
         if(result==true && result2==true ) {
 
             // ICI DB
+
+            AppDatabase db;
+
+            db = AppDatabase.getInstance(this,null);
+
+            User user = new User();
+
+            user.setFirstName(findViewById(R.id.editText4).toString());
+            user.setLastName(findViewById(R.id.editText3).toString());
+            user.setBirthdate(findViewById(R.id.datePicker1).toString());
+            user.setPhoneNumber(findViewById(R.id.phoneNumber).toString());
+            user.setAddress(findViewById(R.id.editText6).toString());
+            user.setEmail(findViewById(R.id.email).toString());
+            user.setPassword(findViewById(R.id.password).toString());
+
+            db.userDao().insertUser(user);
 
 
 

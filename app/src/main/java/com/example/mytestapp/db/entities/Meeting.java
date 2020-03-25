@@ -31,12 +31,12 @@ public class Meeting {
     @ColumnInfo (name = "desc_meeting")
     private String descMeeting;
 
-    public int getUid() {
+    public int getMid() {
         return mid;
     }
 
-    public void setUid(int uid) {
-        this.mid = uid;
+    public void setMid(int uid) {
+        this.mid = mid;
     }
 
     public String getTitleMeeting() {
