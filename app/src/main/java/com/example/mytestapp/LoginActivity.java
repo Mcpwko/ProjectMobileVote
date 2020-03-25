@@ -2,6 +2,7 @@ package com.example.mytestapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -17,7 +18,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 
+import com.example.mytestapp.db.entities.Attendance;
 import com.example.mytestapp.ui.about.AboutFragment;
+import com.example.mytestapp.ui.home.HomeFragment;
 import com.example.mytestapp.ui.login.LoginFragment;
 import com.example.mytestapp.ui.register.RegisterFragment;
 import com.example.mytestapp.ui.settings.SettingsFragment;
@@ -48,7 +51,7 @@ public class LoginActivity extends AppCompatActivity {
 
         navController.setGraph(R.navigation.guest_navigation);*/
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.guest_layout, new LoginFragment(), null).commit();
+        transaction.replace(R.id.guest_layout, new LoginFragment(), "1").commit();
 
 
 
@@ -71,15 +74,26 @@ public class LoginActivity extends AppCompatActivity {
         //startActivity(intent);
 
         FragmentTransaction transaction;
+
         transaction = getSupportFragmentManager().beginTransaction();
+        transaction.addToBackStack(null);
         transaction.replace(R.id.guest_layout, new RegisterFragment(), null).commit();
     }
 
 
 
     public void connect(View view){
+
+        //DB
+        /**User user = user.getUserByEmail(String email);
+         * **** controler le mdp pour la connexion
+         */
+
+
+
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
+
     }
 
 
@@ -105,13 +119,21 @@ public class LoginActivity extends AppCompatActivity {
     public void apply(View view){
         FragmentTransaction transaction;
         transaction = getSupportFragmentManager().beginTransaction();
+
         transaction.replace(R.id.guest_layout, new LoginFragment()).commit();
+
     }
+
 
     public void create(View view){
         boolean result = isValidEmail((EditText)findViewById(R.id.email));
         boolean result2 = isValidPassword((EditText)findViewById(R.id.password),(EditText)findViewById(R.id.passwordCheck));
         if(result==true && result2==true ) {
+
+            // ICI DB
+
+
+
             FragmentTransaction transaction;
             transaction = getSupportFragmentManager().beginTransaction();
             transaction.replace(R.id.guest_layout, new LoginFragment()).commit();

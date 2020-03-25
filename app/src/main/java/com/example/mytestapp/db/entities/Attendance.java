@@ -38,7 +38,7 @@ public class Attendance {
         this.aid = aid;
     }
 
-    public boolean isAnswerAttendance() {
+    public boolean isAnswerAttendance(int uid, int idmeeting) {
         return answerAttendance;
     }
 

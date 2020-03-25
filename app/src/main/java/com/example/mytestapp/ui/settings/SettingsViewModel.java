@@ -1,9 +1,11 @@
 package com.example.mytestapp.ui.settings;
 
+import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -27,4 +29,9 @@ public class SettingsViewModel extends ViewModel {
     public LiveData<String> getText() {
         return mText;
     }
+
+
+
 }
+
+

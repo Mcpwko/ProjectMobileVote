@@ -1,5 +1,6 @@
 package com.example.mytestapp.db.entities;
 
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
@@ -10,19 +11,19 @@ import static androidx.room.ForeignKey.CASCADE;
         @ForeignKey(
                 entity = User.class,
                 parentColumns = "uid",
-                childColumns = "vid",
+                childColumns = "tbl_uid",
                 onDelete = CASCADE
         ),
         @ForeignKey(
                 entity = Category.class,
                 parentColumns = "cid",
-                childColumns = "vid",
+                childColumns = "tbl_cid",
                 onDelete = CASCADE
         ),
         @ForeignKey(
                 entity = PossibleAnswers.class,
-                parentColumns = "cid",
-                childColumns = "vid",
+                parentColumns = "paid",
+                childColumns = "tbl_paid",
                 onDelete = CASCADE
         )
 
@@ -30,6 +31,13 @@ import static androidx.room.ForeignKey.CASCADE;
 
 public class Vote {
 
-    @PrimaryKey
-    private int vid;
+
+    @ColumnInfo(name="tbl_uid")
+    public int uid;
+
+    @ColumnInfo(name = "tbl_cid")
+    public int cid;
+
+    @ColumnInfo(name = "tbl_paid")
+    public int paid;
 }

@@ -1,6 +1,7 @@
 package com.example.mytestapp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -19,6 +20,7 @@ import com.example.mytestapp.ui.addVote.meeting.MeetingFragment;
 import com.example.mytestapp.ui.addVote.poll.PollFragment;
 import com.example.mytestapp.ui.addVote.poll.PollStep2Fragment;
 import com.example.mytestapp.ui.home.HomeFragment;
+import com.example.mytestapp.ui.login.LoginFragment;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.appcompat.app.AppCompatDelegate;
@@ -160,8 +162,6 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction transaction;
         transaction = getSupportFragmentManager().beginTransaction();
 
-
-
         transaction.replace(R.id.home, new ChooseVoteFragment()).commit();
     }
 
@@ -169,8 +169,6 @@ public class MainActivity extends AppCompatActivity {
     public void nextStep(View view){
         FragmentTransaction transaction;
         transaction = getSupportFragmentManager().beginTransaction();
-
-
 
         transaction.replace(R.id.home, new PollStep2Fragment()).commit();
     }
@@ -208,6 +206,12 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction transaction;
         transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.home, new HomeFragment()).commit();
+    }
+
+    public void apply(View view){
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+
     }
 
 

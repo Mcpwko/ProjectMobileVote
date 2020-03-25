@@ -107,11 +107,6 @@ public class SettingsFragment extends Fragment {
 
 
 
-    public void onBackPressed()
-    {
-        FragmentManager fm = getActivity().getSupportFragmentManager();
-        fm.popBackStack();
-    }
 
 
 
