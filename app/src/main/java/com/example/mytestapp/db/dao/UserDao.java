@@ -1,5 +1,8 @@
 package com.example.mytestapp.db.dao;
 
+import android.database.sqlite.SQLiteConstraintException;
+
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -13,7 +16,7 @@ import java.util.List;
 @Dao
 public interface UserDao {
     @Query("SELECT * FROM user")
-    List<User> getAllUsers();
+    LiveData<List<User>> getAllUsers();
 
     @Query("SELECT * FROM user WHERE uid IN(:userIds)")
     List<User> loadAllByIds(int[] userIds);
@@ -22,10 +25,10 @@ public interface UserDao {
     User findbyName(String first, String last);
 
     @Query("SELECT * FROM user WHERE email LIKE(:email)")
-    User getUserByEmail(String email);
+    LiveData<User> getUserByEmail(String email);
 
     @Insert
-    void insertUser(User... user);
+    void insertUser(User user) throws SQLiteConstraintException ;
 
     @Insert
     void insertUsers(List<User> users);
@@ -34,6 +37,9 @@ public interface UserDao {
     void updateUser(User user);
 
     @Delete
-    void delete(User user);
+    void deleteUser(User user);
+
+    @Query("DELETE FROM user")
+    void deleteAll();
 
 }

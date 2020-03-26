@@ -45,4 +45,8 @@ public class Attendance {
     public void setAnswerAttendance(boolean answerAttendance) {
         this.answerAttendance = answerAttendance;
     }
+
+    public boolean isAnswerAttendance() {
+        return answerAttendance;
+    }
 }

@@ -1,13 +1,16 @@
 package com.example.mytestapp.db.entities;
 
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Embedded;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 
 @Entity (tableName = "user")
 public class User {
+
     @PrimaryKey(autoGenerate = true)
     private int uid;
 
@@ -18,10 +21,10 @@ public class User {
     private String lastName;
 
     @ColumnInfo(name = "birth_date")
-    private String birthdate;
+    private String birthDate;
 
     @Embedded
-    public String address;
+    public Address1 address;
 
     @ColumnInfo (name = "phone_number")
     private String phoneNumber;
@@ -32,7 +35,22 @@ public class User {
     @ColumnInfo(name = "password")
     private String password;
 
-    public void setAddress(String address) {
+    @Ignore
+    public User(){
+
+    }
+
+    public User(@NonNull String firstName, String lastName, String birthDate, Address1 address, String phoneNumber, String email, String password) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.birthDate = birthDate;
+        this.address = address;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.password = password;
+    }
+
+    public void setAddress(Address1 address) {
         this.address = address;
     }
 
@@ -60,15 +78,15 @@ public class User {
         this.password = password;
     }
 
-    public String getBirthdate() {
-        return birthdate;
+    public String getBirthDate() {
+        return birthDate;
     }
 
     public void setBirthdate(String birthdate) {
-        this.birthdate = birthdate;
+        this.birthDate = birthdate;
     }
 
-    public String getAddress() {
+    public Address1 getAddress() {
         return address;
     }
 
@@ -95,6 +113,8 @@ public class User {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
+
+
 }
 
 

@@ -44,7 +44,6 @@ public class PollFragment extends Fragment {
         datePicker.setMinDate(new Date().getTime());
 
         return root;
-        bite
     }
 
     @Override

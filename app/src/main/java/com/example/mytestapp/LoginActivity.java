@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -11,39 +12,52 @@ import androidx.navigation.ui.NavigationUI;
 
 import android.content.ContentValues;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabaseLockedException;
 import android.nfc.Tag;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.mytestapp.db.AppDatabase;
+import com.example.mytestapp.db.async.CreateUser;
+import com.example.mytestapp.db.entities.Address1;
 import com.example.mytestapp.db.entities.Attendance;
 import com.example.mytestapp.db.entities.User;
+import com.example.mytestapp.db.repository.UserRepository;
 import com.example.mytestapp.ui.about.AboutFragment;
 import com.example.mytestapp.ui.home.HomeFragment;
 import com.example.mytestapp.ui.login.LoginFragment;
 import com.example.mytestapp.ui.register.RegisterFragment;
 import com.example.mytestapp.ui.settings.SettingsFragment;
+import com.example.mytestapp.util.OnAsyncEventListener;
+import com.example.mytestapp.viewmodel.UserViewModel;
 import com.google.android.material.navigation.NavigationView;
+
+import java.text.SimpleDateFormat;
 
 
 public class LoginActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
-
-
+    private UserViewModel userViewModel;
+    private User user;
+    private UserRepository repository;
+    private static final String TAG = "LoginActivity";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         setTitle("MCPJACK");
-
+        repository = getUserRepository();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarguest);
         setSupportActionBar(toolbar);
 
@@ -57,11 +71,32 @@ public class LoginActivity extends AppCompatActivity {
 
 
         navController.setGraph(R.navigation.guest_navigation);*/
+
+
+        /*UserViewModel.Factory factory = new UserViewModel.Factory(
+                getApplication(), accountId);
+        userViewModel = ViewModelProviders.of(this, factory).get(UserViewModel.class);
+        if (isEditMode) {
+            viewModel.getAccount().observe(this, accountEntity -> {
+                if (accountEntity != null) {
+                    account = accountEntity;
+                    etAccountName.setText(account.getName());
+                }
+            });
+        }*/
+
+
+
+
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.guest_layout, new LoginFragment(), "1").commit();
 
 
 
+    }
+
+    public UserRepository getUserRepository() {
+        return UserRepository.getInstance();
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -90,25 +125,51 @@ public class LoginActivity extends AppCompatActivity {
 
 
     public void connect(View view){
-
-        //DB
-        AppDatabase db;
-
-        db = AppDatabase.getInstance(this,null);
-
-
         EditText userName = findViewById(R.id.userName);
-
-        User user = db.userDao().getUserByEmail(userName.getText().toString());
-
+        String email = userName.getText().toString();
         EditText password = (EditText) findViewById(R.id.password);
+        String password1 = password.getText().toString();
 
 
+        /*UserViewModel.Factory factory = new UserViewModel.Factory(getApplication(), email);
+        userViewModel = ViewModelProviders.of(this, factory).get(UserViewModel.class);
+        userViewModel.getUser().observe(this, User -> {
+            if (User != null) {
+                user = User;
+            }
+        });
 
-        if(user.getPassword().equals(password.getText().toString())){
+        if(user.getPassword().equals(password1)){
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
-        }
+        }*/
+
+        repository.getUser(email, getApplication()).observe(LoginActivity.this, userEntity -> {
+            if (userEntity != null) {
+                if (userEntity.getPassword().equals(password1)) {
+                    // We need an Editor object to make preference changes.
+                    // All objects are from android.context.Context
+                    //SharedPreferences.Editor editor = getSharedPreferences(BaseActivity.PREFS_NAME, 0).edit();
+                    //editor.putString(BaseActivity.PREFS_USER, clientEntity.getEmail());
+                    //editor.apply();
+
+                    Intent intent = new Intent(this, MainActivity.class);
+                    startActivity(intent);
+                    //emailView.setText("");
+                    //passwordView.setText("");
+                } else {
+                    /*passwordView.setError(getString(R.string.error_incorrect_password));
+                    passwordView.requestFocus();
+                    passwordView.setText("");*/
+                }
+                //progressBar.setVisibility(View.GONE);
+            } else {
+                //emailView.setError(getString(R.string.error_invalid_email));
+                //emailView.requestFocus();
+                //passwordView.setText("");
+                //progressBar.setVisibility(View.GONE);
+            }
+        });
 
 
 
@@ -149,29 +210,48 @@ public class LoginActivity extends AppCompatActivity {
         boolean result2 = isValidPassword((EditText)findViewById(R.id.password),(EditText)findViewById(R.id.passwordCheck));
         if(result==true && result2==true ) {
 
-            // ICI DB
-
-            AppDatabase db;
-
-            db = AppDatabase.getInstance(this,null);
-
             User user = new User();
 
-            user.setFirstName(findViewById(R.id.editText4).toString());
-            user.setLastName(findViewById(R.id.editText3).toString());
-            user.setBirthdate(findViewById(R.id.datePicker1).toString());
-            user.setPhoneNumber(findViewById(R.id.phoneNumber).toString());
-            user.setAddress(findViewById(R.id.editText6).toString());
-            user.setEmail(findViewById(R.id.email).toString());
-            user.setPassword(findViewById(R.id.password).toString());
 
-            db.userDao().insertUser(user);
+            EditText firstname = (EditText) findViewById(R.id.editText4);
+            user.setFirstName(firstname.getText().toString());
 
+            EditText name = (EditText) findViewById(R.id.editText3);
+            user.setLastName(name.getText().toString());
 
+            DatePicker date = (DatePicker) findViewById(R.id.datePicker1);
+            user.setBirthdate(date.toString());
+
+            EditText phone = (EditText) findViewById(R.id.phoneNumber);
+            user.setPhoneNumber(phone.getText().toString());
+
+            EditText address = (EditText) findViewById(R.id.editText6);
+            Spinner mySpinner = (Spinner) findViewById(R.id.spinnerCityList);
+            user.setAddress(new Address1(address.getText().toString(),mySpinner.getSelectedItem().toString()));
+
+            EditText email = (EditText) findViewById(R.id.email);
+            user.setEmail(email.getText().toString());
+
+            EditText password = (EditText) findViewById(R.id.password);
+            user.setPassword(password.getText().toString());
+
+            new CreateUser(getApplication(), new OnAsyncEventListener() {
+                @Override
+                public void onSuccess() {
+                    Log.d(TAG, "createUserWithEmail: success");
+                }
+
+                @Override
+                public void onFailure(Exception e) {
+                    Log.d(TAG, "createUserWithEmail: failure", e);
+                }
+            }).execute(user);
 
             FragmentTransaction transaction;
             transaction = getSupportFragmentManager().beginTransaction();
             transaction.replace(R.id.guest_layout, new LoginFragment()).commit();
+
+
         }
     }
 
