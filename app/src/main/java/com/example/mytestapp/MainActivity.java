@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
@@ -13,6 +14,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.mytestapp.ui.addVote.ChooseVoteFragment;
@@ -94,7 +96,24 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+
+
         checkNightModeActivated();
+
+        final SharedPreferences mSharedPreference= PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+
+        TextView firstNameEditText = findViewById(R.id.textView2);
+
+        String firstname=(mSharedPreference.getString("firstname",null));
+        firstNameEditText.setText(firstname);
+
+        TextView lastNameEditText = findViewById(R.id.textView8);
+
+        String lastName=(mSharedPreference.getString("lastname",null));
+        lastNameEditText.setText(lastName);
+
+
+
 
         aSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override

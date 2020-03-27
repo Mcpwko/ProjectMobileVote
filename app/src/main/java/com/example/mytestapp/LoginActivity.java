@@ -52,6 +52,9 @@ public class LoginActivity extends AppCompatActivity {
     private User user;
     private UserRepository repository;
     private static final String TAG = "LoginActivity";
+    SharedPreferences sharedPreferences;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -246,6 +249,25 @@ public class LoginActivity extends AppCompatActivity {
                     Log.d(TAG, "createUserWithEmail: failure", e);
                 }
             }).execute(user);
+
+
+            //Creation of a sharedPreference to save the user
+
+            SharedPreferences pref = getApplicationContext().getSharedPreferences("YOUR_PREF_NAME", MODE_PRIVATE);
+            SharedPreferences.Editor edt = pref.edit();
+
+            edt.putString("firstname",firstname.toString());
+            edt.putString("lastname",name.toString());
+            //edt.putString("email",email.toString());
+            //edt.putString("phone",phone.toString());
+            //edt.putString("date",date.toString());
+            //edt.putString("address",address.getText().toString());
+            //edt.putString("city",mySpinner.getSelectedItem().toString());
+            //edt.putString("password", password.toString());
+
+            edt.apply();
+
+
 
             FragmentTransaction transaction;
             transaction = getSupportFragmentManager().beginTransaction();
