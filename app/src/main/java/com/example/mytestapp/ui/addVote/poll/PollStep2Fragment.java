@@ -15,11 +15,11 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.example.mytestapp.R;
+import com.example.mytestapp.db.entities.Poll;
 
 public class PollStep2Fragment extends Fragment {
 
     private PollStep2ViewModel mViewModel;
-
     public static PollStep2Fragment newInstance() {
         return new PollStep2Fragment();
     }

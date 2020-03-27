@@ -3,29 +3,24 @@ package com.example.mytestapp.db.entities;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 import static androidx.room.ForeignKey.CASCADE;
 
-@Entity(foreignKeys = {
-        @ForeignKey(
-                entity = User.class,
-                parentColumns = "uid",
-                childColumns = "pid",
-                onDelete = CASCADE
-        ),
-        @ForeignKey(
-                entity = Category.class,
-                parentColumns = "cid",
-                childColumns = "pid",
-                onDelete = CASCADE
-        )
-})
+@Entity(foreignKeys = @ForeignKey(entity = User.class,
+        parentColumns = "uid", childColumns = "user_id",
+        onDelete = CASCADE),indices = {
+        @Index(value = {"user_id"}
+        )})
 
 
 public class Poll {
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     private int pid;
+
+    @ColumnInfo (name = "user_id")
+    private int user_id;
 
     @ColumnInfo (name = "title_poll")
     private String titlePoll;
@@ -45,6 +40,14 @@ public class Poll {
 
     public void setPid(int pid) {
         this.pid = pid;
+    }
+
+    public int getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(int user_id) {
+        this.user_id = user_id;
     }
 
     public String getTitlePoll() {

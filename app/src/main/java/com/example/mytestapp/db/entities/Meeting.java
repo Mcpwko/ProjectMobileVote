@@ -3,18 +3,24 @@ package com.example.mytestapp.db.entities;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 import static androidx.room.ForeignKey.CASCADE;
 
 
 @Entity(foreignKeys = @ForeignKey(entity = User.class,
-        parentColumns = "uid", childColumns = "mid",
-        onDelete = CASCADE))
+        parentColumns = "uid", childColumns = "user_id",
+        onDelete = CASCADE),indices = {
+        @Index(value = {"user_id"}
+        )})
 
 public class Meeting {
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     private int mid;
+
+    @ColumnInfo (name = "user_id")
+    private int user_id;
 
     @ColumnInfo (name = "title_meeting")
     private String titleMeeting;
@@ -35,8 +41,16 @@ public class Meeting {
         return mid;
     }
 
-    public void setMid(int uid) {
+    public  void setMid(int mid) {
         this.mid = mid;
+    }
+
+    public int getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(int user_id) {
+        this.user_id = user_id;
     }
 
     public String getTitleMeeting() {

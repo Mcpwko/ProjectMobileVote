@@ -14,9 +14,9 @@ import androidx.annotation.NonNull;
 
 import com.example.mytestapp.db.dao.MeetingDao;
 import com.example.mytestapp.db.dao.PollDao;
+import com.example.mytestapp.db.dao.PossibleAnswerDao;
 import com.example.mytestapp.db.dao.UserDao;
 import com.example.mytestapp.db.entities.Attendance;
-import com.example.mytestapp.db.entities.Category;
 import com.example.mytestapp.db.entities.Meeting;
 import com.example.mytestapp.db.entities.Poll;
 import com.example.mytestapp.db.entities.PossibleAnswers;
@@ -25,7 +25,7 @@ import com.example.mytestapp.db.entities.Vote;
 
 import java.util.concurrent.Executors;
 
-@Database(entities = {Attendance.class,Category.class,Meeting.class,Poll.class,PossibleAnswers.class,User.class,Vote.class}, version = 1)
+@Database(entities = {Attendance.class,Meeting.class,Poll.class,PossibleAnswers.class,User.class,Vote.class}, version = 1)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static final String TAG = "AppDatabase";
@@ -37,6 +37,7 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract MeetingDao meetingDao();
     public abstract PollDao pollDao();
     public abstract UserDao userDao();
+    public abstract PossibleAnswerDao possibleAnswerDao();
 
     private final MutableLiveData<Boolean> isDatabaseCreated = new MutableLiveData<>();
 

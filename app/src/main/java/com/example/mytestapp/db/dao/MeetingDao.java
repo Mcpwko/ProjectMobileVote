@@ -1,6 +1,8 @@
 package com.example.mytestapp.db.dao;
 
 
+import android.database.sqlite.SQLiteConstraintException;
+
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -19,13 +21,13 @@ public interface MeetingDao {
     List<Meeting> getAllMeetings();
 
     @Insert
-    void insertPoll(Meeting meeting);
+    void insertMeeting(Meeting meeting) throws SQLiteConstraintException;
 
     @Update
-    void updatePoll(Meeting meeting);
+    void updateMeeting(Meeting meeting);
 
     @Delete
-    void deletePoll(Meeting meeting);
+    void deleteMeeting(Meeting meeting);
 
 }
 

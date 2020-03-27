@@ -41,6 +41,7 @@ import com.example.mytestapp.ui.settings.SettingsFragment;
 import com.example.mytestapp.util.OnAsyncEventListener;
 import com.example.mytestapp.viewmodel.UserViewModel;
 import com.google.android.material.navigation.NavigationView;
+import com.google.gson.Gson;
 
 import java.text.SimpleDateFormat;
 
@@ -64,33 +65,6 @@ public class LoginActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarguest);
         setSupportActionBar(toolbar);
 
-        /*mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_login, R.id.nav_settings, R.id.nav_about)
-                .build();
-
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_guest_fragment);
-        NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
-        NavigationUI.setupWithNavController(toolbar,navController);
-
-
-        navController.setGraph(R.navigation.guest_navigation);*/
-
-
-        /*UserViewModel.Factory factory = new UserViewModel.Factory(
-                getApplication(), accountId);
-        userViewModel = ViewModelProviders.of(this, factory).get(UserViewModel.class);
-        if (isEditMode) {
-            viewModel.getAccount().observe(this, accountEntity -> {
-                if (accountEntity != null) {
-                    account = accountEntity;
-                    etAccountName.setText(account.getName());
-                }
-            });
-        }*/
-
-
-
-
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.guest_layout, new LoginFragment(), "1").commit();
 
@@ -105,12 +79,11 @@ public class LoginActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
+        MenuItem menuItem = menu.findItem(R.id.sort);
+        menuItem.setVisible(false);
         return true;
     }
 
-    /**public boolean onOptionsItemSelected(MenuItem item){
-
-    }*/
 
     //This method allows to start the Register Activity
 
@@ -134,19 +107,6 @@ public class LoginActivity extends AppCompatActivity {
         String password1 = password.getText().toString();
 
 
-        /*UserViewModel.Factory factory = new UserViewModel.Factory(getApplication(), email);
-        userViewModel = ViewModelProviders.of(this, factory).get(UserViewModel.class);
-        userViewModel.getUser().observe(this, User -> {
-            if (User != null) {
-                user = User;
-            }
-        });
-
-        if(user.getPassword().equals(password1)){
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
-        }*/
-
         repository.getUser(email, getApplication()).observe(LoginActivity.this, userEntity -> {
             if (userEntity != null) {
                 if (userEntity.getPassword().equals(password1)) {
@@ -155,6 +115,17 @@ public class LoginActivity extends AppCompatActivity {
                     //SharedPreferences.Editor editor = getSharedPreferences(BaseActivity.PREFS_NAME, 0).edit();
                     //editor.putString(BaseActivity.PREFS_USER, clientEntity.getEmail());
                     //editor.apply();
+                    //Creation of a sharedPreference to save the user
+
+                    sharedPreferences = getApplicationContext().getSharedPreferences("User", MODE_PRIVATE);
+                    SharedPreferences.Editor edt = sharedPreferences.edit();
+
+                    Gson gson = new Gson();
+                    String json = gson.toJson(userEntity);
+                    edt.putString("User", json);
+                    edt.apply();
+
+
 
                     Intent intent = new Intent(this, MainActivity.class);
                     startActivity(intent);
@@ -251,21 +222,6 @@ public class LoginActivity extends AppCompatActivity {
             }).execute(user);
 
 
-            //Creation of a sharedPreference to save the user
-
-            SharedPreferences pref = getApplicationContext().getSharedPreferences("YOUR_PREF_NAME", MODE_PRIVATE);
-            SharedPreferences.Editor edt = pref.edit();
-
-            edt.putString("firstname",firstname.toString());
-            edt.putString("lastname",name.toString());
-            //edt.putString("email",email.toString());
-            //edt.putString("phone",phone.toString());
-            //edt.putString("date",date.toString());
-            //edt.putString("address",address.getText().toString());
-            //edt.putString("city",mySpinner.getSelectedItem().toString());
-            //edt.putString("password", password.toString());
-
-            edt.apply();
 
 
 
