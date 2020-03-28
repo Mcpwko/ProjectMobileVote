@@ -14,6 +14,11 @@
             android:title="@string/menu_myaccount" />
 
         <item
+            android:id="@+id/my_topics"
+            android:title="@string/my_topics"
+            android:icon="@drawable/ic_menu_share" />
+
+        <item
             android:id="@+id/nav_home"
             android:icon="@drawable/ic_menu_camera"
             android:title="@string/menu_home" />
@@ -32,6 +37,13 @@
             android:id="@+id/darkMode"
             android:title="Dark mode"
             app:actionLayout="@layout/switch_item"
+            app:showAsAction="always" />
+
+
+        <item
+            android:id="@+id/logout"
+            android:icon="@drawable/ic_menu_share"
+            android:title="@string/menu_logout"
             app:showAsAction="always" />
     </group>
 

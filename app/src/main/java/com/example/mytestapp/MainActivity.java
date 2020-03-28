@@ -61,6 +61,8 @@ import androidx.appcompat.widget.Toolbar;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuItemClickListener {
@@ -107,7 +109,7 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_myaccount, R.id.nav_about,R.id.nav_settings)
+                R.id.nav_home,R.id.my_topics, R.id.nav_myaccount, R.id.nav_about,R.id.nav_settings, R.id.logout)
                 .setDrawerLayout(drawer)
                 .build();
 
@@ -129,6 +131,23 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
 
         if(navigationView.getCheckedItem()== navigationView.getMenu().findItem(R.id.nav_home))
             homepage = true;
+
+        final Context context = this;
+
+        MenuItem logout = navigationView.getMenu().findItem(R.id.logout);
+
+        logout.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                Intent newAct = new Intent(context, LoginActivity.class);
+                startActivity(newAct);
+                return false;
+            }
+        });
+
+
+
+
 
 
 
@@ -155,7 +174,27 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
         });
 
 
+
+        SharedPreferences userpreferences = getSharedPreferences("User", Context.MODE_PRIVATE);
+        Gson gson2 = new Gson();
+        String json2 = userpreferences.getString("User", "");
+        User user = gson2.fromJson(json2, User.class);
+
+
+
+        View hView = navigationView.getHeaderView(0);
+        TextView navViewName = (TextView)hView.findViewById(R.id.navviewName);
+        TextView navViewEmail = (TextView)hView.findViewById(R.id.navviewEmail);
+        navViewName.setText(user.getLastName() + " " + user.getFirstName());
+        navViewEmail.setText(user.getEmail());
     }
+
+    public void Logout(View view){
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
+    }
+
+
 
 
     public PollRepository getPollRepository() {
@@ -190,7 +229,15 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
         transaction = getSupportFragmentManager().beginTransaction();
         switch (item.getItemId()) {
             case R.id.sort:
-
+                break;
+            case R.id.all_filter:
+                Toast.makeText(this,"all selected",Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.meeting_filter:
+                Toast.makeText(this,"meeting selected",Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.poll_filter:
+                Toast.makeText(this,"poll selected",Toast.LENGTH_SHORT).show();
                 break;
             default:
                 break;
@@ -245,6 +292,17 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
         transaction.replace(R.id.home, new ChooseVoteFragment()).commit();
     }
 
+    public static java.util.Date getDateFromDatePicker(DatePicker datePicker){
+        int day = datePicker.getDayOfMonth();
+        int month = datePicker.getMonth();
+        int year =  datePicker.getYear();
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(year, month, day);
+
+        return calendar.getTime();
+    }
+
 
     public void nextStep(View view){
 
@@ -261,7 +319,9 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
         poll.setDescPoll(description.getText().toString());
 
         DatePicker date = (DatePicker) findViewById(R.id.datePoll);
-        poll.setDeadlinePoll(date.toString());
+        Date dateInfo = getDateFromDatePicker(date);
+
+        poll.setDeadlinePoll(dateInfo);
 
 
         SharedPreferences preferences = getSharedPreferences("User", Context.MODE_PRIVATE);
@@ -328,6 +388,7 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
 
     }
 
+
     public void donePoll(View view){
 
 
@@ -356,7 +417,7 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
         EditText title = (EditText) findViewById(R.id.answer1);
         String meeting = title.getText().toString();
 
-
+        poll.setStatusOpen(true);
 
         new CreatePoll(getApplication(), new OnAsyncEventListener() {
             @Override
@@ -376,12 +437,17 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
             Poll poll2 = pollentity;
 
 
-            PossibleAnswers possibleAnswers = new PossibleAnswers();
+
 
             for(int i = 0; i < answers.size(); i++) {
+                PossibleAnswers possibleAnswers = new PossibleAnswers();
+                possibleAnswers.setAnswer(null);
                 String test = answers.get(i);
+
                 possibleAnswers.setAnswer(test);
                 possibleAnswers.setPollid(poll2.getPid());
+
+
 
                 new CreatePossibleAnswer(getApplication(), new OnAsyncEventListener() {
                     @Override
@@ -418,10 +484,13 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
         meeting.setTitleMeeting(title.getText().toString());
 
         DatePicker date = (DatePicker) findViewById(R.id.dateMeeting);
-        meeting.setDayMeeting(date.toString());
+        Date date2 = getDateFromDatePicker(date);
+        meeting.setDayMeeting(date2);
 
         TimePicker hour = (TimePicker) findViewById(R.id.timePicker);
-        meeting.setTimeMeeting(hour.toString());
+        int a =hour.getCurrentHour();
+        int b = hour.getCurrentMinute();
+        meeting.setTimeMeeting(a +":"+ b);
 
         EditText place = (EditText) findViewById(R.id.place);
         meeting.setPlaceMeeting(place.getText().toString());
@@ -429,6 +498,16 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
         EditText description = (EditText) findViewById(R.id.descriptionmeeting);
         meeting.setDescMeeting(description.getText().toString());
 
+        meeting.setStatusOpen(true);
+
+        SharedPreferences userpreferences = getSharedPreferences("User", Context.MODE_PRIVATE);
+        Gson gson2 = new Gson();
+        String json2 = userpreferences.getString("User", "");
+        User user = gson2.fromJson(json2, User.class);
+
+
+
+        meeting.setUser_id(user.getUid());
 
         new CreateMeeting(getApplication(), new OnAsyncEventListener() {
             @Override

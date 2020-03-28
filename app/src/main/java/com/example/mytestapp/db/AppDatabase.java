@@ -2,6 +2,7 @@ package com.example.mytestapp.db;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.room.TypeConverters;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 import androidx.room.Database;
 import androidx.room.Room;
@@ -12,6 +13,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.example.mytestapp.adapter.Converters;
 import com.example.mytestapp.db.dao.MeetingDao;
 import com.example.mytestapp.db.dao.PollDao;
 import com.example.mytestapp.db.dao.PossibleAnswerDao;
@@ -26,6 +28,7 @@ import com.example.mytestapp.db.entities.Vote;
 import java.util.concurrent.Executors;
 
 @Database(entities = {Attendance.class,Meeting.class,Poll.class,PossibleAnswers.class,User.class,Vote.class}, version = 1)
+@TypeConverters({Converters.class})
 public abstract class AppDatabase extends RoomDatabase {
 
     private static final String TAG = "AppDatabase";

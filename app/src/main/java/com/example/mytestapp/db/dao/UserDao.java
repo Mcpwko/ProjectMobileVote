@@ -27,6 +27,9 @@ public interface UserDao {
     @Query("SELECT * FROM user WHERE email LIKE(:email)")
     LiveData<User> getUserByEmail(String email);
 
+    @Query("SELECT * FROM user WHERE uid LIKE(:id)")
+    LiveData<User> getUserById(int id);
+
     @Insert
     void insertUser(User user) throws SQLiteConstraintException ;
 

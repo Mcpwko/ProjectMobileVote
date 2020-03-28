@@ -6,6 +6,8 @@ import androidx.room.ForeignKey;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
+import java.util.Date;
+
 import static androidx.room.ForeignKey.CASCADE;
 
 
@@ -26,7 +28,7 @@ public class Meeting {
     private String titleMeeting;
 
     @ColumnInfo (name = "day_meeting")
-    private String dayMeeting;
+    private Date dayMeeting;
 
     @ColumnInfo (name = "time_meeting")
     private String timeMeeting;
@@ -36,6 +38,9 @@ public class Meeting {
 
     @ColumnInfo (name = "desc_meeting")
     private String descMeeting;
+
+    @ColumnInfo (name = "statusOpen")
+    private boolean statusOpen;
 
     public int getMid() {
         return mid;
@@ -53,6 +58,14 @@ public class Meeting {
         this.user_id = user_id;
     }
 
+    public boolean isStatusOpen() {
+        return statusOpen;
+    }
+
+    public void setStatusOpen(boolean statusOpen) {
+        this.statusOpen = statusOpen;
+    }
+
     public String getTitleMeeting() {
         return titleMeeting;
     }
@@ -61,11 +74,11 @@ public class Meeting {
         this.titleMeeting = titleMeeting;
     }
 
-    public String getDayMeeting() {
+    public Date getDayMeeting() {
         return dayMeeting;
     }
 
-    public void setDayMeeting(String dayMeeting) {
+    public void setDayMeeting(Date dayMeeting) {
         this.dayMeeting = dayMeeting;
     }
 

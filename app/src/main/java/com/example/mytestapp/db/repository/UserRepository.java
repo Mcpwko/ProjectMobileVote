@@ -34,6 +34,10 @@ public class UserRepository {
         return AppDatabase.getInstance(context).userDao().getUserByEmail(email);
     }
 
+    public LiveData<User> getUserById(final int id, Context context) {
+        return AppDatabase.getInstance(context).userDao().getUserById(id);
+    }
+
     public LiveData<List<User>> getAllUsers(Context context) {
         return AppDatabase.getInstance(context).userDao().getAllUsers();
     }

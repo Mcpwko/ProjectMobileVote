@@ -5,11 +5,10 @@ import android.content.Context;
 import androidx.lifecycle.LiveData;
 
 import com.example.mytestapp.db.AppDatabase;
-import com.example.mytestapp.db.async.CreateUser;
-import com.example.mytestapp.db.async.DeleteUser;
-import com.example.mytestapp.db.async.UpdateUser;
+import com.example.mytestapp.db.async.CreatePoll;
+import com.example.mytestapp.db.async.DeletePoll;
+import com.example.mytestapp.db.async.UpdatePoll;
 import com.example.mytestapp.db.entities.Poll;
-import com.example.mytestapp.db.entities.User;
 import com.example.mytestapp.util.OnAsyncEventListener;
 
 import java.util.List;
@@ -22,7 +21,7 @@ public class PollRepository {
 
     public static PollRepository getInstance() {
         if (instance == null) {
-            synchronized (UserRepository.class) {
+            synchronized (PollRepository.class) {
                 if (instance == null) {
                     instance = new PollRepository();
                 }
@@ -35,19 +34,28 @@ public class PollRepository {
         return AppDatabase.getInstance(context).pollDao().getLastPoll();
     }
 
-    public LiveData<List<User>> getAllUsers(Context context) {
-        return AppDatabase.getInstance(context).userDao().getAllUsers();
+    public LiveData<List<Poll>> getMyPolls (int id, Context context) {
+        return AppDatabase.getInstance(context).pollDao().getMyPolls(id);
     }
 
-    public void insertUser(final User user, OnAsyncEventListener callback, Context context) {
-        new CreateUser(context, callback).execute(user);
+    public LiveData<Poll> getPoll (int id, Context context) {
+        return AppDatabase.getInstance(context).pollDao().getPoll(id);
     }
 
-    public void updateUser(final User user, OnAsyncEventListener callback, Context context) {
-        new UpdateUser(context, callback).execute(user);
+    public LiveData<List<Poll>> getActivePolls(Context context) {
+        return AppDatabase.getInstance(context).pollDao().getActivePolls();
     }
 
-    public void deleteUser(final User user, OnAsyncEventListener callback, Context context) {
-        new DeleteUser(context, callback).execute(user);
+
+    public void insertPoll(final Poll poll, OnAsyncEventListener callback, Context context) {
+        new CreatePoll(context, callback).execute(poll);
+    }
+
+    public void updatePoll(final Poll poll, OnAsyncEventListener callback, Context context) {
+        new UpdatePoll(context, callback).execute(poll);
+    }
+
+    public void deletePoll(final Poll poll, OnAsyncEventListener callback, Context context) {
+        new DeletePoll(context, callback).execute(poll);
     }
 }

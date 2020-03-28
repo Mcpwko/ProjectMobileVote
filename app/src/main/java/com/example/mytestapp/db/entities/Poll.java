@@ -6,6 +6,8 @@ import androidx.room.ForeignKey;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
+import java.util.Date;
+
 import static androidx.room.ForeignKey.CASCADE;
 
 @Entity(foreignKeys = @ForeignKey(entity = User.class,
@@ -32,7 +34,10 @@ public class Poll {
     private String descPoll;
 
     @ColumnInfo (name = "deadline_poll")
-    private String deadlinePoll;
+    private Date deadlinePoll;
+
+    @ColumnInfo (name = "statusOpen")
+    private boolean statusOpen;
 
     public int getPid() {
         return pid;
@@ -48,6 +53,14 @@ public class Poll {
 
     public void setUser_id(int user_id) {
         this.user_id = user_id;
+    }
+
+    public boolean isStatusOpen() {
+        return statusOpen;
+    }
+
+    public void setStatusOpen(boolean statusOpen) {
+        this.statusOpen = statusOpen;
     }
 
     public String getTitlePoll() {
@@ -74,11 +87,11 @@ public class Poll {
         this.descPoll = descPoll;
     }
 
-    public String getDeadlinePoll() {
+    public Date getDeadlinePoll() {
         return deadlinePoll;
     }
 
-    public void setDeadlinePoll(String deadlinePoll) {
+    public void setDeadlinePoll(Date deadlinePoll) {
         this.deadlinePoll = deadlinePoll;
     }
 }

@@ -79,4 +79,8 @@
     <string name="deadline">Deadline</string>
     <string name="lastName">Lastname</string>
     <string name="all">All</string>
+    <string name="my_topics">My Topics</string>
+    <string name="hintmeetingselected">Will you be present to this meeting ?</string>
+    <string name="yesmeeting">Yes</string>
+    <string name="Nobtn">No</string>
 </resources>

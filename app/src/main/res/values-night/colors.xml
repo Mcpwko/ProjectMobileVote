@@ -4,6 +4,7 @@
     <color name="colorPrimary">#6200EE</color>
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
+    <color name="TopicsHome">#BBED81</color>
 
     <color name="colorPrimaryNight">#16202c</color>
     <color name="colorPrimaryDarkNight">#141d26</color>
