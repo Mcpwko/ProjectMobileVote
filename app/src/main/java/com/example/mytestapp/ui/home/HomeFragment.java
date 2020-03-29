@@ -40,20 +40,24 @@ public class HomeFragment extends Fragment {
     private MeetingRepository meetingRep;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        if (container != null) {
-            container.removeAllViews();
-        }
+
 
 
         homeViewModel =
                 ViewModelProviders.of(this).get(HomeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_home, container, false);
-        final TextView textView = root.findViewById(R.id.text_home);
-
+        //final TextView textView = root.findViewById(R.id.text_home);
+        if (container != null) {
+            container.removeAllViews();
+        }
 
         setHasOptionsMenu(true);
 
+
+
         LinearLayout linearLayout = root.findViewById(R.id.LinearLayoutHome);
+
+        //linearLayout.removeAllViews();
 
 
         pollRep = getPollRepository();
@@ -62,7 +66,7 @@ public class HomeFragment extends Fragment {
         pollRep.getActivePolls(getActivity().getApplication()).observe(getActivity(), list ->{
 
             for(int i =0 ; i<list.size();i++) {
-                Button button = new Button(getActivity());
+                Button button = new Button(getContext());
                 button.setText(list.get(i).getTitlePoll());
                 int x = i;
                 button.setOnClickListener(new View.OnClickListener() {

@@ -67,25 +67,27 @@
         app:layout_constraintTop_toBottomOf="@+id/dayOfMeetingSelected" />
 
     <Button
-        android:id="@+id/button4"
+        android:id="@+id/yesMeetingbtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/yesmeeting"
+        android:onClick="acceptMeeting"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/button5"
+        app:layout_constraintEnd_toStartOf="@+id/noMeetingbtn"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/hintmeetingselected" />
 
     <Button
-        android:id="@+id/button5"
+        android:id="@+id/noMeetingbtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/Nobtn"
+        android:onClick="refuseMeeting"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/button4"
+        app:layout_constraintStart_toEndOf="@+id/yesMeetingbtn"
         app:layout_constraintTop_toBottomOf="@+id/hintmeetingselected"
         app:layout_constraintVertical_bias="0.501" />
 

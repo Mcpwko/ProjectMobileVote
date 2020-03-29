@@ -83,4 +83,6 @@
     <string name="hintmeetingselected">Will you be present to this meeting ?</string>
     <string name="yesmeeting">Yes</string>
     <string name="Nobtn">No</string>
+    <string name="chooseAnswersTitle">Choose the answers that you want !</string>
+    <string name="validateAnswers">Done</string>
 </resources>

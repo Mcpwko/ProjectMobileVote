@@ -25,6 +25,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import android.os.Handler;
 
 public class MeetingSelectedFragment extends Fragment {
 
@@ -43,48 +44,65 @@ public class MeetingSelectedFragment extends Fragment {
         if (container != null) {
             container.removeAllViews();
         }
-
         View root = inflater.inflate(R.layout.fragment_meeting_selected, container, false);
 
-
-        meetingRep = getMeetingRepository();
-        userRepository = getUserRepository();
+        final Handler handler = new Handler();
 
 
-        meetingRep.getMeeting(id,getActivity().getApplication()).observe(getActivity(), meeting ->{
-
-            TextView title = root.findViewById(R.id.meetingSelectedTitle);
-            title.setText(meeting.getTitleMeeting());
-
-
-
-            userRepository.getUserById(meeting.getUser_id(),getActivity().getApplication()).observe(getActivity(),user -> {
-
-                TextView name = root.findViewById(R.id.nameOfCreator);
-                name.setText(user.getLastName() + " " + user.getFirstName());
-
-            });
-
-            TextView day = root.findViewById(R.id.dayOfMeetingSelected);
-            Date date = meeting.getDayMeeting();
-            DateFormat df = new SimpleDateFormat("dd/MM/yy");
-            day.setText(df.format(date));
-
-            TextView hour = root.findViewById(R.id.hourMeetingSelected);
-            hour.setText(meeting.getTimeMeeting());
-
-            TextView place = root.findViewById(R.id.placeMeetingSelected);
-            place.setText(meeting.getPlaceMeeting());
-
-            TextView description = root.findViewById(R.id.descriptionMeetingSelected);
-            description.setText(meeting.getDescMeeting());
-
-
-        });
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Do something after 5s = 5000ms
 
 
 
 
+                meetingRep = getMeetingRepository();
+                userRepository = getUserRepository();
+
+
+                meetingRep.getMeeting(id,getActivity().getApplication()).observe(getActivity(), meeting ->{
+
+                    TextView title = root.findViewById(R.id.meetingSelectedTitle);
+                    title.setText(meeting.getTitleMeeting());
+
+
+
+                    userRepository.getUserById(meeting.getUser_id(),getActivity().getApplication()).observe(getActivity(),user -> {
+
+                        TextView name = root.findViewById(R.id.nameOfCreator);
+                        name.setText(user.getLastName() + " " + user.getFirstName());
+
+                    });
+
+                    TextView day = root.findViewById(R.id.dayOfMeetingSelected);
+                    Date date = meeting.getDayMeeting();
+                    DateFormat df = new SimpleDateFormat("dd/MM/yy");
+                    day.setText(df.format(date));
+
+                    TextView hour = root.findViewById(R.id.hourMeetingSelected);
+                    hour.setText(meeting.getTimeMeeting());
+
+                    TextView place = root.findViewById(R.id.placeMeetingSelected);
+                    place.setText(meeting.getPlaceMeeting());
+
+                    TextView description = root.findViewById(R.id.descriptionMeetingSelected);
+                    description.setText(meeting.getDescMeeting());
+
+                    Button btnyes = root.findViewById(R.id.yesMeetingbtn);
+                    Button btnNo = root.findViewById(R.id.noMeetingbtn);
+
+                    btnyes.setId(meeting.getMid());
+                    btnNo.setId(meeting.getMid());
+                });
+
+
+
+
+
+
+            }
+        }, 500);
 
 
 
@@ -92,17 +110,6 @@ public class MeetingSelectedFragment extends Fragment {
         return root;
     }
 
-
-    public static java.util.Date getDateFromDatePicker(DatePicker datePicker){
-        int day = datePicker.getDayOfMonth();
-        int month = datePicker.getMonth();
-        int year =  datePicker.getYear();
-
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(year, month, day);
-
-        return calendar.getTime();
-    }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {

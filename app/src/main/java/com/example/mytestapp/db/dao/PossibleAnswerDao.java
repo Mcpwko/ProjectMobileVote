@@ -2,6 +2,7 @@ package com.example.mytestapp.db.dao;
 
 import android.database.sqlite.SQLiteConstraintException;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -18,6 +19,8 @@ public interface PossibleAnswerDao {
     @Query("SELECT * FROM PossibleAnswers")
     List<PossibleAnswers> getAllPossibleAnswers();
 
+    @Query("SELECT * FROM PossibleAnswers WHERE pollid = :id")
+    LiveData<List<PossibleAnswers>> getPossibleAnswersByPoll(int id);
     @Insert
     void insertPossibleAnswer(PossibleAnswers possibleAnswers) throws SQLiteConstraintException;
 

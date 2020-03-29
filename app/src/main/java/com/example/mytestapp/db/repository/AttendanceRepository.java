@@ -1,0 +1,39 @@
+package com.example.mytestapp.db.repository;
+
+import android.content.Context;
+
+import androidx.lifecycle.LiveData;
+
+import com.example.mytestapp.db.AppDatabase;
+import com.example.mytestapp.db.async.CreateAttendance;
+import com.example.mytestapp.db.entities.Attendance;
+import com.example.mytestapp.util.OnAsyncEventListener;
+
+import java.util.List;
+
+public class AttendanceRepository {
+
+    private static AttendanceRepository instance;
+
+    private AttendanceRepository() {}
+
+    public static AttendanceRepository getInstance() {
+        if (instance == null) {
+            synchronized (AttendanceRepository.class) {
+                if (instance == null) {
+                    instance = new AttendanceRepository();
+                }
+            }
+        }
+        return instance;
+    }
+
+
+
+
+
+    public void insertMeeting(final Attendance attendance, OnAsyncEventListener callback, Context context) {
+        new CreateAttendance(context, callback).execute(attendance);
+    }
+
+}

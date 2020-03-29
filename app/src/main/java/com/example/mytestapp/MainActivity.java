@@ -1,10 +1,17 @@
 package com.example.mytestapp;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,6 +20,7 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
@@ -22,16 +30,19 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.example.mytestapp.db.async.CreateAttendance;
 import com.example.mytestapp.db.async.CreateMeeting;
 import com.example.mytestapp.db.async.CreatePoll;
 import com.example.mytestapp.db.async.CreatePossibleAnswer;
 import com.example.mytestapp.db.async.CreateUser;
 import com.example.mytestapp.db.async.GetLastPoll;
 import com.example.mytestapp.db.entities.Address1;
+import com.example.mytestapp.db.entities.Attendance;
 import com.example.mytestapp.db.entities.Meeting;
 import com.example.mytestapp.db.entities.Poll;
 import com.example.mytestapp.db.entities.PossibleAnswers;
 import com.example.mytestapp.db.entities.User;
+import com.example.mytestapp.db.repository.AttendanceRepository;
 import com.example.mytestapp.db.repository.PollRepository;
 import com.example.mytestapp.db.repository.UserRepository;
 import com.example.mytestapp.ui.about.AboutFragment;
@@ -47,7 +58,11 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.LiveData;
@@ -59,11 +74,18 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
+
+
+
+
 
 public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuItemClickListener {
     private int cpt = 2;
@@ -83,7 +105,9 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
     private static final int PERMISSION_CODE = 1001;
     private Switch aSwitch;
     private PollRepository pollRepository;
+    private AttendanceRepository attendanceRepository;
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,13 +117,13 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
         preferences.edit().remove("Answers").commit();
 
         pollRepository = getPollRepository();
+        attendanceRepository = getAttendanceRepository();
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         //FloatingActionButton fab = findViewById(R.id.fab);
         //ROND VOLANT EN BAS A GAUCHE DE LECRAN
         /**fab.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
+        @Override public void onClick(View view) {
         Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
         .setAction("Action", null).show();
         }
@@ -109,7 +133,7 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home,R.id.my_topics, R.id.nav_myaccount, R.id.nav_about,R.id.nav_settings, R.id.logout)
+                R.id.nav_home, R.id.my_topics, R.id.nav_myaccount, R.id.nav_about, R.id.nav_settings, R.id.logout)
                 .setDrawerLayout(drawer)
                 .build();
 
@@ -129,7 +153,7 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
         aSwitch = menuItem.getActionView().findViewById(R.id.drawer_switch);
 
 
-        if(navigationView.getCheckedItem()== navigationView.getMenu().findItem(R.id.nav_home))
+        if (navigationView.getCheckedItem() == navigationView.getMenu().findItem(R.id.nav_home))
             homepage = true;
 
         final Context context = this;
@@ -146,16 +170,7 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
         });
 
 
-
-
-
-
-
-
         checkNightModeActivated();
-
-
-
 
 
         aSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -174,19 +189,63 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
         });
 
 
-
         SharedPreferences userpreferences = getSharedPreferences("User", Context.MODE_PRIVATE);
         Gson gson2 = new Gson();
         String json2 = userpreferences.getString("User", "");
         User user = gson2.fromJson(json2, User.class);
 
 
-
         View hView = navigationView.getHeaderView(0);
-        TextView navViewName = (TextView)hView.findViewById(R.id.navviewName);
-        TextView navViewEmail = (TextView)hView.findViewById(R.id.navviewEmail);
+        TextView navViewName = (TextView) hView.findViewById(R.id.navviewName);
+        TextView navViewEmail = (TextView) hView.findViewById(R.id.navviewEmail);
         navViewName.setText(user.getLastName() + " " + user.getFirstName());
         navViewEmail.setText(user.getEmail());
+
+
+        //TENTATIVE DE CHANGEMENT D'IMAGE DU NAVIGATION DRAWER
+
+
+        ImageButton button = hView.findViewById(R.id.imageButton);
+
+
+        SharedPreferences sp = getSharedPreferences("profilpic", Context.MODE_PRIVATE);
+
+        try {
+            Uri imageUri = Uri.parse(sp.getString("profilpic", ""));
+
+            if (imageUri != null) {
+                InputStream imageStream = getContentResolver().openInputStream(imageUri);
+                Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
+
+                selectedImage = getResizedBitmap(selectedImage, 300);// 400 is for example, replace with desired size
+
+                ImageView profilpic = hView.findViewById(R.id.imageButton);
+                profilpic.setImageBitmap(selectedImage);
+            }
+
+        } catch (IllegalArgumentException | FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+
+        button.setOnClickListener(v -> {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
+                    String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE};
+                    requestPermissions(permissions, PERMISSION_CODE);
+                } else {
+                    pickImageFromGallery();
+
+
+                }
+            } else {
+                pickImageFromGallery();
+            }
+        });
+
+
+
     }
 
     public void Logout(View view){
@@ -194,11 +253,79 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
         startActivity(intent);
     }
 
+    public Bitmap getResizedBitmap(Bitmap image, int maxSize) {
+        int width = image.getWidth();
+        int height = image.getHeight();
+
+        float bitmapRatio = (float)width / (float) height;
+        if (bitmapRatio > 1) {
+            width = maxSize;
+            height = (int) (width / bitmapRatio);
+        } else {
+            height = maxSize;
+            width = (int) (height * bitmapRatio);
+        }
+        return Bitmap.createScaledBitmap(image, width, height, true);
+    }
+
+    private void pickImageFromGallery(){
+
+        Intent intent = new Intent (Intent.ACTION_OPEN_DOCUMENT);
+        intent.setType("image/*");
+        startActivityForResult(intent, IMAGE_PICK_CODE);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        ImageView imageView = findViewById(R.id.imageButton);
+        if (resultCode == RESULT_OK && requestCode == IMAGE_PICK_CODE) {
+            try {
+                Uri imageUri = data.getData();
+
+                SharedPreferences sp = getSharedPreferences("profilpic",Context.MODE_PRIVATE);
+                SharedPreferences.Editor edt = sp.edit();
+
+                edt.putString("profilpic", imageUri.toString());
+                edt.commit();
+
+
+                InputStream imageStream = getContentResolver().openInputStream(imageUri);
+                Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
+
+                selectedImage = getResizedBitmap(selectedImage, 300);// 400 is for example, replace with desired size
+
+                imageView.setImageBitmap(selectedImage);
+
+
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case PERMISSION_CODE: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    pickImageFromGallery();
+                } else {
+                    Toast.makeText(this, "Permission denied...", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+    }
+
 
 
 
     public PollRepository getPollRepository() {
         return PollRepository.getInstance();
+    }
+
+    public AttendanceRepository getAttendanceRepository(){
+        return AttendanceRepository.getInstance();
     }
 
     //Block the back button of the smartphone
@@ -388,7 +515,6 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
 
     }
 
-
     public void donePoll(View view){
 
 
@@ -396,6 +522,8 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
         Gson gson2 = new Gson();
         String json2 = answersSharedPreferences.getString("Answers", "");
         List<Integer> listAnswers = gson2.fromJson(json2, new TypeToken<ArrayList<Integer>>(){}.getType());
+        if(listAnswers==null)
+            listAnswers = new ArrayList<Integer>();
 
         listAnswers.add(R.id.answer1);
         listAnswers.add(R.id.answer2);
@@ -414,8 +542,8 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
         String json = pollSharedPreferences.getString("Poll", "");
         Poll poll = gson.fromJson(json, Poll.class);
 
-        EditText title = (EditText) findViewById(R.id.answer1);
-        String meeting = title.getText().toString();
+        //EditText title = (EditText) findViewById(R.id.answer1);
+        //String meeting = title.getText().toString();
 
         poll.setStatusOpen(true);
 
@@ -448,7 +576,6 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
                 possibleAnswers.setPollid(poll2.getPid());
 
 
-
                 new CreatePossibleAnswer(getApplication(), new OnAsyncEventListener() {
                     @Override
                     public void onSuccess() {
@@ -463,15 +590,14 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
             }
         });
 
-
-        //Récupérer toutes les réponses
-
-
-
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
 
         FragmentTransaction transaction;
         transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.home, new HomeFragment()).commit();
+
+
     }
 
     public void doneMeeting(View view){
@@ -522,6 +648,8 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
         }).execute(meeting);
 
 
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
 
         FragmentTransaction transaction;
         transaction = getSupportFragmentManager().beginTransaction();
@@ -533,6 +661,83 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
         startActivity(intent);
 
     }
+
+
+
+    public void acceptMeeting(View view){
+        SharedPreferences userpreferences = getSharedPreferences("User", Context.MODE_PRIVATE);
+        Gson gson2 = new Gson();
+        String json2 = userpreferences.getString("User", "");
+        User user = gson2.fromJson(json2, User.class);
+
+        Attendance attendance = new Attendance();
+        attendance.setAnswerAttendance(true);
+        attendance.setUser_id(user.getUid());
+        attendance.setMeeting_id(view.getId());
+
+        new CreateAttendance(getApplication(), new OnAsyncEventListener() {
+            @Override
+            public void onSuccess() {
+                Log.d(TAG, "createUserWithEmail: success");
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+                Log.d(TAG, "createUserWithEmail: failure", e);
+            }
+        }).execute(attendance);
+
+
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        finish();
+
+
+        FragmentTransaction transaction;
+        transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.home, new HomeFragment()).commit();
+
+
+    }
+
+
+
+    public void refuseMeeting(View view){
+        SharedPreferences userpreferences = getSharedPreferences("User", Context.MODE_PRIVATE);
+        Gson gson2 = new Gson();
+        String json2 = userpreferences.getString("User", "");
+        User user = gson2.fromJson(json2, User.class);
+
+
+        Attendance attendance = new Attendance();
+        attendance.setAnswerAttendance(false);
+        attendance.setUser_id(user.getUid());
+        attendance.setMeeting_id(view.getId());
+
+        new CreateAttendance(getApplication(), new OnAsyncEventListener() {
+            @Override
+            public void onSuccess() {
+                Log.d(TAG, "createUserWithEmail: success");
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+                Log.d(TAG, "createUserWithEmail: failure", e);
+            }
+        }).execute(attendance);
+
+
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        finish();
+
+        FragmentTransaction transaction;
+        transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.home, new HomeFragment()).commit();
+
+    }
+
+
 
 
     @Override

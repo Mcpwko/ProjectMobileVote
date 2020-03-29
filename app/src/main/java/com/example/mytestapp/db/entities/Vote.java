@@ -16,13 +16,20 @@ import static androidx.room.ForeignKey.CASCADE;
                 onDelete = CASCADE
         ),
         @ForeignKey(
+                entity = Poll.class,
+                parentColumns = "pid",
+                childColumns = "poll_id",
+                onDelete = CASCADE
+        ),
+        @ForeignKey(
                 entity = PossibleAnswers.class,
                 parentColumns = "paid",
                 childColumns = "possaid",
                 onDelete = CASCADE
         )},indices = {
         @Index(value ={"user_id"}),
-        @Index(value ={"possaid"})
+        @Index(value ={"possaid"}),
+        @Index(value ={"poll_id"})
 })
 
 public class Vote {
@@ -36,6 +43,9 @@ public class Vote {
     @ColumnInfo(name = "possaid")
     public int possaid;
 
+    @ColumnInfo(name = "poll_id")
+    public int poll_id;
+
 
     public int getVid() {
         return vid;
@@ -43,6 +53,14 @@ public class Vote {
 
     public void setVid(int vid) {
         this.vid = vid;
+    }
+
+    public int getPoll_id() {
+        return poll_id;
+    }
+
+    public void setPoll_id(int poll_id) {
+        this.poll_id = poll_id;
     }
 
     public int getUser_id() {

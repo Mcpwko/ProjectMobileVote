@@ -14,10 +14,12 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.example.mytestapp.adapter.Converters;
+import com.example.mytestapp.db.dao.AttendanceDao;
 import com.example.mytestapp.db.dao.MeetingDao;
 import com.example.mytestapp.db.dao.PollDao;
 import com.example.mytestapp.db.dao.PossibleAnswerDao;
 import com.example.mytestapp.db.dao.UserDao;
+import com.example.mytestapp.db.dao.VoteDao;
 import com.example.mytestapp.db.entities.Attendance;
 import com.example.mytestapp.db.entities.Meeting;
 import com.example.mytestapp.db.entities.Poll;
@@ -41,6 +43,8 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract PollDao pollDao();
     public abstract UserDao userDao();
     public abstract PossibleAnswerDao possibleAnswerDao();
+    public abstract AttendanceDao attendanceDao();
+    public abstract VoteDao voteDao();
 
     private final MutableLiveData<Boolean> isDatabaseCreated = new MutableLiveData<>();
 
