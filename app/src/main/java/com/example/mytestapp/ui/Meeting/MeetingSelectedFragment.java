@@ -112,6 +112,27 @@ public class MeetingSelectedFragment extends Fragment {
 
 
     @Override
+    public void setUserVisibleHint(boolean isVisibleToUser)
+    {
+        super.setUserVisibleHint(isVisibleToUser);
+        if(isVisibleToUser)
+        {
+
+
+
+
+
+
+
+
+
+
+        }
+    }
+
+
+
+    @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(MeetingSelectedViewModel.class);

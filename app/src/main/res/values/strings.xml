@@ -85,4 +85,5 @@
     <string name="Nobtn">No</string>
     <string name="chooseAnswersTitle">Choose the answers that you want !</string>
     <string name="validateAnswers">Done</string>
+    <string name="edit">Edit</string>
 </resources>

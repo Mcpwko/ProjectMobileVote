@@ -19,7 +19,6 @@ public class AccountViewModel extends ViewModel {
 
 
         mText = new MutableLiveData<>();
-        mText.setValue("This is account page");
     }
 
     public LiveData<String> getText() {

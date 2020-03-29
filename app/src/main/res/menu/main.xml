@@ -34,4 +34,11 @@
                 android:title="@string/Poll" />
         </menu>
     </item>
+
+    <item
+        android:id="@+id/edit"
+        android:orderInCategory="50"
+        android:title="@string/edit"
+        android:icon="@drawable/edit"
+        app:showAsAction="always" />
 </menu>

@@ -8,6 +8,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -29,9 +32,8 @@ public class AccountFragment extends Fragment {
         accountViewModel =
                 ViewModelProviders.of(this).get(AccountViewModel.class);
         View root = inflater.inflate(R.layout.fragment_account, container, false);
-        final TextView textView = root.findViewById(R.id.text_gallery);
 
-
+        setHasOptionsMenu(true);
         SharedPreferences preferences = this.getActivity().getSharedPreferences("User", Context.MODE_PRIVATE);
         Gson gson = new Gson();
         String json = preferences.getString("User", "");
@@ -56,17 +58,42 @@ public class AccountFragment extends Fragment {
         TextView password = root.findViewById(R.id.textView13);
         password.setText(user.getPassword());
 
-        accountViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
+        Button button = root.findViewById(R.id.button6);
+        button.setVisibility(View.GONE);
+
+        Button button2 = root.findViewById(R.id.deleteAccount);
+        button2.setVisibility(View.GONE);
+
+        Spinner mySpinner = root.findViewById(R.id.spinner2);
+
+        String city = user.getAddress().getCity();
+
+        ArrayAdapter<String> myAdapter = new ArrayAdapter<String>(this.getActivity(),android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.names));
+        myAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mySpinner.setAdapter(myAdapter);
+
+        for(int i=0; i<myAdapter.getCount();i++){
+            if(myAdapter.getItem(i).equals(city)) {
+                mySpinner.setSelection(i);
+                mySpinner.setEnabled(false);
             }
-        });
+
+        }
+
 
 
 
         return root;
     }
+
+    public void onPrepareOptionsMenu(Menu menu) {
+        MenuItem item = menu.findItem(R.id.edit);
+        if(item!=null)
+        item.setVisible(true);
+    }
+
+
+
 
 
 }

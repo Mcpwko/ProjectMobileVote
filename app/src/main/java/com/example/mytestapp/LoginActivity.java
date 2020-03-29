@@ -81,6 +81,8 @@ public class LoginActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.main, menu);
         MenuItem menuItem = menu.findItem(R.id.sort);
         menuItem.setVisible(false);
+        MenuItem menuItem2 = menu.findItem(R.id.edit);
+        menuItem2.setVisible(false);
         return true;
     }
 
@@ -194,6 +196,8 @@ public class LoginActivity extends AppCompatActivity {
             user.setLastName(name.getText().toString());
 
             DatePicker date = (DatePicker) findViewById(R.id.datePicker1);
+            //SimpleDateFormat dateFormat = new SimpleDateFormat("DD.MM.YYYY");
+
             user.setBirthdate(date.toString());
 
             EditText phone = (EditText) findViewById(R.id.phoneNumber);

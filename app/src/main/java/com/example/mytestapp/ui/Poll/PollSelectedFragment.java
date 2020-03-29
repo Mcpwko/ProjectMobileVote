@@ -101,7 +101,8 @@ public class PollSelectedFragment extends Fragment {
         possibleAnsRep = getPossibleAnswersRepository();
         voteRep = getVoteRepository();
 
-        pollRep.getPoll(id,getActivity().getApplication()).observe(getActivity(), poll ->{
+        if(this.isVisible()){
+        pollRep.getPoll(id,getActivity().getApplication()).observe(getActivity(), poll -> {
 
             TextView title = view.findViewById(R.id.titlePollSelected);
             title.setText(poll.getTitlePoll());
@@ -118,12 +119,12 @@ public class PollSelectedFragment extends Fragment {
             description.setText(poll.getDescPoll());
 
 
-            userRep.getUserById(poll.getUser_id(),getActivity().getApplication()).observe(getActivity(),user -> {
+            /*userRep.getUserById(poll.getUser_id(),getActivity().getApplication()).observe(getActivity(),user -> {
 
                 TextView name = view.findViewById(R.id.userCreatorPoll);
                 name.setText(user.getLastName() + " " + user.getFirstName());
 
-            });
+            });*/
 
 
             SharedPreferences preferences = getActivity().getSharedPreferences("User", Context.MODE_PRIVATE);
@@ -221,14 +222,14 @@ public class PollSelectedFragment extends Fragment {
                                        }
                                    }
                                     Activity a = getActivity();
-                                   Intent intent = new Intent(getActivity(), MainActivity.class);
+                                   Intent intent = new Intent(a, MainActivity.class);
                                    startActivity(intent);
                                    a.finish();
 
 
-                                   FragmentTransaction transaction;
-                                   transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                                   transaction.replace(R.id.home, new HomeFragment()).commit();
+                                   //FragmentTransaction transaction;
+                                   //transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                                   //transaction.replace(R.id.home, new HomeFragment()).commit();
                                }
 
                            });
@@ -239,7 +240,7 @@ public class PollSelectedFragment extends Fragment {
 
                    });
                });
-            });
+            });}
 
     }
 

@@ -12,6 +12,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
+import android.text.InputType;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -35,7 +36,9 @@ import com.example.mytestapp.db.async.CreateMeeting;
 import com.example.mytestapp.db.async.CreatePoll;
 import com.example.mytestapp.db.async.CreatePossibleAnswer;
 import com.example.mytestapp.db.async.CreateUser;
+import com.example.mytestapp.db.async.DeleteUser;
 import com.example.mytestapp.db.async.GetLastPoll;
+import com.example.mytestapp.db.async.UpdateUser;
 import com.example.mytestapp.db.entities.Address1;
 import com.example.mytestapp.db.entities.Attendance;
 import com.example.mytestapp.db.entities.Meeting;
@@ -105,7 +108,9 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
     private static final int PERMISSION_CODE = 1001;
     private Switch aSwitch;
     private PollRepository pollRepository;
+    private UserRepository userRepository;
     private AttendanceRepository attendanceRepository;
+    private boolean account;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -116,6 +121,7 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
         SharedPreferences preferences = getSharedPreferences("Answers", 0);
         preferences.edit().remove("Answers").commit();
 
+        userRepository = getUserRepository();
         pollRepository = getPollRepository();
         attendanceRepository = getAttendanceRepository();
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -157,6 +163,10 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
             homepage = true;
 
         final Context context = this;
+
+        MenuItem accountdr = navigationView.getMenu().findItem(R.id.nav_myaccount);
+
+
 
         MenuItem logout = navigationView.getMenu().findItem(R.id.logout);
 
@@ -246,6 +256,10 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
 
 
 
+    }
+
+    public UserRepository getUserRepository() {
+        return UserRepository.getInstance();
     }
 
     public void Logout(View view){
@@ -342,7 +356,9 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         MenuItem menuItem = menu.findItem(R.id.sort);
-            menuItem.setVisible(false);
+        menuItem.setVisible(false);
+        MenuItem menuItem4 = menu.findItem(R.id.edit);
+        menuItem4.setVisible(false);
         MenuItem menuItem2 = menu.findItem(R.id.action_about);
         menuItem2.setVisible(false);
         MenuItem menuItem3 = menu.findItem(R.id.action_settings);
@@ -351,11 +367,39 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
     }
 
 
+
+
     public boolean onOptionsItemSelected(MenuItem item) {
-        FragmentTransaction transaction;
+        FragmentTransaction transaction; /////INUTILEEEEE
         transaction = getSupportFragmentManager().beginTransaction();
         switch (item.getItemId()) {
             case R.id.sort:
+                break;
+            case R.id.edit:
+                findViewById(R.id.button6).setVisibility(View.VISIBLE);
+                findViewById(R.id.deleteAccount).setVisibility(View.VISIBLE);
+                EditText mail = findViewById(R.id.textView11);
+                mail.setEnabled(true);
+                mail.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+
+                EditText lastName = findViewById(R.id.textView8);
+                lastName.setEnabled(true);
+
+                EditText firstName = findViewById(R.id.textView2);
+                firstName.setEnabled(true);
+
+                EditText password = findViewById(R.id.textView13);
+                password.setEnabled(true);
+
+                EditText address = findViewById(R.id.textView16);
+                address.setEnabled(true);
+
+                EditText birthdate = findViewById(R.id.textView19);
+                birthdate.setEnabled(true);
+
+                Spinner spinner = findViewById(R.id.spinner2);
+                spinner.setEnabled(true);
+
                 break;
             case R.id.all_filter:
                 Toast.makeText(this,"all selected",Toast.LENGTH_SHORT).show();
@@ -372,10 +416,94 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
         return super.onOptionsItemSelected(item);
     }
 
-    public void showMenu(View view){
-        PopupMenu popupMenu = new PopupMenu(this,view);
-        popupMenu.inflate(R.menu.filter);
-        popupMenu.show();
+
+
+    public void saveSettings(View view){
+
+        findViewById(R.id.button6).setVisibility(View.GONE);
+        findViewById(R.id.deleteAccount).setVisibility(View.GONE);
+        User user = new User();
+
+        EditText mail = findViewById(R.id.textView11);
+        mail.setEnabled(false);
+        user.setEmail(mail.getText().toString());
+
+        EditText lastName = findViewById(R.id.textView8);
+        lastName.setEnabled(false);
+        user.setLastName(lastName.getText().toString());
+
+        EditText firstName = findViewById(R.id.textView2);
+        firstName.setEnabled(false);
+        user.setFirstName(firstName.getText().toString());
+
+        EditText password = findViewById(R.id.textView13);
+        password.setEnabled(false);
+        user.setPassword(password.getText().toString());
+
+        EditText address = findViewById(R.id.textView16);
+        address.setEnabled(false);
+        Spinner spinner = findViewById(R.id.spinner2);
+        spinner.setEnabled(false);
+
+        user.setAddress(new Address1(address.getText().toString(),spinner.getSelectedItem().toString()));
+
+        EditText birthdate = findViewById(R.id.textView19);
+        birthdate.setEnabled(false);
+        user.setBirthdate(birthdate.getText().toString());
+
+        SharedPreferences preferences = getSharedPreferences("User", Context.MODE_PRIVATE);
+        Gson gson2 = new Gson();
+        String json2 = preferences.getString("User", "");
+        User usera = gson2.fromJson(json2, User.class);
+
+        user.setUid(usera.getUid());
+
+
+        new UpdateUser(getApplication(), new OnAsyncEventListener() {
+            @Override
+            public void onSuccess() {
+                Log.d(TAG, "createUserWithEmail: success");
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+                Log.d(TAG, "createUserWithEmail: failure", e);
+            }
+        }).execute(user);
+
+
+        preferences = getApplicationContext().getSharedPreferences("User", MODE_PRIVATE);
+        SharedPreferences.Editor edt = preferences.edit();
+
+        Gson gson = new Gson();
+        String json = gson.toJson(user);
+        edt.putString("User", json);
+        edt.apply();
+
+
+    }
+
+    public void deleteAccount(View view){
+        SharedPreferences preferences = getSharedPreferences("User", Context.MODE_PRIVATE);
+        Gson gson2 = new Gson();
+        String json2 = preferences.getString("User", "");
+        User user = gson2.fromJson(json2, User.class);
+
+
+        new DeleteUser(getApplication(), new OnAsyncEventListener() {
+            @Override
+            public void onSuccess() {
+                Log.d(TAG, "createUserWithEmail: success");
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+                Log.d(TAG, "createUserWithEmail: failure", e);
+            }
+        }).execute(user);
+
+        Intent newAct = new Intent(this, LoginActivity.class);
+        startActivity(newAct);
     }
 
 
@@ -569,7 +697,6 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
 
             for(int i = 0; i < answers.size(); i++) {
                 PossibleAnswers possibleAnswers = new PossibleAnswers();
-                possibleAnswers.setAnswer(null);
                 String test = answers.get(i);
 
                 possibleAnswers.setAnswer(test);
