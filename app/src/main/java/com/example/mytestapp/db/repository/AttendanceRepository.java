@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData;
 
 import com.example.mytestapp.db.AppDatabase;
 import com.example.mytestapp.db.async.CreateAttendance;
+import com.example.mytestapp.db.async.DeleteAttendance;
 import com.example.mytestapp.db.entities.Attendance;
 import com.example.mytestapp.db.entities.Meeting;
 import com.example.mytestapp.util.OnAsyncEventListener;
@@ -34,10 +35,18 @@ public class AttendanceRepository {
         return AppDatabase.getInstance(context).attendanceDao().getAttendance(idUser,idMeeting);
     }
 
+    public LiveData<Attendance> getAttendanceById (int id, Context context) {
+        return AppDatabase.getInstance(context).attendanceDao().getAttendanceById(id);
+    }
+
 
 
     public void insertAttendance(final Attendance attendance, OnAsyncEventListener callback, Context context) {
         new CreateAttendance(context, callback).execute(attendance);
+    }
+
+    public void deleteAttendance(final Attendance attendance, OnAsyncEventListener callback, Context context){
+        new DeleteAttendance(context, callback).execute(attendance);
     }
 
 }

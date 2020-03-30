@@ -37,6 +37,7 @@ import com.example.mytestapp.db.async.CreateMeeting;
 import com.example.mytestapp.db.async.CreatePoll;
 import com.example.mytestapp.db.async.CreatePossibleAnswer;
 import com.example.mytestapp.db.async.CreateUser;
+import com.example.mytestapp.db.async.DeleteAttendance;
 import com.example.mytestapp.db.async.DeleteUser;
 import com.example.mytestapp.db.async.GetLastPoll;
 import com.example.mytestapp.db.async.UpdateUser;
@@ -371,6 +372,13 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
         return true;
     }
 
+    /*public void deleteAttendance(View view){
+
+
+        int id = view.getId();
+
+    }*/
+
 
 
 
@@ -510,6 +518,8 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
         Intent newAct = new Intent(this, LoginActivity.class);
         startActivity(newAct);
     }
+
+
 
 
     

@@ -92,4 +92,6 @@
     <string name="birthdate">Birthdate :</string>
     <string name="deleteAccount">Delete Account</string>
     <string name="edit">Edit</string>
+    <string name="deleteAttedance">Are you sure you want to change your answer ?</string>
+    <string name="delete">Delete</string>
 </resources>
