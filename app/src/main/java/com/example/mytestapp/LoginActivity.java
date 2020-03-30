@@ -44,6 +44,7 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -196,9 +197,9 @@ public class LoginActivity extends AppCompatActivity {
             user.setLastName(name.getText().toString());
 
             DatePicker date = (DatePicker) findViewById(R.id.datePicker1);
-            //SimpleDateFormat dateFormat = new SimpleDateFormat("DD.MM.YYYY");
-
-            user.setBirthdate(date.toString());
+            SimpleDateFormat dateformat = new SimpleDateFormat("yyyy.MM.dd");
+            String dateFormat = dateformat.format(new Date(date.getYear(),date.getMonth(),date.getDayOfMonth()));
+            user.setBirthdate(dateFormat);
 
             EditText phone = (EditText) findViewById(R.id.phoneNumber);
             user.setPhoneNumber(phone.getText().toString());

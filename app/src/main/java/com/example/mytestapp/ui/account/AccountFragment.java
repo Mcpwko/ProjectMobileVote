@@ -90,6 +90,7 @@ public class AccountFragment extends Fragment {
         MenuItem item = menu.findItem(R.id.edit);
         if(item!=null)
         item.setVisible(true);
+
     }
 
 

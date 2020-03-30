@@ -9,6 +9,9 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -27,6 +30,7 @@ public class ChooseVoteFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
 
 
+        setHasOptionsMenu(true);
 
         if (container != null) {
             container.removeAllViews();
@@ -40,6 +44,12 @@ public class ChooseVoteFragment extends Fragment {
         mViewModel = ViewModelProviders.of(this).get(ChooseVoteViewModel.class);
         // TODO: Use the ViewModel
     }
+
+    public void onPrepareOptionsMenu(Menu menu) {
+        MenuItem item=menu.findItem(R.id.sort);
+        item.setVisible(false);
+    }
+
 
 
 

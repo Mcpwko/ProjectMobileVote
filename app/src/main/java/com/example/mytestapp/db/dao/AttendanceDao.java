@@ -18,8 +18,8 @@ import java.util.List;
 public interface AttendanceDao {
 
 
-    @Query("SELECT * FROM Attendance WHERE meeting_id = :id")
-    LiveData<Attendance> getAttendance(int id);
+    @Query("SELECT * FROM Attendance WHERE meeting_id = :idMeeting AND user_id = :idUser")
+    LiveData<Attendance> getAttendance(int idUser,int idMeeting);
 
 
     @Insert

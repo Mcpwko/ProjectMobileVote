@@ -49,10 +49,10 @@
     <string name="Description_Logo">Logo</string>
     <string name="no_account_yet">No account yet ?</string>
     <string name="registerbtn">Register</string>
-    <string name="firstname">Firstname</string>
+    <string name="firstname">Firstname :</string>
     <string name="name">Name</string>
-    <string name="address">Address</string>
-    <string name="city">City</string>
+    <string name="address">Address :</string>
+    <string name="city">City :</string>
     <string name="phone_number">Phone Number</string>
     <string name="mail">Mail</string>
     <string name="password">Password</string>
@@ -77,7 +77,7 @@
     <string name="place">Add a place</string>
     <string name="done">Done</string>
     <string name="deadline">Deadline</string>
-    <string name="lastName">Lastname</string>
+    <string name="lastName">Lastname :</string>
     <string name="all">All</string>
     <string name="my_topics">My Topics</string>
     <string name="hintmeetingselected">Will you be present to this meeting ?</string>
@@ -85,5 +85,11 @@
     <string name="Nobtn">No</string>
     <string name="chooseAnswersTitle">Choose the answers that you want !</string>
     <string name="validateAnswers">Done</string>
+    <string name="password_change">Password Change :</string>
+    <string name="general_information">GENERAL INFORMATION</string>
+    <string name="additional_information">ADDITIONAL INFORMATION</string>
+    <string name="email_address">Email address :</string>
+    <string name="birthdate">Birthdate :</string>
+    <string name="deleteAccount">Delete Account</string>
     <string name="edit">Edit</string>
 </resources>

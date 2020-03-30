@@ -17,6 +17,9 @@ import androidx.fragment.app.Fragment;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -68,7 +71,7 @@ public class PollSelectedFragment extends Fragment {
             container.removeAllViews();
         }
 
-
+        setHasOptionsMenu(true);
         View root = inflater.inflate(R.layout.fragment_selected_poll, container, false);
 
         return root;
@@ -242,6 +245,11 @@ public class PollSelectedFragment extends Fragment {
                });
             });}
 
+    }
+
+    public void onPrepareOptionsMenu(Menu menu) {
+        MenuItem item=menu.findItem(R.id.sort);
+        item.setVisible(false);
     }
 
     public PollRepository getPollRepository() { return PollRepository.getInstance() ; }

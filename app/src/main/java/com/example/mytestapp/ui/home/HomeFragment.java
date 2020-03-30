@@ -3,6 +3,7 @@ package com.example.mytestapp.ui.home;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -105,9 +106,10 @@ public class HomeFragment extends Fragment {
 
     public void onPrepareOptionsMenu(Menu menu) {
         MenuItem item=menu.findItem(R.id.sort);
-        if(item!=null)
-            item.setVisible(true);
+        item.setVisible(true);
     }
+
+
 
     public PollRepository getPollRepository() {
         return PollRepository.getInstance();

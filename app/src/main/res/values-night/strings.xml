@@ -17,4 +17,8 @@
     <string name="create">Create</string>
     <string name="menu_logout">Logout</string>
     <string name="menu_login">Login</string>
+    <string name="password_change">Password Change</string>
+    <string name="additional_information">ADDITIONAL INFORMATION</string>
+    <string name="email_address">Email address</string>
+    <string name="birthdate">Birthdate</string>
 </resources>
