@@ -28,7 +28,7 @@ public class LoadingScreen extends AppCompatActivity {
 
         checkNightModeActivated();
 
-
+System.out.println("Bonjour");
 
 
         new Handler().postDelayed(new Runnable(){
