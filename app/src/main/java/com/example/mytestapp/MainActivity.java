@@ -69,6 +69,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.LiveData;
 import androidx.navigation.NavController;
@@ -731,15 +732,10 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
                 }).execute(possibleAnswers);
             }
         });
-
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
-
-        FragmentTransaction transaction;
-        transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.home, new HomeFragment()).commit();
-
-
     }
 
     public void doneMeeting(View view){
@@ -793,9 +789,6 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
 
-        FragmentTransaction transaction;
-        transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.home, new HomeFragment()).commit();
     }
 
     public void apply(View view){

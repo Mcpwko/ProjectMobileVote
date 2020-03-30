@@ -48,7 +48,7 @@ public class HomeListViewModel extends AndroidViewModel {
     /**
      * A creator is used to inject the account id into the ViewModel
      */
-    /*public static class Factory extends ViewModelProvider.NewInstanceFactory {
+    public static class Factory extends ViewModelProvider.NewInstanceFactory {
 
         @NonNull
         private final Application application;
@@ -68,7 +68,10 @@ public class HomeListViewModel extends AndroidViewModel {
             //noinspection unchecked
             return (T) new HomeListViewModel(application, meetingRepository, pollRepository);
         }
-    }*/
+    }
+
+
+
 
     /**
      * Expose the LiveData ClientAccounts query so the UI can observe it.
@@ -93,7 +96,7 @@ public class HomeListViewModel extends AndroidViewModel {
         repository.transaction(sender, recipient, callback, application);
     }*/
 
-    public PollRepository getPollRepository(){ return PollRepository.getInstance(); }
-    public MeetingRepository getMeetingRepository(){ return MeetingRepository.getInstance(); }
+    public static PollRepository getPollRepository(){ return PollRepository.getInstance(); }
+    public static MeetingRepository getMeetingRepository(){ return MeetingRepository.getInstance(); }
 }
 

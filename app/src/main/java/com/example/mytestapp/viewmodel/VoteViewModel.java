@@ -1,37 +1,38 @@
 package com.example.mytestapp.viewmodel;
 
 import android.app.Application;
-import android.content.Context;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.mytestapp.db.entities.User;
+import com.example.mytestapp.db.entities.Vote;
 import com.example.mytestapp.db.repository.UserRepository;
-import com.example.mytestapp.util.OnAsyncEventListener;
+import com.example.mytestapp.db.repository.VoteRepository;
 
-public class UserViewModel extends AndroidViewModel {
+import java.util.List;
 
-    private UserRepository repository;
+public class VoteViewModel extends AndroidViewModel {
+
+    private VoteRepository voterepository;
     private Application application;
 
     // MediatorLiveData can observe other LiveData objects and react on their emissions.
-    private final LiveData<User> observableClient;
+    private final LiveData<List<Vote>> observableVotes;
 
-    public UserViewModel(@NonNull Application application,
-                           final int idUser, UserRepository userRepository) {
+    public VoteViewModel(@NonNull Application application,
+                         final int idUser,final int idPoll, VoteRepository voterepository) {
         super(application);
 
-        repository = userRepository;
+        this.voterepository = voterepository;
 
         this.application = application;
 
 
-        observableClient = repository.getUserById(idUser, application);
+        observableVotes = voterepository.getVote(idUser,idPoll, application);
     }
 
     /**
@@ -43,28 +44,30 @@ public class UserViewModel extends AndroidViewModel {
         private final Application application;
 
         private final int idUser;
+        private final int idPoll;
 
-        private final UserRepository repository;
+        private final VoteRepository voteRepository;
 
-        public Factory(@NonNull Application application, int idUser) {
+        public Factory(@NonNull Application application, int idUser,int idPoll) {
             this.application = application;
             this.idUser = idUser;
-            repository = getUserRepository();
+            this.idPoll = idPoll;
+            voteRepository = getVoteRepository();
         }
 
         @Override
         public <T extends ViewModel> T create(Class<T> modelClass) {
             //noinspection unchecked
-            return (T) new UserViewModel(application, idUser, repository);
+            return (T) new VoteViewModel(application, idUser,idPoll, voteRepository);
         }
     }
 
     /**
      * Expose the LiveData UserEntity query so the UI can observe it.
      */
-    public LiveData<User> getUser() {
-        return observableClient;
+    public LiveData<List<Vote>> getVotes() {
+        return observableVotes;
     }
 
-    public static UserRepository getUserRepository(){ return UserRepository.getInstance(); }
+    public static VoteRepository getVoteRepository(){ return VoteRepository.getInstance(); }
 }

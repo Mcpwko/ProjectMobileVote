@@ -39,7 +39,6 @@ import com.example.mytestapp.ui.login.LoginFragment;
 import com.example.mytestapp.ui.register.RegisterFragment;
 import com.example.mytestapp.ui.settings.SettingsFragment;
 import com.example.mytestapp.util.OnAsyncEventListener;
-import com.example.mytestapp.viewmodel.UserViewModel;
 import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
 
@@ -50,7 +49,6 @@ import java.util.Date;
 public class LoginActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
-    private UserViewModel userViewModel;
     private User user;
     private UserRepository repository;
     private static final String TAG = "LoginActivity";

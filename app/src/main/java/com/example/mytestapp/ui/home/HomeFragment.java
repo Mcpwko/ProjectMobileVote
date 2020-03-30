@@ -30,74 +30,71 @@ import com.example.mytestapp.db.repository.PollRepository;
 import com.example.mytestapp.ui.Meeting.MeetingSelectedFragment;
 import com.example.mytestapp.ui.Poll.PollSelectedFragment;
 import com.example.mytestapp.ui.addVote.ChooseVoteFragment;
+import com.example.mytestapp.viewmodel.HomeListViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class HomeFragment extends Fragment {
 
-    private HomeViewModel homeViewModel;
+    private HomeListViewModel homeViewModel;
     private PollRepository pollRep;
     private MeetingRepository meetingRep;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-
-
-        homeViewModel =
-                ViewModelProviders.of(this).get(HomeViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_home, container, false);
-        //final TextView textView = root.findViewById(R.id.text_home);
         if (container != null) {
             container.removeAllViews();
         }
 
         setHasOptionsMenu(true);
-
-
-
+        View root = inflater.inflate(R.layout.fragment_home, container, false);
         LinearLayout linearLayout = root.findViewById(R.id.LinearLayoutHome);
 
-        //linearLayout.removeAllViews();
+        HomeListViewModel.Factory factory = new HomeListViewModel.Factory(
+                getActivity().getApplication());
+
+        homeViewModel = ViewModelProviders.of(this,factory).get(HomeListViewModel.class);
 
 
-        pollRep = getPollRepository();
-        meetingRep = getMeetingRepository();
+        homeViewModel.getMeetings().observe(getActivity(), list-> {
 
-        pollRep.getActivePolls(getActivity().getApplication()).observe(getActivity(), list ->{
 
-            for(int i =0 ; i<list.size();i++) {
-                Button button = new Button(getContext());
-                button.setText(list.get(i).getTitlePoll());
-                int x = i;
-                button.setOnClickListener(new View.OnClickListener() {
-                    public void onClick(View v) {
-                        FragmentTransaction transaction;
-                        transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                        transaction.replace(R.id.home, new PollSelectedFragment(list.get(x).getPid())).commit();
-                    }
+                        for(int i =0 ; i<list.size();i++) {
+                            Button button = new Button(getActivity());
+                            button.setText(list.get(i).getTitleMeeting());
+                            button.setTextColor(getResources().getColor(R.color.TopicsHome));
+                            int x = i;
+                            button.setOnClickListener(new View.OnClickListener() {
+                                public void onClick(View v) {
+                                    FragmentTransaction transaction;
+                                    transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                                    transaction.replace(R.id.home, new MeetingSelectedFragment(list.get(x).getMid())).commit();
+                                }
+                            });
+                            linearLayout.addView(button);
+                        }
                 });
-                linearLayout.addView(button);
+
+        homeViewModel.getPolls().observe(getViewLifecycleOwner(), new Observer<List<Poll>>() {
+            @Override
+            public void onChanged(List<Poll> list) {
+
+                for(int i =0 ; i<list.size();i++) {
+                    Button button = new Button(getContext());
+                    button.setText(list.get(i).getTitlePoll());
+                    int x = i;
+                    button.setOnClickListener(new View.OnClickListener() {
+                        public void onClick(View v) {
+                            FragmentTransaction transaction;
+                            transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                            transaction.replace(R.id.home, new PollSelectedFragment(list.get(x).getPid())).commit();
+                        }
+                    });
+                    linearLayout.addView(button);
+                }
+
             }
-        });
-
-        meetingRep.getActiveMeeting(getActivity().getApplication()).observe(getActivity(), list ->{
-
-            for(int i =0 ; i<list.size();i++) {
-                Button button = new Button(getActivity());
-                button.setText(list.get(i).getTitleMeeting());
-                button.setTextColor(getResources().getColor(R.color.TopicsHome));
-                int x = i;
-                button.setOnClickListener(new View.OnClickListener() {
-                    public void onClick(View v) {
-                        FragmentTransaction transaction;
-                        transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                        transaction.replace(R.id.home, new MeetingSelectedFragment(list.get(x).getMid())).commit();
-                    }
-                });
-                linearLayout.addView(button);
-            }
-
         });
 
 
@@ -109,10 +106,4 @@ public class HomeFragment extends Fragment {
         item.setVisible(true);
     }
 
-
-
-    public PollRepository getPollRepository() {
-        return PollRepository.getInstance();
-    }
-    public MeetingRepository getMeetingRepository() { return MeetingRepository.getInstance() ; }
 }
