@@ -52,7 +52,7 @@
         android:clickable="true"
         android:onClick="addVote"
         android:src="@android:drawable/ic_input_add"
-        app:backgroundTint="@color/colorPrimary"
+        app:backgroundTint="@color/colorPrimaryDarkNight"
         app:fabSize="normal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

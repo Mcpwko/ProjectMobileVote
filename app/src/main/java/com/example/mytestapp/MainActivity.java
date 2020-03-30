@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -210,6 +211,10 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
         TextView navViewEmail = (TextView) hView.findViewById(R.id.navviewEmail);
         navViewName.setText(user.getLastName() + " " + user.getFirstName());
         navViewEmail.setText(user.getEmail());
+
+        navViewName.setTextColor(Color.WHITE);
+        navViewEmail.setTextColor(Color.WHITE);
+
 
 
         //TENTATIVE DE CHANGEMENT D'IMAGE DU NAVIGATION DRAWER

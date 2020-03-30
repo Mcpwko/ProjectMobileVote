@@ -10,31 +10,32 @@
         <item
 
             android:id="@+id/nav_myaccount"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@drawable/person"
             android:title="@string/menu_myaccount" />
 
         <item
             android:id="@+id/my_topics"
             android:title="@string/my_topics"
-            android:icon="@drawable/ic_menu_share" />
+            android:icon="@drawable/ledger" />
 
         <item
             android:id="@+id/nav_home"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/vote"
             android:title="@string/menu_home" />
 
         <item
             android:id="@+id/nav_about"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:icon="@drawable/question"
             android:title="@string/menu_about" />
 
         <item
             android:id="@+id/nav_settings"
-            android:icon="@drawable/ic_menu_share"
+            android:icon="@drawable/settings"
             android:title="@string/menu_settings"/>
 
         <item
             android:id="@+id/darkMode"
+            android:icon="@drawable/darkmode"
             android:title="Dark mode"
             app:actionLayout="@layout/switch_item"
             app:showAsAction="always" />
@@ -42,7 +43,7 @@
 
         <item
             android:id="@+id/logout"
-            android:icon="@drawable/ic_menu_share"
+            android:icon="@drawable/exit"
             android:title="@string/menu_logout"
             app:showAsAction="always" />
     </group>
