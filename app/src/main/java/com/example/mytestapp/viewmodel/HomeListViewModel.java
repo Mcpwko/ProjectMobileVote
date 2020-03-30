@@ -26,8 +26,8 @@ public class HomeListViewModel extends AndroidViewModel {
     private MeetingRepository meetingRepository;
 
     // MediatorLiveData can observe other LiveData objects and react on their emissions.
-    private final MediatorLiveData<List<Meeting>> observableMeetings;
-    private final MediatorLiveData<List<Poll>> observablePolls;
+    private final LiveData<List<Meeting>> observableMeetings;
+    private final LiveData<List<Poll>> observablePolls;
 
     public HomeListViewModel(@NonNull Application application,
                                 MeetingRepository meetingRepository,
@@ -40,29 +40,18 @@ public class HomeListViewModel extends AndroidViewModel {
         this.pollRepository = pollRepository;
 
 
-        observableMeetings = new MediatorLiveData<>();
-        observablePolls = new MediatorLiveData<>();
-        // set by default null, until we get data from the database.
-        observableMeetings.setValue(null);
-        observablePolls.setValue(null);
 
-        LiveData<List<Meeting>> meetings = meetingRepository.getActiveMeeting(application);
-        LiveData<List<Poll>> polls = pollRepository.getActivePolls(application);
-
-        // observe the changes of the entities from the database and forward them
-        observableMeetings.addSource(meetings, observableMeetings::setValue);
-        observablePolls.addSource(polls, observablePolls::setValue);
+        observableMeetings = meetingRepository.getActiveMeeting(application);
+        observablePolls = pollRepository.getActivePolls(application);
     }
 
     /**
      * A creator is used to inject the account id into the ViewModel
      */
-    public static class Factory extends ViewModelProvider.NewInstanceFactory {
+    /*public static class Factory extends ViewModelProvider.NewInstanceFactory {
 
         @NonNull
         private final Application application;
-
-        //private final String ownerId;
 
         private final MeetingRepository meetingRepository;
 
@@ -70,8 +59,8 @@ public class HomeListViewModel extends AndroidViewModel {
 
         public Factory(@NonNull Application application) {
             this.application = application;
-            pollRepository = ((BaseApp) application).getPollRepository();
-            meetingRepository = ((BaseApp) application).getMeetingRepository();
+            pollRepository = getPollRepository();
+            meetingRepository = getMeetingRepository();
         }
 
         @Override
@@ -79,19 +68,19 @@ public class HomeListViewModel extends AndroidViewModel {
             //noinspection unchecked
             return (T) new HomeListViewModel(application, meetingRepository, pollRepository);
         }
-    }
+    }*/
 
     /**
      * Expose the LiveData ClientAccounts query so the UI can observe it.
      */
-    public LiveData<List<Meeting>> getClientAccounts() {
+    public LiveData<List<Meeting>> getMeetings() {
         return observableMeetings;
     }
 
     /**
      * Expose the LiveData AccountEntities query so the UI can observe it.
      */
-    public LiveData<List<Poll>> getOwnAccounts() {
+    public LiveData<List<Poll>> getPolls() {
         return observablePolls;
     }
 
@@ -103,5 +92,8 @@ public class HomeListViewModel extends AndroidViewModel {
                                    OnAsyncEventListener callback) {
         repository.transaction(sender, recipient, callback, application);
     }*/
+
+    public PollRepository getPollRepository(){ return PollRepository.getInstance(); }
+    public MeetingRepository getMeetingRepository(){ return MeetingRepository.getInstance(); }
 }
 
