@@ -1,5 +1,6 @@
 package com.example.mytestapp.ui.mytopics;
 
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Context;
@@ -20,6 +21,10 @@ import com.example.mytestapp.R;
 import com.example.mytestapp.db.entities.User;
 import com.example.mytestapp.db.repository.MeetingRepository;
 import com.example.mytestapp.db.repository.PollRepository;
+import com.example.mytestapp.ui.Meeting.MeetingSelectedFragment;
+import com.example.mytestapp.ui.Poll.PollSelectedFragment;
+import com.example.mytestapp.ui.mytopics.Meeting.MyTopicMeetingFragment;
+import com.example.mytestapp.ui.mytopics.Poll.MyTopicPollFragment;
 import com.google.gson.Gson;
 
 public class MyTopicsFragment extends Fragment {
@@ -56,20 +61,36 @@ public class MyTopicsFragment extends Fragment {
 
 
         pollRep.getMyPolls(user.getUid(),getActivity().getApplication()).observe(getActivity(), list ->{
-
+            if(isAdded())
             for(int i =0 ; i<list.size();i++) {
                 Button button = new Button(getActivity());
                 button.setText(list.get(i).getTitlePoll());
+                int x = i;
+                button.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
+                        FragmentTransaction transaction;
+                        transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                        transaction.replace(R.id.my_topics, new MyTopicPollFragment(list.get(x).getPid())).commit();
+                    }
+                });
                 linearLayout.addView(button);
             }
         });
 
         meetingRep.getMyMeetings(user.getUid(),getActivity().getApplication()).observe(getActivity(), list ->{
-
+            if(isAdded())
             for(int i =0 ; i<list.size();i++) {
                 Button button = new Button(getActivity());
                 button.setText(list.get(i).getTitleMeeting());
                 button.setTextColor(getResources().getColor(R.color.TopicsHome));
+                int x = i;
+                button.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
+                        FragmentTransaction transaction;
+                        transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                        transaction.replace(R.id.my_topics, new MyTopicMeetingFragment(list.get(x).getMid())).commit();
+                    }
+                });
                 linearLayout.addView(button);
             }
 

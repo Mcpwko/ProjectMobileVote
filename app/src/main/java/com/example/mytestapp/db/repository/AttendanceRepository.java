@@ -39,6 +39,10 @@ public class AttendanceRepository {
         return AppDatabase.getInstance(context).attendanceDao().getAttendanceById(id);
     }
 
+    public LiveData<List<Attendance>> getAttendances(int idMeeting,Context context){
+        return AppDatabase.getInstance(context).attendanceDao().getAttendances(idMeeting);
+    }
+
 
 
     public void insertAttendance(final Attendance attendance, OnAsyncEventListener callback, Context context) {

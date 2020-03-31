@@ -40,6 +40,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import android.os.Handler;
 
+import org.w3c.dom.Text;
+
 import static android.content.Context.MODE_PRIVATE;
 
 public class MeetingSelectedFragment extends Fragment {
@@ -107,11 +109,12 @@ public class MeetingSelectedFragment extends Fragment {
 
                     Button btnyes = root.findViewById(R.id.yesBtnMeetingSelected);
                     Button btnNo = root.findViewById(R.id.noBtnMeetingSelected);
-
+                    TextView response = root.findViewById(R.id.responsePresence);
 
                     Button btnEdit = root.findViewById(R.id.editmeeting);
 
                     mViewModel.getAttendance().observe(getActivity(), attendance -> {
+
 
 
 
@@ -126,6 +129,7 @@ public class MeetingSelectedFragment extends Fragment {
                                     btnyes.setVisibility(View.VISIBLE);
                                     btnNo.setVisibility(View.VISIBLE);
                                     btnEdit.setVisibility(View.GONE);
+                                    response.setVisibility(View.GONE);
 
 
 
@@ -156,14 +160,26 @@ public class MeetingSelectedFragment extends Fragment {
                             btnyes.setVisibility(View.VISIBLE);
                             btnNo.setVisibility(View.VISIBLE);
                             btnEdit.setVisibility(View.GONE);
+                            response.setVisibility(View.GONE);
+
                             btnyes.setId(meeting.getMid());
                             btnNo.setId(meeting.getMid());
 
 
                         } else {
+
+                            String reponse;
+                            if(attendance.isAnswerAttendance()) {
+                                reponse = "Yes";
+                            }else {
+                                reponse = "No";
+                            }
+                            response.setText(reponse);
+
                             btnyes.setVisibility(View.GONE);
                             btnNo.setVisibility(View.GONE);
                             btnEdit.setVisibility(View.VISIBLE);
+                            response.setVisibility(View.VISIBLE);
                             btnEdit.setId(attendance.getAid());
                         }
 

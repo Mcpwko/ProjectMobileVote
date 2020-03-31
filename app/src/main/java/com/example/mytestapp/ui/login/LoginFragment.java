@@ -17,7 +17,6 @@ import android.view.ViewGroup;
 import com.example.mytestapp.LoginActivity;
 import com.example.mytestapp.MainActivity;
 import com.example.mytestapp.R;
-import com.example.mytestapp.ui.settings.SettingsFragment;
 
 public class LoginFragment extends Fragment {
 

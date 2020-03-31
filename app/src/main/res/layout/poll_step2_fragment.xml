@@ -63,12 +63,15 @@
         android:id="@+id/doneStep2Poll"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="160dp"
-        android:layout_marginTop="212dp"
+        android:layout_marginTop="32dp"
         android:onClick="donePoll"
         android:text="@string/doneStep2Poll"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addAnswerBtnStep2Poll" />
+        app:layout_constraintTop_toBottomOf="@+id/addAnswerBtnStep2Poll"
+        app:layout_constraintVertical_bias="0.368" />
 
     <ImageButton
         android:id="@+id/addAnswerBtnStep2Poll"

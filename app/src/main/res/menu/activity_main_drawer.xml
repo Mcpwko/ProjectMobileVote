@@ -29,9 +29,16 @@
             android:title="@string/menu_about" />
 
         <item
-            android:id="@+id/nav_settings"
-            android:icon="@drawable/settings"
-            android:title="@string/menu_settings"/>
+            android:id="@+id/logout"
+            android:icon="@drawable/exit"
+            android:title="@string/menu_logout"
+            app:showAsAction="always" />
+
+        <item
+            android:title="@string/action_settings"
+            android:titleCondensed="@string/menu_settings"
+            android:enabled="false" />
+
 
         <item
             android:id="@+id/darkMode"
@@ -41,11 +48,7 @@
             app:showAsAction="always" />
 
 
-        <item
-            android:id="@+id/logout"
-            android:icon="@drawable/exit"
-            android:title="@string/menu_logout"
-            app:showAsAction="always" />
+
     </group>
 
 

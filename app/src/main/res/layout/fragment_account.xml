@@ -23,12 +23,12 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="28dp"
         android:layout_marginTop="16dp"
+        android:autofillHints=""
         android:enabled="false"
         android:inputType="textEmailAddress"
         android:text="@string/emailEditAccount"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/emailLabelAccount"
-        android:autofillHints="" />
+        app:layout_constraintTop_toBottomOf="@+id/emailLabelAccount" />
 
     <TextView
         android:id="@+id/emailLabelAccount"
@@ -47,12 +47,13 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="96dp"
         android:layout_marginTop="16dp"
+        android:autofillHints=""
         android:enabled="false"
-        android:text="@string/lastNameEditAccount"
-        app:layout_constraintStart_toEndOf="@+id/firstNameEditAccount"
-        app:layout_constraintTop_toBottomOf="@+id/lastNameLabelAccount"
         android:inputType="text"
-        android:autofillHints="" />
+        android:text="@string/lastNameEditAccount"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/firstNameEditAccount"
+        app:layout_constraintTop_toBottomOf="@+id/lastNameLabelAccount" />
 
     <TextView
         android:id="@+id/firstNameLabelAccount"
@@ -73,6 +74,8 @@
         android:layout_marginTop="24dp"
         android:text="@string/lastNameLabelAccount"
         android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.438"
         app:layout_constraintStart_toEndOf="@+id/firstNameLabelAccount"
         app:layout_constraintTop_toBottomOf="@+id/generalInformationLabelAccount" />
 
@@ -82,12 +85,12 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="28dp"
         android:layout_marginTop="16dp"
+        android:autofillHints=""
         android:enabled="false"
+        android:inputType="text"
         android:text="@string/firstNameEditAccount"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/firstNameLabelAccount"
-        android:autofillHints=""
-        android:inputType="text" />
+        app:layout_constraintTop_toBottomOf="@+id/firstNameLabelAccount" />
 
     <EditText
         android:id="@+id/passwordEditAccount"
@@ -95,13 +98,13 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="28dp"
         android:layout_marginTop="16dp"
+        android:autofillHints=""
         android:enabled="false"
         android:inputType="textPassword"
         android:text="@string/passwordEditAccount"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/passwordLabelAccount"
-        tools:text="@string/password"
-        android:autofillHints="" />
+        tools:text="@string/password" />
 
     <TextView
         android:id="@+id/additionalInformationLabelAccount"
@@ -142,21 +145,22 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="16dp"
+        android:autofillHints=""
         android:enabled="false"
+        android:inputType="text"
         android:text="@string/addressEditAccount"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addressLabelAccount"
-        android:autofillHints=""
-        android:inputType="text" />
+        app:layout_constraintTop_toBottomOf="@+id/addressLabelAccount" />
 
     <TextView
         android:id="@+id/cityLabelAccount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="36dp"
         android:text="@string/cityLabelAccount"
         android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/spinnerCityListAccount"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/addressEditAccount" />
 
@@ -164,19 +168,22 @@
         android:id="@+id/spinnerCityListAccount"
         android:layout_width="148dp"
         android:layout_height="0dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cityLabelAccount" />
+        android:layout_marginTop="32dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/cityLabelAccount"
+        app:layout_constraintTop_toBottomOf="@+id/birthdateEditAccount" />
 
     <TextView
         android:id="@+id/birthdateLabelAccount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="120dp"
+        android:layout_marginStart="128dp"
         android:layout_marginTop="24dp"
         android:text="@string/birthdateLabelAccount"
         android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.286"
         app:layout_constraintStart_toEndOf="@+id/addressLabelAccount"
         app:layout_constraintTop_toBottomOf="@+id/additionalInformationLabelAccount" />
 
@@ -185,37 +192,41 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="120dp"
+        android:layout_marginEnd="32dp"
+        android:autofillHints=""
         android:enabled="false"
+        android:inputType="text"
         android:text="@string/birthdateEditAccount"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.973"
+        app:layout_constraintHorizontal_bias="0.772"
         app:layout_constraintStart_toEndOf="@+id/addressEditAccount"
-        app:layout_constraintTop_toBottomOf="@+id/birthdateLabelAccount"
-        android:autofillHints=""
-        android:inputType="text" />
+        app:layout_constraintTop_toBottomOf="@+id/birthdateLabelAccount" />
 
     <Button
         android:id="@+id/saveChangesAccount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="60dp"
-        android:layout_marginBottom="52dp"
+        android:layout_marginBottom="40dp"
         android:onClick="saveSettings"
         android:text="@string/saveChangesAccount"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerCityListAccount"
+        app:layout_constraintVertical_bias="1.0"
         tools:ignore="OnClick" />
 
     <Button
         android:id="@+id/deleteAccount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginBottom="52dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginBottom="40dp"
         android:onClick="deleteAccount"
         android:text="@string/deleteAccount"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/saveChangesAccount"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerCityListAccount"
+        app:layout_constraintVertical_bias="1.0"
         tools:ignore="OnClick" />
 </androidx.constraintlayout.widget.ConstraintLayout>

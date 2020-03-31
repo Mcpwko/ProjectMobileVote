@@ -59,7 +59,7 @@ public class HomeFragment extends Fragment {
 
         homeViewModel.getMeetings().observe(getActivity(), list-> {
 
-
+                        if(isAdded())
                         for(int i =0 ; i<list.size();i++) {
                             Button button = new Button(getActivity());
                             button.setText(list.get(i).getTitleMeeting());

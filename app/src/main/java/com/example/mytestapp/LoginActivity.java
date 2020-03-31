@@ -1,5 +1,6 @@
 package com.example.mytestapp;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentManager;
@@ -26,9 +27,11 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.mytestapp.db.AppDatabase;
 import com.example.mytestapp.db.async.CreateUser;
+import com.example.mytestapp.db.async.DeleteAttendance;
 import com.example.mytestapp.db.entities.Address1;
 import com.example.mytestapp.db.entities.Attendance;
 import com.example.mytestapp.db.entities.User;
@@ -37,7 +40,6 @@ import com.example.mytestapp.ui.about.AboutFragment;
 import com.example.mytestapp.ui.home.HomeFragment;
 import com.example.mytestapp.ui.login.LoginFragment;
 import com.example.mytestapp.ui.register.RegisterFragment;
-import com.example.mytestapp.ui.settings.SettingsFragment;
 import com.example.mytestapp.util.OnAsyncEventListener;
 import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
@@ -51,6 +53,7 @@ public class LoginActivity extends AppCompatActivity {
     private AppBarConfiguration mAppBarConfiguration;
     private User user;
     private UserRepository repository;
+    private UserRepository userRepository;
     private static final String TAG = "LoginActivity";
     SharedPreferences sharedPreferences;
 
@@ -59,8 +62,8 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        setTitle("MCPJACK");
         repository = getUserRepository();
+        userRepository = getUserRepository();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarguest);
         setSupportActionBar(toolbar);
 
@@ -108,6 +111,8 @@ public class LoginActivity extends AppCompatActivity {
         String password1 = password.getText().toString();
 
 
+
+
         repository.getUser(email, getApplication()).observe(LoginActivity.this, userEntity -> {
             if (userEntity != null) {
                 if (userEntity.getPassword().equals(password1)) {
@@ -133,16 +138,30 @@ public class LoginActivity extends AppCompatActivity {
                     //emailView.setText("");
                     //passwordView.setText("");
                 } else {
-                    /*passwordView.setError(getString(R.string.error_incorrect_password));
-                    passwordView.requestFocus();
-                    passwordView.setText("");*/
+                    password.setText("");
+                    final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+                    alertDialog.setTitle(getString(R.string.warning));
+                    alertDialog.setCancelable(false);
+                    alertDialog.setMessage(getString(R.string.wronginformation));
+                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, getString(R.string.okbutton), (dialog, which) -> {
+                        alertDialog.dismiss();
+
+                    });
+                    alertDialog.show();
+
                 }
-                //progressBar.setVisibility(View.GONE);
+
             } else {
-                //emailView.setError(getString(R.string.error_invalid_email));
-                //emailView.requestFocus();
-                //passwordView.setText("");
-                //progressBar.setVisibility(View.GONE);
+                password.setText("");
+                final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+                alertDialog.setTitle(getString(R.string.warning));
+                alertDialog.setCancelable(false);
+                alertDialog.setMessage(getString(R.string.wronginformation));
+                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, getString(R.string.okbutton), (dialog, which) -> {
+                    alertDialog.dismiss();
+
+                });
+                alertDialog.show();
             }
         });
 
@@ -156,10 +175,6 @@ public class LoginActivity extends AppCompatActivity {
         FragmentTransaction transaction;
         transaction = getSupportFragmentManager().beginTransaction();
         switch (item.getItemId()) {
-            case R.id.action_settings:
-                //getFragmentManager().beginTransaction().commit();
-                transaction.replace(R.id.guest_layout, new SettingsFragment(), null).commit();
-                break;
             case R.id.action_about:
                 //getFragmentManager().beginTransaction().commit();
                 transaction.replace(R.id.guest_layout, new AboutFragment(), null).commit();
@@ -208,31 +223,70 @@ public class LoginActivity extends AppCompatActivity {
 
             EditText email = (EditText) findViewById(R.id.emailRegister);
             user.setEmail(email.getText().toString());
+            String emailAdress = email.getText().toString();
 
             EditText password = (EditText) findViewById(R.id.passwordRegister);
             user.setPassword(password.getText().toString());
 
-            new CreateUser(getApplication(), new OnAsyncEventListener() {
-                @Override
-                public void onSuccess() {
-                    Log.d(TAG, "createUserWithEmail: success");
-                }
+            if(firstname.getText().toString().equals("") || name.getText().toString().equals("") ||
+                    phone.getText().toString().equals("") || email.getText().toString().equals("") ||
+                    password.getText().toString().equals("")) {
 
-                @Override
-                public void onFailure(Exception e) {
-                    Log.d(TAG, "createUserWithEmail: failure", e);
-                }
-            }).execute(user);
+                final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+                alertDialog.setTitle(getString(R.string.warning));
+                alertDialog.setCancelable(false);
+                alertDialog.setMessage(getString(R.string.pleasefillall));
+                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, getString(R.string.okbutton), (dialog, which) -> {
+                    alertDialog.dismiss();
 
+                });
+                alertDialog.show();
 
-
-
-
-            FragmentTransaction transaction;
-            transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.guest_layout, new LoginFragment()).commit();
+                //////
 
 
+
+            }else {
+
+
+                userRepository.getUser(emailAdress, getApplication()).observe(LoginActivity.this, userEntity -> {
+                    if(userEntity!=null){
+                        Toast.makeText(this, "Email already used !", Toast.LENGTH_SHORT).show();
+                    }else{
+
+
+
+                        new CreateUser(getApplication(), new OnAsyncEventListener() {
+                            @Override
+                            public void onSuccess() {
+                                Log.d(TAG, "createUserWithEmail: success");
+                            }
+
+                            @Override
+                            public void onFailure(Exception e) {
+                                Log.d(TAG, "createUserWithEmail: failure", e);
+                            }
+                        }).execute(user);
+                        Toast.makeText(this, "Account created !", Toast.LENGTH_SHORT).show();
+
+                        FragmentTransaction transaction;
+                        transaction = getSupportFragmentManager().beginTransaction();
+                        transaction.replace(R.id.guest_layout, new LoginFragment()).commit();
+
+
+                    }
+
+                });
+
+
+
+            }
+        }else{
+            if(!result)
+                Toast.makeText(this, "Give a real email!", Toast.LENGTH_SHORT).show();
+            else{
+                Toast.makeText(this, "Password not the same !", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 

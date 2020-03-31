@@ -45,7 +45,6 @@
     <string name="button_connect">Connect</string>
     <string name="Label_username">Username</string>
     <string name="Label_Password">Password</string>
-    <string name="title_app">MCJACK</string>
     <string name="Description_Logo">Logo</string>
     <string name="no_account_yet">No account yet ?</string>
     <string name="registerbtn">Register</string>

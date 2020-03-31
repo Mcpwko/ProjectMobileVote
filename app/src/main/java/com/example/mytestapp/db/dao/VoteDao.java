@@ -21,6 +21,9 @@ public interface VoteDao {
     @Query("SELECT * FROM vote WHERE user_id LIKE(:idUser) AND poll_id LIKE(:idPoll)")
     LiveData<List<Vote>> getVote(int idUser, int idPoll);
 
+    @Query("SELECT * FROM vote WHERE poll_id LIKE(:idPoll)")
+    LiveData<List<Vote>> getVoteByPoll(int idPoll);
+
     @Insert
     void insertVote(Vote vote) throws SQLiteConstraintException;
 

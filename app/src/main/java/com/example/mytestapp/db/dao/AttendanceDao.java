@@ -24,6 +24,10 @@ public interface AttendanceDao {
     @Query("SELECT * FROM Attendance WHERE aid = :id")
     LiveData<Attendance> getAttendanceById(int id);
 
+    @Query("SELECT * FROM Attendance WHERE meeting_id = :idMeeting")
+    LiveData<List<Attendance>> getAttendances(int idMeeting);
+
+
     @Insert
     void insertAttendance(Attendance attendance) throws SQLiteConstraintException;
 

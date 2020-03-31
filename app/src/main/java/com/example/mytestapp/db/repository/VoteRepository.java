@@ -38,6 +38,10 @@ public class VoteRepository {
         return AppDatabase.getInstance(context).voteDao().getVote(idUser, idPoll);
     }
 
+    public LiveData<List<Vote>> getVotesByPoll(int idPoll, Context context){
+        return AppDatabase.getInstance(context).voteDao().getVoteByPoll(idPoll);
+    }
+
     public void insertVote(final Vote vote, OnAsyncEventListener callback, Context context) {
         new CreateVote(context, callback).execute(vote);
     }

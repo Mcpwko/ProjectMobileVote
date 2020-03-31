@@ -1,6 +1,7 @@
 package com.example.mytestapp.ui.Poll;
 
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -27,11 +28,18 @@ import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.mytestapp.MainActivity;
 import com.example.mytestapp.R;
 import com.example.mytestapp.db.async.CreateAttendance;
 import com.example.mytestapp.db.async.CreateVote;
+import com.example.mytestapp.db.async.DeleteAttendance;
+import com.example.mytestapp.db.async.DeletePossibleAnswer;
+import com.example.mytestapp.db.async.DeleteUser;
+import com.example.mytestapp.db.async.DeleteVote;
+import com.example.mytestapp.db.async.UpdateVote;
+import com.example.mytestapp.db.entities.PossibleAnswers;
 import com.example.mytestapp.db.entities.User;
 import com.example.mytestapp.db.entities.Vote;
 import com.example.mytestapp.db.repository.MeetingRepository;
@@ -86,6 +94,9 @@ public class PollSelectedFragment extends Fragment {
 
         LinearLayout linearLayout = root.findViewById(R.id.linearLayoutAnswersPollSelected);
         Button validate = root.findViewById(R.id.validateAnswers);
+        Button editPoll = root.findViewById(R.id.editPoll);
+        Button deletePoll = root.findViewById(R.id.deleteAnswers);
+        Button updatePoll = root.findViewById(R.id.updatePoll);
 
         PollSelectedViewModel.Factory factory = new PollSelectedViewModel.Factory(
                 getActivity().getApplication(),idPoll);
@@ -125,10 +136,10 @@ public class PollSelectedFragment extends Fragment {
 
                 VoteViewModel.Factory factoryVote = new VoteViewModel.Factory(getActivity().getApplication(),actualUser.getUid(),poll.getPid());
                 voteViewModel = ViewModelProviders.of(this, factoryVote).get(VoteViewModel.class);
-
+                if(this.isVisible())
                 voteViewModel.getVotes().observe(getActivity(), votes -> {
                     if(votes.size()>=1){
-                        List<TextView> list = new ArrayList<TextView>();
+                        List<CheckBox> list = new ArrayList<CheckBox>();
                         for(int i =0 ; i<possibleAnswers.size();i++) {
                             boolean exist =false;
                             for (Vote vote : votes) {
@@ -137,18 +148,20 @@ public class PollSelectedFragment extends Fragment {
                                 }
                             }
 
-
+                            if(isAdded())
                             if(exist){
-                                TextView button = new TextView(getActivity());
+                                CheckBox button = new CheckBox(getActivity());
                                 button.setText(possibleAnswers.get(i).getAnswer());
                                 button.setId(possibleAnswers.get(i).getPaid());
-                                button.setTextColor(getResources().getColor(R.color.TopicsHome));
+                                button.setChecked(true);
+                                button.setEnabled(false);
                                 list.add(button);
 
                                 linearLayout.addView(button);
                             }else{
 
-                                TextView button = new TextView(getActivity());
+                                CheckBox button = new CheckBox(getActivity());
+                                button.setEnabled(false);
                                 button.setText(possibleAnswers.get(i).getAnswer());
                                 button.setId(possibleAnswers.get(i).getPaid());
                                 list.add(button);
@@ -157,14 +170,156 @@ public class PollSelectedFragment extends Fragment {
                             }
 
 
+                            editPoll.setVisibility(View.VISIBLE);
+                            validate.setVisibility(View.GONE);
+
+
+
+
                             //ACTION POUR EDIT ICI
 
-                            validate.setOnClickListener(new View.OnClickListener() {
+                            editPoll.setOnClickListener(new View.OnClickListener() {
                                 public void onClick(View v) {
+                                    //EDIT BUTTON
+                                    for(CheckBox box : list){
+                                        box.setEnabled(true);
+                                    }
+                                    updatePoll.setVisibility(View.VISIBLE);
+                                    editPoll.setVisibility(View.GONE);
+                                    deletePoll.setVisibility(View.VISIBLE);
+
+
 
 
                                 }
 
+                            });
+
+                            updatePoll.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    //UPDATE BUTTON
+                                    for(CheckBox box : list){
+                                        box.setEnabled(false);
+                                    }
+                                    updatePoll.setVisibility(View.GONE);
+                                    editPoll.setVisibility(View.VISIBLE);
+                                    deletePoll.setVisibility(View.GONE);
+
+                                    Toast.makeText(getActivity(),"Answer(s) updated",Toast.LENGTH_SHORT).show();
+
+                                    for(Vote vote : votes) {
+
+                                        new DeleteVote(getActivity().getApplication(), new OnAsyncEventListener() {
+                                            @Override
+                                            public void onSuccess() {
+                                                Log.d(TAG, "createUserWithEmail: success");
+                                            }
+
+                                            @Override
+                                            public void onFailure(Exception e) {
+                                                Log.d(TAG, "createUserWithEmail: failure", e);
+                                            }
+                                        }).execute(vote);
+                                    }
+
+
+
+
+
+
+                                    List<Integer> listChoosenAnswers = new ArrayList<Integer>();
+
+                                    for(int i=0;i<list.size();i++){
+                                        if(list.get(i).isChecked()==true){
+                                            listChoosenAnswers.add(list.get(i).getId());
+
+                                            Vote vote = new Vote();
+
+
+                                            vote.setUser_id(actualUser.getUid());
+                                            vote.setPossaid(list.get(i).getId());
+                                            vote.setPoll_id(poll.getPid());
+
+
+                                            new CreateVote(getActivity().getApplication(), new OnAsyncEventListener() {
+                                                @Override
+                                                public void onSuccess() {
+                                                    Log.d(TAG, "createUserWithEmail: success");
+                                                }
+
+                                                @Override
+                                                public void onFailure(Exception e) {
+                                                    Log.d(TAG, "createUserWithEmail: failure", e);
+                                                }
+                                            }).execute(vote);
+
+
+
+                                        }
+                                    }
+
+                                    FragmentTransaction transaction;
+                                    transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                                    transaction.replace(R.id.home, new HomeFragment()).commit();
+
+
+                                }
+                            });
+
+
+
+                            deletePoll.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+
+
+                                    final AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
+                                    alertDialog.setTitle(getString(R.string.delete));
+                                    alertDialog.setCancelable(false);
+                                    alertDialog.setMessage(getString(R.string.deleteAttedance));
+                                    alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.yesmeeting), (dialog, which) -> {
+
+                                        Toast.makeText(getActivity(),"Answers succesfully deleted !",Toast.LENGTH_SHORT).show();
+
+                                        for(Vote vote : votes) {
+
+                                            new DeleteVote(getActivity().getApplication(), new OnAsyncEventListener() {
+                                                @Override
+                                                public void onSuccess() {
+                                                    Log.d(TAG, "createUserWithEmail: success");
+                                                }
+
+                                                @Override
+                                                public void onFailure(Exception e) {
+                                                    Log.d(TAG, "createUserWithEmail: failure", e);
+                                                }
+                                            }).execute(vote);
+                                        }
+                                        updatePoll.setVisibility(View.GONE);
+                                        editPoll.setVisibility(View.GONE);
+                                        validate.setVisibility(View.VISIBLE);
+                                        deletePoll.setVisibility(View.GONE);
+
+                                        for(CheckBox box : list){
+                                            box.setEnabled(true);
+                                            box.setChecked(false);
+                                        }
+
+                                        Activity a = getActivity();
+                                        Intent intent = new Intent(a, MainActivity.class);
+                                        startActivity(intent);
+                                        a.finish();
+
+
+
+
+
+                                    });
+                                    alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.Nobtn), (dialog, which) -> alertDialog.dismiss());
+                                    alertDialog.show();
+
+                                }
                             });
 
                         }
@@ -174,18 +329,22 @@ public class PollSelectedFragment extends Fragment {
                         List<CheckBox> list = new ArrayList<CheckBox>();
 
                         for(int i =0 ; i<possibleAnswers.size();i++) {
+                            if (isAdded()) {
+                                CheckBox button = new CheckBox(getActivity());
 
-                            CheckBox button = new CheckBox(getActivity());
-                            button.setText(possibleAnswers.get(i).getAnswer());
-                            button.setId(possibleAnswers.get(i).getPaid());
-                            list.add(button);
-                            linearLayout.addView(button);
+                                button.setText(possibleAnswers.get(i).getAnswer());
+                                button.setId(possibleAnswers.get(i).getPaid());
+                                list.add(button);
+                                linearLayout.addView(button);
+                            }
                         }
 
 
 
                         validate.setOnClickListener(new View.OnClickListener() {
                             public void onClick(View v) {
+
+
 
                                 List<Integer> listChoosenAnswers = new ArrayList<Integer>();
 

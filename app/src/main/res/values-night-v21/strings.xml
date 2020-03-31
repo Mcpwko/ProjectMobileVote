@@ -65,4 +65,11 @@
     <string name="answer1Step2Poll">Answer 1</string>
     <string name="answer2Step2Poll">Answer 2</string>
     <string name="doneStep2Poll">Done</string>
+    <string name="present">Present</string>
+    <string name="notPresent">Not Present</string>
+    <string name="warning">Warning</string>
+    <string name="wronginformation">Wrong login information !</string>
+    <string name="okbutton">Ok</string>
+    <string name="pleasefillall">Please fill all the gaps !</string>
+    <string name="pleasegiveanswers">Please give at least 2 answers !</string>
 </resources>

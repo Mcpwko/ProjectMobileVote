@@ -57,7 +57,6 @@ import com.example.mytestapp.ui.addVote.poll.PollFragment;
 import com.example.mytestapp.ui.addVote.poll.PollStep2Fragment;
 import com.example.mytestapp.ui.home.HomeFragment;
 import com.example.mytestapp.ui.login.LoginFragment;
-import com.example.mytestapp.ui.settings.SettingsFragment;
 import com.example.mytestapp.util.OnAsyncEventListener;
 import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
@@ -66,6 +65,7 @@ import com.google.gson.reflect.TypeToken;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
@@ -86,6 +86,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 
@@ -142,7 +143,7 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.my_topics, R.id.nav_myaccount, R.id.nav_about, R.id.nav_settings, R.id.logout)
+                R.id.nav_home, R.id.my_topics, R.id.nav_myaccount, R.id.nav_about, R.id.logout)
                 .setDrawerLayout(drawer)
                 .build();
 
@@ -368,8 +369,6 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
         menuItem4.setVisible(false);
         MenuItem menuItem2 = menu.findItem(R.id.action_about);
         menuItem2.setVisible(false);
-        MenuItem menuItem3 = menu.findItem(R.id.action_settings);
-        menuItem3.setVisible(false);
         return true;
     }
 
@@ -577,6 +576,8 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
 
     public void nextStep(View view){
 
+
+
         Poll poll = new Poll();
 
 
@@ -593,6 +594,21 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
         Date dateInfo = getDateFromDatePicker(date);
 
         poll.setDeadlinePoll(dateInfo);
+
+        if(title.getText().toString().equals("") || description.getText().toString().equals("")){
+
+            final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+            alertDialog.setTitle(getString(R.string.warning));
+            alertDialog.setCancelable(false);
+            alertDialog.setMessage(getString(R.string.pleasefillall));
+            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, getString(R.string.okbutton), (dialog, which) -> {
+                alertDialog.dismiss();
+
+            });
+            alertDialog.show();
+        }else{
+
+
 
 
         SharedPreferences preferences = getSharedPreferences("User", Context.MODE_PRIVATE);
@@ -613,9 +629,12 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
         FragmentTransaction transaction;
         transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.home, new PollStep2Fragment()).commit();
+
+        }
     }
 
     public void selectPoll(View view){
+        Toast.makeText(this, "Poll selected !", Toast.LENGTH_SHORT).show();
         FragmentTransaction transaction;
         transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.home, new PollFragment()).commit();
@@ -624,6 +643,7 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
 
 
     public void selectMeeting(View view){
+        Toast.makeText(this, "Meeting selected !", Toast.LENGTH_SHORT).show();
         FragmentTransaction transaction;
         transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.home, new MeetingFragment()).commit();
@@ -671,71 +691,94 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
 
         listAnswers.add(R.id.answer1Step2Poll);
         listAnswers.add(R.id.answer2Step2Poll);
+        EditText answer1 = (EditText) findViewById(R.id.answer1Step2Poll);
+        String a1 = answer1.getText().toString();
+        EditText answer2 = (EditText) findViewById(R.id.answer2Step2Poll);
+        String a2 = answer2.getText().toString();
 
-        List<String> answers = new ArrayList<String>();
 
-        for(int i = 0; i< listAnswers.size();i++){
-            EditText answer = (EditText) findViewById(listAnswers.get(i));
-            String test = answer.getText().toString();
-            answers.add(answer.getText().toString());
+        if(a1.equals("") ||a2.equals("")){
+
+            final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+            alertDialog.setTitle(getString(R.string.warning));
+            alertDialog.setCancelable(false);
+            alertDialog.setMessage(getString(R.string.pleasegiveanswers));
+            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, getString(R.string.okbutton), (dialog, which) -> {
+                alertDialog.dismiss();
+
+            });
+            alertDialog.show();
+
+        }else
+
+        {
+
+            List<String> answers = new ArrayList<String>();
+
+            for (int i = 0; i < listAnswers.size(); i++) {
+                EditText answer = (EditText) findViewById(listAnswers.get(i));
+                String test = answer.getText().toString();
+                answers.add(answer.getText().toString());
+            }
+
+            answers.remove("");
+
+            LinkedHashSet<String> hashSet = new LinkedHashSet<>(answers);
+
+            ArrayList<String> listWithoutDuplicates = new ArrayList<>(hashSet);
+
+
+            pollSharedPreferences = getSharedPreferences("Poll", Context.MODE_PRIVATE);
+            Gson gson = new Gson();
+            String json = pollSharedPreferences.getString("Poll", "");
+            Poll poll = gson.fromJson(json, Poll.class);
+
+
+            poll.setStatusOpen(true);
+
+            new CreatePoll(getApplication(), new OnAsyncEventListener() {
+                @Override
+                public void onSuccess() {
+                    Log.d(TAG, "createUserWithEmail: success");
+                }
+
+                @Override
+                public void onFailure(Exception e) {
+                    Log.d(TAG, "createUserWithEmail: failure", e);
+                }
+            }).execute(poll);
+
+
+            pollRepository.getLastPoll(getApplication()).observe(MainActivity.this, pollentity -> {
+                Poll poll2 = pollentity;
+
+
+                for (int i = 0; i < listWithoutDuplicates.size(); i++) {
+                    PossibleAnswers possibleAnswers = new PossibleAnswers();
+                    String test = listWithoutDuplicates.get(i);
+
+                    possibleAnswers.setAnswer(test);
+                    possibleAnswers.setPollid(poll2.getPid());
+
+
+                    new CreatePossibleAnswer(getApplication(), new OnAsyncEventListener() {
+                        @Override
+                        public void onSuccess() {
+                            Log.d(TAG, "createUserWithEmail: success");
+                        }
+
+                        @Override
+                        public void onFailure(Exception e) {
+                            Log.d(TAG, "createUserWithEmail: failure", e);
+                        }
+                    }).execute(possibleAnswers);
+                }
+            });
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
         }
-
-
-        pollSharedPreferences = getSharedPreferences("Poll", Context.MODE_PRIVATE);
-        Gson gson = new Gson();
-        String json = pollSharedPreferences.getString("Poll", "");
-        Poll poll = gson.fromJson(json, Poll.class);
-
-        //EditText title = (EditText) findViewById(R.id.answer1);
-        //String meeting = title.getText().toString();
-
-        poll.setStatusOpen(true);
-
-        new CreatePoll(getApplication(), new OnAsyncEventListener() {
-            @Override
-            public void onSuccess() {
-                Log.d(TAG, "createUserWithEmail: success");
-            }
-
-            @Override
-            public void onFailure(Exception e) {
-                Log.d(TAG, "createUserWithEmail: failure", e);
-            }
-        }).execute(poll);
-
-
-
-        pollRepository.getLastPoll( getApplication()).observe(MainActivity.this, pollentity -> {
-            Poll poll2 = pollentity;
-
-
-
-
-            for(int i = 0; i < answers.size(); i++) {
-                PossibleAnswers possibleAnswers = new PossibleAnswers();
-                String test = answers.get(i);
-
-                possibleAnswers.setAnswer(test);
-                possibleAnswers.setPollid(poll2.getPid());
-
-
-                new CreatePossibleAnswer(getApplication(), new OnAsyncEventListener() {
-                    @Override
-                    public void onSuccess() {
-                        Log.d(TAG, "createUserWithEmail: success");
-                    }
-
-                    @Override
-                    public void onFailure(Exception e) {
-                        Log.d(TAG, "createUserWithEmail: failure", e);
-                    }
-                }).execute(possibleAnswers);
-            }
-        });
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
     }
 
     public void doneMeeting(View view){
@@ -762,6 +805,23 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
         EditText description = (EditText) findViewById(R.id.descriptionMeeting);
         meeting.setDescMeeting(description.getText().toString());
 
+        if(title.getText().toString().equals("") || place.getText().toString().equals("") || description.getText().toString().equals("")){
+
+
+            final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+            alertDialog.setTitle(getString(R.string.warning));
+            alertDialog.setCancelable(false);
+            alertDialog.setMessage(getString(R.string.pleasefillall));
+            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, getString(R.string.okbutton), (dialog, which) -> {
+                alertDialog.dismiss();
+
+            });
+            alertDialog.show();
+
+        }else{
+
+
+
         meeting.setStatusOpen(true);
 
         SharedPreferences userpreferences = getSharedPreferences("User", Context.MODE_PRIVATE);
@@ -769,9 +829,8 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
         String json2 = userpreferences.getString("User", "");
         User user = gson2.fromJson(json2, User.class);
 
-
-
         meeting.setUser_id(user.getUid());
+
 
         new CreateMeeting(getApplication(), new OnAsyncEventListener() {
             @Override
@@ -788,18 +847,13 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
 
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
-
-    }
-
-    public void apply(View view){
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-
+        }
     }
 
 
 
     public void acceptMeeting(View view){
+        Toast.makeText(this, "Meeting accepted !", Toast.LENGTH_SHORT).show();
         SharedPreferences userpreferences = getSharedPreferences("User", Context.MODE_PRIVATE);
         Gson gson2 = new Gson();
         String json2 = userpreferences.getString("User", "");
@@ -823,6 +877,7 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
         }).execute(attendance);
 
 
+
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();
@@ -838,6 +893,7 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
 
 
     public void refuseMeeting(View view){
+        Toast.makeText(this, "Meeting refused !", Toast.LENGTH_SHORT).show();
         SharedPreferences userpreferences = getSharedPreferences("User", Context.MODE_PRIVATE);
         Gson gson2 = new Gson();
         String json2 = userpreferences.getString("User", "");
