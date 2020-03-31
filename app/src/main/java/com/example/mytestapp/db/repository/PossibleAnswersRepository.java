@@ -8,6 +8,7 @@ import com.example.mytestapp.db.AppDatabase;
 import com.example.mytestapp.db.entities.PossibleAnswers;
 
 import java.util.List;
+//The class is used to transfer data from DAO to ViewModel
 
 public class PossibleAnswersRepository {
 
@@ -25,6 +26,7 @@ public class PossibleAnswersRepository {
         }
         return instance;
     }
+    //The methods below are used to get datas from the DAO
 
     public LiveData<List<PossibleAnswers>> getPossibleAnswersByPoll (int id, Context context) {
         return AppDatabase.getInstance(context).possibleAnswerDao().getPossibleAnswersByPoll(id);

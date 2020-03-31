@@ -6,6 +6,9 @@ import android.util.Log;
 import com.example.mytestapp.db.entities.Address1;
 import com.example.mytestapp.db.entities.User;
 
+//We create a DatabaseInitializer in order to populate the Database with our own personal
+//information
+
 public class DatabaseInitializer {
 
     public static final String TAG = "DatabaseInitializer";
@@ -16,6 +19,7 @@ public class DatabaseInitializer {
         task.execute();
     }
 
+    //We add a User in the database with this method
     private static void addUser(final AppDatabase db, final String lastName, final String firstName,
                                 final String birthdate, final Address1 address, final String phoneNumber,
                                 final String email, final String password) {
@@ -23,7 +27,9 @@ public class DatabaseInitializer {
         db.userDao().insertUser(user);
     }
 
+    //Creation of our personal entries in the Database
     private static void populateWithTestData(AppDatabase db) {
+        //We delete everything to clear the Database
         db.userDao().deleteAll();
 
         addUser(db, "Coppey","Kevin","24.07.1997",new Address1("Avenue Rossfeld 21","Sierre"),

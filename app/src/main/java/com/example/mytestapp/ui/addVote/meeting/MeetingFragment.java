@@ -16,6 +16,7 @@ import android.widget.DatePicker;
 import com.example.mytestapp.R;
 
 import java.util.Date;
+//This is the MeetingFragment class where all its specific operations are written
 
 public class MeetingFragment extends Fragment {
 
@@ -31,6 +32,7 @@ public class MeetingFragment extends Fragment {
 
         View root = inflater.inflate(R.layout.fragment_meeting, container, false);
 
+        //We create a DatePicker to choose a date. WARNING we set the Date from the current day
         DatePicker datePicker = root.findViewById(R.id.dateMeeting);
         datePicker.setMinDate(new Date().getTime());
 

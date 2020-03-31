@@ -9,7 +9,9 @@ import androidx.room.PrimaryKey;
 import java.util.Date;
 
 import static androidx.room.ForeignKey.CASCADE;
+//This class represents the Poll Entity
 
+//We use foreign keys to create links with the User Entity
 @Entity(foreignKeys = @ForeignKey(entity = User.class,
         parentColumns = "uid", childColumns = "user_id",
         onDelete = CASCADE),indices = {

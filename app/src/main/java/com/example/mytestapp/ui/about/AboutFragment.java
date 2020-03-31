@@ -10,11 +10,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.mytestapp.R;
 
+
+//This is the AboutFragment class where all its specific operations are written
 public class AboutFragment extends Fragment {
 
     private AboutViewModel aboutViewModel;
@@ -23,7 +24,7 @@ public class AboutFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         aboutViewModel = ViewModelProviders.of(this).get(AboutViewModel.class);
 
-
+        //Here is explained what is the layout the class must load to display information
         View root = inflater.inflate(R.layout.fragment_about, container, false);
         final TextView textView = root.findViewById(R.id.about);
 

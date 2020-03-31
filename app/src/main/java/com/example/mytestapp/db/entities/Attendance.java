@@ -1,5 +1,7 @@
 package com.example.mytestapp.db.entities;
 
+//This class represents the Attendance Entity
+
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
@@ -7,7 +9,7 @@ import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 import static androidx.room.ForeignKey.CASCADE;
-
+//We use foreign keys to create links with the Meeting Entity and the User Entity
 @Entity(foreignKeys = {
         @ForeignKey(
                 entity = Meeting.class,
@@ -19,6 +21,7 @@ import static androidx.room.ForeignKey.CASCADE;
                 entity = User.class,
                 parentColumns = "uid",
                 childColumns = "user_id",
+                //Used to delete on Cascade --> All the links
                 onDelete = CASCADE
         )
 },indices = {
@@ -28,6 +31,7 @@ import static androidx.room.ForeignKey.CASCADE;
 
 public class Attendance {
 
+    //The autoGenerate paramater is used to create automatically the ID
     @PrimaryKey(autoGenerate = true)
     private int aid;
 

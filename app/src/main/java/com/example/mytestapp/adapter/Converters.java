@@ -4,6 +4,9 @@ import androidx.room.TypeConverter;
 
 import java.util.Date;
 
+
+//This class is used to store date in Long in the Database
+
 public class Converters {
     @TypeConverter
     public static Date fromTimestamp(Long value) {

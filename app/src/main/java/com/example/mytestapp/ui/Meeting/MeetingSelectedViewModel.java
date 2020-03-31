@@ -10,11 +10,10 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.mytestapp.db.entities.Attendance;
 import com.example.mytestapp.db.entities.Meeting;
-import com.example.mytestapp.db.entities.Poll;
-import com.example.mytestapp.db.entities.User;
+
 import com.example.mytestapp.db.repository.AttendanceRepository;
 import com.example.mytestapp.db.repository.MeetingRepository;
-import com.example.mytestapp.db.repository.PollRepository;
+
 import com.example.mytestapp.db.repository.UserRepository;
 
 import java.util.List;

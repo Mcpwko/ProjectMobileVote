@@ -7,7 +7,9 @@ import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 import static androidx.room.ForeignKey.CASCADE;
+//This class represents the PossibleAnswers Entity
 
+//We use foreign keys to create links with the Poll Entity
 @Entity(foreignKeys = @ForeignKey(entity = Poll.class,
         parentColumns = "pid", childColumns = "pollid",
         onDelete = CASCADE),

@@ -1,18 +1,19 @@
 package com.example.mytestapp.viewmodel;
 
 import android.app.Application;
-import android.content.Context;
+
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MediatorLiveData;
+
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.mytestapp.db.entities.User;
 import com.example.mytestapp.db.repository.UserRepository;
-import com.example.mytestapp.util.OnAsyncEventListener;
+
+//The ViewModel will use the observer pattern to get the data from the database
 
 public class UserViewModel extends AndroidViewModel {
 
@@ -34,9 +35,8 @@ public class UserViewModel extends AndroidViewModel {
         observableClient = repository.getUserById(idUser, application);
     }
 
-    /**
-     * A creator is used to inject the account id into the ViewModel
-     */
+    //The Factory pattern is used to put the id into the ViewModel
+
     public static class Factory extends ViewModelProvider.NewInstanceFactory {
 
         @NonNull
@@ -59,9 +59,8 @@ public class UserViewModel extends AndroidViewModel {
         }
     }
 
-    /**
-     * Expose the LiveData UserEntity query so the UI can observe it.
-     */
+    //We expose the LiveData list query so that it can be observed
+
     public LiveData<User> getUser() {
         return observableClient;
     }

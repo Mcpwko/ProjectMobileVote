@@ -29,6 +29,10 @@ import com.example.mytestapp.db.entities.Vote;
 
 import java.util.concurrent.Executors;
 
+//All the DAO classes are declared in this class in order to create the Room Database
+
+
+//Below are all our entities
 @Database(entities = {Attendance.class,Meeting.class,Poll.class,PossibleAnswers.class,User.class,Vote.class}, version = 1)
 @TypeConverters({Converters.class})
 public abstract class AppDatabase extends RoomDatabase {
@@ -52,7 +56,9 @@ public abstract class AppDatabase extends RoomDatabase {
         if (instance == null) {
             synchronized (AppDatabase.class) {
                 if (instance == null) {
+                    //used to build the database
                     instance = buildDatabase(context.getApplicationContext());
+                    //Used to update the database
                     instance.updateDatabaseCreated(context.getApplicationContext());
                 }
             }
@@ -60,12 +66,11 @@ public abstract class AppDatabase extends RoomDatabase {
         return instance;
     }
 
-    /**
-     * Build the database. {@link Builder#build()} only sets up the database configuration and
-     * creates a new instance of the database.
-     * The SQLite database is only created when it's accessed for the first time.
-     */
+    //The method below build the databse by setting up the database configuration and creating
+    //a new instance of the database.
+    //The SQLite database is only created when it's accessed for the first time.
     private static AppDatabase buildDatabase(final Context appContext) {
+        //Used to communicate the database state through the console
         Log.i(TAG, "Database will be initialized.");
         return Room.databaseBuilder(appContext, AppDatabase.class, DATABASE_NAME)
                 .addCallback(new Callback() {
@@ -82,9 +87,9 @@ public abstract class AppDatabase extends RoomDatabase {
                 }).build();
     }
 
-    /**
-     * Check whether the database already exists and expose it via {@link #getDatabaseCreated()}
-     */
+
+
+    //Check whether the database already exists and expose it via {@link #getDatabaseCreated()
     private void updateDatabaseCreated(final Context context) {
         if (context.getDatabasePath(DATABASE_NAME).exists()) {
             Log.i(TAG, "Database initialized.");

@@ -14,14 +14,14 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.mytestapp.R;
 import com.example.mytestapp.db.entities.User;
 import com.google.gson.Gson;
+
+//This is the AccountFragment class where all its specific operations are written
 
 public class AccountFragment extends Fragment {
 
@@ -31,15 +31,18 @@ public class AccountFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         accountViewModel =
                 ViewModelProviders.of(this).get(AccountViewModel.class);
+        //Here is explained what is the layout the class must load to display information
         View root = inflater.inflate(R.layout.fragment_account, container, false);
 
+        //Allow to create the menu and its icons
         setHasOptionsMenu(true);
+        //SharedPreference is used to keep the name of the User
         SharedPreferences preferences = this.getActivity().getSharedPreferences("User", Context.MODE_PRIVATE);
         Gson gson = new Gson();
         String json = preferences.getString("User", "");
         User user = gson.fromJson(json, User.class);
 
-
+        //We set all the Textviews with what is inside the Database for a specific User
         TextView firstname = root.findViewById(R.id.firstNameEditAccount);
         firstname.setText(user.getFirstName());
 
@@ -86,6 +89,7 @@ public class AccountFragment extends Fragment {
         return root;
     }
 
+    //This method set an item from the menu visible
     public void onPrepareOptionsMenu(Menu menu) {
         MenuItem item = menu.findItem(R.id.edit);
         if(item!=null)

@@ -5,15 +5,12 @@ import android.content.Context;
 import androidx.lifecycle.LiveData;
 
 import com.example.mytestapp.db.AppDatabase;
-import com.example.mytestapp.db.async.CreateUser;
 import com.example.mytestapp.db.async.CreateVote;
-import com.example.mytestapp.db.async.DeleteUser;
-import com.example.mytestapp.db.async.UpdateUser;
-import com.example.mytestapp.db.entities.User;
 import com.example.mytestapp.db.entities.Vote;
 import com.example.mytestapp.util.OnAsyncEventListener;
 
 import java.util.List;
+//The class is used to transfer data from DAO to ViewModel
 
 public class VoteRepository {
 
@@ -32,6 +29,7 @@ public class VoteRepository {
         return instance;
     }
 
+    //The methods below are used to get datas from the DAO
 
 
     public LiveData<List<Vote>> getVote(int idUser, int idPoll,Context context) {

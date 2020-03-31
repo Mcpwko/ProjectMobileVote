@@ -12,6 +12,7 @@ import com.example.mytestapp.db.entities.User;
 import com.example.mytestapp.util.OnAsyncEventListener;
 
 import java.util.List;
+//The class is used to transfer data from DAO to ViewModel
 
 public class UserRepository {
 
@@ -29,6 +30,7 @@ public class UserRepository {
         }
         return instance;
     }
+    //The methods below are used to get datas from the DAO
 
     public LiveData<User> getUser(final String email, Context context) {
         return AppDatabase.getInstance(context).userDao().getUserByEmail(email);

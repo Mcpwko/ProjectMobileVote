@@ -11,8 +11,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.provider.MediaStore;
+
 import android.text.InputType;
 import android.util.Log;
 import android.view.MenuItem;
@@ -25,7 +24,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.PopupMenu;
+
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -36,10 +35,8 @@ import com.example.mytestapp.db.async.CreateAttendance;
 import com.example.mytestapp.db.async.CreateMeeting;
 import com.example.mytestapp.db.async.CreatePoll;
 import com.example.mytestapp.db.async.CreatePossibleAnswer;
-import com.example.mytestapp.db.async.CreateUser;
-import com.example.mytestapp.db.async.DeleteAttendance;
+
 import com.example.mytestapp.db.async.DeleteUser;
-import com.example.mytestapp.db.async.GetLastPoll;
 import com.example.mytestapp.db.async.UpdateUser;
 import com.example.mytestapp.db.entities.Address1;
 import com.example.mytestapp.db.entities.Attendance;
@@ -50,13 +47,11 @@ import com.example.mytestapp.db.entities.User;
 import com.example.mytestapp.db.repository.AttendanceRepository;
 import com.example.mytestapp.db.repository.PollRepository;
 import com.example.mytestapp.db.repository.UserRepository;
-import com.example.mytestapp.ui.about.AboutFragment;
 import com.example.mytestapp.ui.addVote.ChooseVoteFragment;
 import com.example.mytestapp.ui.addVote.meeting.MeetingFragment;
 import com.example.mytestapp.ui.addVote.poll.PollFragment;
 import com.example.mytestapp.ui.addVote.poll.PollStep2Fragment;
 import com.example.mytestapp.ui.home.HomeFragment;
-import com.example.mytestapp.ui.login.LoginFragment;
 import com.example.mytestapp.util.OnAsyncEventListener;
 import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
@@ -68,10 +63,8 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.LiveData;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -89,10 +82,7 @@ import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.List;
 
-
-
-
-
+//This class is considered as the main activity because it hosts basically all the fragments
 
 public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuItemClickListener {
     private int cpt = 2;
@@ -122,22 +112,19 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //We create a shared preference for the answers
         SharedPreferences preferences = getSharedPreferences("Answers", 0);
         preferences.edit().remove("Answers").commit();
 
         userRepository = getUserRepository();
         pollRepository = getPollRepository();
         attendanceRepository = getAttendanceRepository();
+
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        //FloatingActionButton fab = findViewById(R.id.fab);
-        //ROND VOLANT EN BAS A GAUCHE DE LECRAN
-        /**fab.setOnClickListener(new View.OnClickListener() {
-        @Override public void onClick(View view) {
-        Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-        .setAction("Action", null).show();
-        }
-        });*/
+
+
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
@@ -157,22 +144,19 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
 
         sharedPreferences = getSharedPreferences(MyPREFERENCE, Context.MODE_PRIVATE);
 
-        //aSwitch = findViewById(R.id.darkMode);
-
-        MenuItem menuItem = navigationView.getMenu().findItem(R.id.darkMode); // This is the menu item that contains your switch
+        // This is the menu item that contains your switch for the darkmode
+        MenuItem menuItem = navigationView.getMenu().findItem(R.id.darkMode);
         aSwitch = menuItem.getActionView().findViewById(R.id.drawer_switch);
 
 
+        // We use this condition to see if the menu must be set here
         if (navigationView.getCheckedItem() == navigationView.getMenu().findItem(R.id.nav_home))
             homepage = true;
 
         final Context context = this;
 
-        MenuItem accountdr = navigationView.getMenu().findItem(R.id.nav_myaccount);
-
-
-
         MenuItem logout = navigationView.getMenu().findItem(R.id.logout);
+
 
         logout.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
@@ -186,7 +170,7 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
 
         checkNightModeActivated();
 
-
+        //if the switch is on we activate the night mode, if not we don't activate it
         aSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -208,7 +192,7 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
         String json2 = userpreferences.getString("User", "");
         User user = gson2.fromJson(json2, User.class);
 
-
+        //We set the text present at the top of navigation drawer
         View hView = navigationView.getHeaderView(0);
         TextView navViewName = (TextView) hView.findViewById(R.id.nameAndroidNav);
         TextView navViewEmail = (TextView) hView.findViewById(R.id.emailAndroidNav);
@@ -220,7 +204,7 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
 
 
 
-        //TENTATIVE DE CHANGEMENT D'IMAGE DU NAVIGATION DRAWER
+        //This part concerns the implementation of the profil picture
 
 
         ImageButton button = hView.findViewById(R.id.imgAndroidBtnNav);
@@ -229,8 +213,10 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
         SharedPreferences sp = getSharedPreferences("profilpic", Context.MODE_PRIVATE);
 
         try {
+            //We parse the image in order to apply it
             Uri imageUri = Uri.parse(sp.getString("profilpic", ""));
 
+            //if what we parsed is not null we can apply it
             if (imageUri != null) {
                 InputStream imageStream = getContentResolver().openInputStream(imageUri);
                 Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
@@ -247,6 +233,8 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
         }
 
 
+        //We also created a permission to ask the user if he lett the app communicate with the gallery
+        //of his system
         button.setOnClickListener(v -> {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
@@ -275,6 +263,7 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
         startActivity(intent);
     }
 
+    //This method is used to resize the picture from the gallery
     public Bitmap getResizedBitmap(Bitmap image, int maxSize) {
         int width = image.getWidth();
         int height = image.getHeight();
@@ -290,6 +279,7 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
         return Bitmap.createScaledBitmap(image, width, height, true);
     }
 
+    //The method is used to pick an image from the gallery
     private void pickImageFromGallery(){
 
         Intent intent = new Intent (Intent.ACTION_OPEN_DOCUMENT);
@@ -305,6 +295,7 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
             try {
                 Uri imageUri = data.getData();
 
+                //We store the picture with a sharedPreference in order to save it
                 SharedPreferences sp = getSharedPreferences("profilpic",Context.MODE_PRIVATE);
                 SharedPreferences.Editor edt = sp.edit();
 
@@ -315,7 +306,8 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
                 InputStream imageStream = getContentResolver().openInputStream(imageUri);
                 Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
 
-                selectedImage = getResizedBitmap(selectedImage, 300);// 400 is for example, replace with desired size
+                //Size of the picture set to 300
+                selectedImage = getResizedBitmap(selectedImage, 300);// 300 is for example, replace with desired size
 
                 imageView.setImageBitmap(selectedImage);
 
@@ -325,6 +317,7 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
             }
         }
     }
+    //Grant or deny the permission method
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -353,8 +346,6 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
     //Block the back button of the smartphone
     @Override
     public void onBackPressed() {
-        // super.onBackPressed();
-        //Fragment f = getSupportFragmentManager().findFragmentById(R.id.fragment_container_view_tag);
         Toast.makeText(MainActivity.this,"There is no back action",Toast.LENGTH_LONG).show();
         return;
     }
@@ -372,16 +363,9 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
         return true;
     }
 
-    /*public void deleteAttendance(View view){
 
 
-        int id = view.getId();
-
-    }*/
-
-
-
-
+    //Manages the action of every item in the menu
     public boolean onOptionsItemSelected(MenuItem item) {
         FragmentTransaction transaction; /////INUTILEEEEE
         transaction = getSupportFragmentManager().beginTransaction();
@@ -430,7 +414,7 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
     }
 
 
-
+    //This method is used to save the updated account
     public void saveSettings(View view){
 
         findViewById(R.id.saveChangesAccount).setVisibility(View.GONE);
@@ -472,6 +456,7 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
         user.setUid(usera.getUid());
 
 
+        //Then we can update the user
         new UpdateUser(getApplication(), new OnAsyncEventListener() {
             @Override
             public void onSuccess() {
@@ -496,6 +481,7 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
 
     }
 
+    //the method is used to delete an account from the database
     public void deleteAccount(View view){
         SharedPreferences preferences = getSharedPreferences("User", Context.MODE_PRIVATE);
         Gson gson2 = new Gson();
@@ -526,7 +512,7 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
 
 
 
-
+    //This method handles the navigation between fragments
     @Override
     public boolean onSupportNavigateUp() {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
@@ -534,6 +520,7 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
                 || super.onSupportNavigateUp();
     }
 
+    //Used to save the night mode State even if we close the app
     private void saveNightModeState(boolean nightMode) {
 
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -544,6 +531,7 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
 
     }
 
+    //Check if the night mode is activated
     public void checkNightModeActivated() {
         if (sharedPreferences.getBoolean(KEY_ISNIGHTMODE, false)){
             aSwitch.setChecked(true);
@@ -555,6 +543,7 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
         }
     }
 
+    //method used by a button to add a vote
     public void addVote(View view){
         FragmentTransaction transaction;
         transaction = getSupportFragmentManager().beginTransaction();
@@ -574,12 +563,14 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
     }
 
 
+    //method used by a button to go to the next step of the creation of polls
     public void nextStep(View view){
 
 
 
         Poll poll = new Poll();
 
+        //We set all the textviews by the new data
 
         EditText title = (EditText) findViewById(R.id.titlePoll);
         poll.setTitlePoll(title.getText().toString());
@@ -595,6 +586,7 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
 
         poll.setDeadlinePoll(dateInfo);
 
+        //If something is empty we display an AlertDialog
         if(title.getText().toString().equals("") || description.getText().toString().equals("")){
 
             final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
@@ -633,6 +625,7 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
         }
     }
 
+    //Method used to change the fragment if we click on a button
     public void selectPoll(View view){
         Toast.makeText(this, "Poll selected !", Toast.LENGTH_SHORT).show();
         FragmentTransaction transaction;
@@ -641,14 +634,14 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
     }
 
 
-
+    //Method used to change the fragment if we click on a button
     public void selectMeeting(View view){
         Toast.makeText(this, "Meeting selected !", Toast.LENGTH_SHORT).show();
         FragmentTransaction transaction;
         transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.home, new MeetingFragment()).commit();
     }
-
+    //Method used to add an answer to a poll
     public void addAnswer(View view){
         EditText answer = new EditText(this);
         cpt = cpt+1;
@@ -679,12 +672,16 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
 
     }
 
+    //Method used to validate the creation of the poll
     public void donePoll(View view){
 
 
         answersSharedPreferences = getSharedPreferences("Answers", Context.MODE_PRIVATE);
         Gson gson2 = new Gson();
         String json2 = answersSharedPreferences.getString("Answers", "");
+
+
+        //We save the list of answers
         List<Integer> listAnswers = gson2.fromJson(json2, new TypeToken<ArrayList<Integer>>(){}.getType());
         if(listAnswers==null)
             listAnswers = new ArrayList<Integer>();
@@ -696,7 +693,7 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
         EditText answer2 = (EditText) findViewById(R.id.answer2Step2Poll);
         String a2 = answer2.getText().toString();
 
-
+        //If one of the answer is empty we display an AlertDialog
         if(a1.equals("") ||a2.equals("")){
 
             final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
@@ -712,7 +709,7 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
         }else
 
         {
-
+            //Otherwise we can set our data
             List<String> answers = new ArrayList<String>();
 
             for (int i = 0; i < listAnswers.size(); i++) {
@@ -749,6 +746,8 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
             }).execute(poll);
 
 
+            //We get the last poll in the database and we put the data into a listwithout duplicates
+
             pollRepository.getLastPoll(getApplication()).observe(MainActivity.this, pollentity -> {
                 Poll poll2 = pollentity;
 
@@ -761,6 +760,7 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
                     possibleAnswers.setPollid(poll2.getPid());
 
 
+                    //We create the possible answers
                     new CreatePossibleAnswer(getApplication(), new OnAsyncEventListener() {
                         @Override
                         public void onSuccess() {
@@ -774,14 +774,17 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
                     }).execute(possibleAnswers);
                 }
             });
+
+            //We change the fragment
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
         }
     }
-
+//Basically the same method as donePoll. It is actioned when the button doneMeeting is pressed
     public void doneMeeting(View view){
+
 
 
         Meeting meeting = new Meeting();
@@ -852,6 +855,8 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
 
 
 
+
+    //Method launched when the user accept a meeting suggested
     public void acceptMeeting(View view){
         Toast.makeText(this, "Meeting accepted !", Toast.LENGTH_SHORT).show();
         SharedPreferences userpreferences = getSharedPreferences("User", Context.MODE_PRIVATE);
@@ -891,7 +896,7 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
     }
 
 
-
+    //Method launched when the user refuse a meeting suggested
     public void refuseMeeting(View view){
         Toast.makeText(this, "Meeting refused !", Toast.LENGTH_SHORT).show();
         SharedPreferences userpreferences = getSharedPreferences("User", Context.MODE_PRIVATE);
@@ -904,7 +909,7 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
         attendance.setAnswerAttendance(false);
         attendance.setUser_id(user.getUid());
         attendance.setMeeting_id(view.getId());
-
+        //We create an attendance anyway
         new CreateAttendance(getApplication(), new OnAsyncEventListener() {
             @Override
             public void onSuccess() {
@@ -930,7 +935,7 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
 
 
 
-
+//Filter button action
     @Override
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()){

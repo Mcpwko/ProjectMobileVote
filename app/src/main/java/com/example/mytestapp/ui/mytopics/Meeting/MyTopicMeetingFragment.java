@@ -4,8 +4,6 @@ import androidx.annotation.RequiresApi;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
@@ -24,13 +22,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
-import com.example.mytestapp.MainActivity;
+
 import com.example.mytestapp.R;
 import com.example.mytestapp.db.async.DeleteMeeting;
-import com.example.mytestapp.db.async.DeletePoll;
+
 import com.example.mytestapp.db.async.UpdateMeeting;
 import com.example.mytestapp.db.entities.Attendance;
-import com.example.mytestapp.db.entities.Meeting;
+
 import com.example.mytestapp.db.entities.User;
 import com.example.mytestapp.ui.Meeting.MeetingSelectedViewModel;
 import com.example.mytestapp.ui.mytopics.MyTopicsFragment;
@@ -38,7 +36,7 @@ import com.example.mytestapp.util.OnAsyncEventListener;
 import com.example.mytestapp.viewmodel.AttendanceViewModel;
 import com.google.gson.Gson;
 
-import java.text.DateFormat;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -46,6 +44,7 @@ import java.util.Date;
 
 import static android.content.Context.MODE_PRIVATE;
 
+//This class is used when we click on one of a Meeting we created
 public class MyTopicMeetingFragment extends Fragment {
 
     private MeetingSelectedViewModel mViewModel;
@@ -66,6 +65,7 @@ public class MyTopicMeetingFragment extends Fragment {
         }
         View root = inflater.inflate(R.layout.fragmentmy_topic_meeting, container, false);
 
+        //The sharedPreferences is always used to keep the information of the User (especially his name)
         SharedPreferences preferences = getActivity().getSharedPreferences("User", MODE_PRIVATE);
         Gson gson = new Gson();
         String json = preferences.getString("User", "");
@@ -79,9 +79,11 @@ public class MyTopicMeetingFragment extends Fragment {
 
         mViewModel = ViewModelProviders.of(this,factory).get(MeetingSelectedViewModel.class);
 
+        //With this viewModel we can use all the methods we want from the table Meeting
         mViewModel.getMeeting().observe(getActivity(), meeting-> {
             if(isAdded()){
 
+                //We set the text of the editTexts with the data we have in the Database
 
             EditText title = root.findViewById(R.id.titleMeetingMyTopic);
             title.setText(meeting.getTitleMeeting());
@@ -111,17 +113,21 @@ public class MyTopicMeetingFragment extends Fragment {
             description.setText(meeting.getDescMeeting());
 
 
+            //We do the same with the viewModel for attendance
             attendanceViewModel.getAttendances().observe(getActivity(), attendances -> {
 
                 TextView yes = root.findViewById(R.id.cptYesMeeting);
                 TextView no = root.findViewById(R.id.cptNoMeeting);
+                //We count the number of yes and no
                 int cptyes = 0;
                 int cptno = 0;
 
+                //Everytime an attendance is "true" we increment yes
                 for(Attendance attendance : attendances){
                     if(attendance.isAnswerAttendance()){
                         cptyes++;
                     }else{
+                        //Everytime an attendance is "false" we increment yes
                         cptno++;
                     }
                 }
@@ -137,6 +143,7 @@ public class MyTopicMeetingFragment extends Fragment {
             Button save  = root.findViewById(R.id.saveMeetingMyTopic);
 
 
+            //We give the possibility to the User to save the data by clicking on the save Button
             save.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -176,6 +183,7 @@ public class MyTopicMeetingFragment extends Fragment {
                 }
             });
 
+            //If we click on the delete button we delete the answers
             delete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -192,7 +200,7 @@ public class MyTopicMeetingFragment extends Fragment {
                         }
                     }).execute(meeting);
 
-
+                    //We go back to My topics
                     FragmentTransaction transaction;
                     transaction = getActivity().getSupportFragmentManager().beginTransaction();
                     transaction.replace(R.id.my_topics, new MyTopicsFragment()).commit();
@@ -200,6 +208,8 @@ public class MyTopicMeetingFragment extends Fragment {
             });
 
 
+
+            //We explain here what button is going to remain or not if we click on the edit button
             edit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -231,6 +241,7 @@ public class MyTopicMeetingFragment extends Fragment {
         // TODO: Use the ViewModel
     }
 
+    //This method is used to get the Date from the datepicker
     public static java.util.Date getDateFromDatePicker(DatePicker datePicker){
         int day = datePicker.getDayOfMonth();
         int month = datePicker.getMonth();

@@ -5,18 +5,15 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
-
-import com.example.mytestapp.BaseApp;
-import com.example.mytestapp.MainActivity;
 import com.example.mytestapp.db.entities.Meeting;
 import com.example.mytestapp.db.entities.Poll;
 import com.example.mytestapp.db.repository.MeetingRepository;
 import com.example.mytestapp.db.repository.PollRepository;
 
 import java.util.List;
+//The ViewModel will use the observer pattern to get the data from the database
 
 public class HomeListViewModel extends AndroidViewModel {
 
@@ -45,9 +42,8 @@ public class HomeListViewModel extends AndroidViewModel {
         observablePolls = pollRepository.getActivePolls(application);
     }
 
-    /**
-     * A creator is used to inject the account id into the ViewModel
-     */
+    //The Factory pattern is used to put the id into the ViewModel
+
     public static class Factory extends ViewModelProvider.NewInstanceFactory {
 
         @NonNull
@@ -70,31 +66,14 @@ public class HomeListViewModel extends AndroidViewModel {
         }
     }
 
+    //We expose the LiveData list query so that it can be observed
 
-
-
-    /**
-     * Expose the LiveData ClientAccounts query so the UI can observe it.
-     */
     public LiveData<List<Meeting>> getMeetings() {
         return observableMeetings;
     }
-
-    /**
-     * Expose the LiveData AccountEntities query so the UI can observe it.
-     */
     public LiveData<List<Poll>> getPolls() {
         return observablePolls;
     }
-
-    /*public void deleteAccount(AccountEntity account, OnAsyncEventListener callback) {
-        repository.delete(account, callback, application);
-    }
-
-    public void executeTransaction(final AccountEntity sender, final AccountEntity recipient,
-                                   OnAsyncEventListener callback) {
-        repository.transaction(sender, recipient, callback, application);
-    }*/
 
     public static PollRepository getPollRepository(){ return PollRepository.getInstance(); }
     public static MeetingRepository getMeetingRepository(){ return MeetingRepository.getInstance(); }

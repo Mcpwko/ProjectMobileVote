@@ -9,12 +9,12 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.mytestapp.db.entities.Attendance;
-import com.example.mytestapp.db.entities.Vote;
+
 import com.example.mytestapp.db.repository.AttendanceRepository;
-import com.example.mytestapp.db.repository.VoteRepository;
+
 
 import java.util.List;
-
+//The ViewModel will use the observer pattern to get the data from the database
 public class AttendanceViewModel extends AndroidViewModel {
 
     private Application application;
@@ -34,9 +34,8 @@ public class AttendanceViewModel extends AndroidViewModel {
         observableAttendance = attendanceRepository.getAttendances(idMeeting,application);
     }
 
-    /**
-     * A creator is used to inject the account id into the ViewModel
-     */
+
+    //The Factory pattern is used to put the id into the ViewModel
     public static class Factory extends ViewModelProvider.NewInstanceFactory {
 
         @NonNull
@@ -61,9 +60,9 @@ public class AttendanceViewModel extends AndroidViewModel {
 
 
 
-    /**
-     * Expose the LiveData ClientAccounts query so the UI can observe it.
-     */
+
+    //We expose the LiveData list query so that it can be observed
+
     public LiveData<List<Attendance>> getAttendances() {
         return observableAttendance;
     }

@@ -8,6 +8,10 @@ import androidx.room.PrimaryKey;
 
 import static androidx.room.ForeignKey.CASCADE;
 
+//This class represents the Vote Entity. It is used as an Association Class.
+
+//We use foreign keys to create links with the User Entity, the Poll Entity and the PossibleAnswers Entity
+
 @Entity(foreignKeys = {
         @ForeignKey(
                 entity = User.class,

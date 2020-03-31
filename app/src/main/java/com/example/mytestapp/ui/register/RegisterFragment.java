@@ -18,7 +18,7 @@ import android.widget.Spinner;
 import com.example.mytestapp.R;
 
 import java.util.Date;
-
+//This class has for purpose to create the elements used in the Register page
 public class RegisterFragment extends Fragment {
 
     private RegisterViewModel mViewModel;

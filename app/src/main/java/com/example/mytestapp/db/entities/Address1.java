@@ -1,5 +1,7 @@
 package com.example.mytestapp.db.entities;
 
+//This class represents the Address object
+
 public class Address1 {
 
     public String address;

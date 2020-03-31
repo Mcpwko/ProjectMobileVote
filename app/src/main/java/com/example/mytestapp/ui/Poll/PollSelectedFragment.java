@@ -1,15 +1,12 @@
 package com.example.mytestapp.ui.Poll;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -19,35 +16,29 @@ import androidx.fragment.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.mytestapp.MainActivity;
 import com.example.mytestapp.R;
-import com.example.mytestapp.db.async.CreateAttendance;
 import com.example.mytestapp.db.async.CreateVote;
-import com.example.mytestapp.db.async.DeleteAttendance;
-import com.example.mytestapp.db.async.DeletePossibleAnswer;
-import com.example.mytestapp.db.async.DeleteUser;
+
 import com.example.mytestapp.db.async.DeleteVote;
-import com.example.mytestapp.db.async.UpdateVote;
-import com.example.mytestapp.db.entities.PossibleAnswers;
+
 import com.example.mytestapp.db.entities.User;
 import com.example.mytestapp.db.entities.Vote;
-import com.example.mytestapp.db.repository.MeetingRepository;
+
 import com.example.mytestapp.db.repository.PollRepository;
 import com.example.mytestapp.db.repository.PossibleAnswersRepository;
 import com.example.mytestapp.db.repository.UserRepository;
 import com.example.mytestapp.db.repository.VoteRepository;
-import com.example.mytestapp.ui.Meeting.MeetingSelectedViewModel;
+
 import com.example.mytestapp.ui.home.HomeFragment;
 import com.example.mytestapp.util.OnAsyncEventListener;
 import com.example.mytestapp.viewmodel.UserViewModel;
@@ -62,6 +53,7 @@ import java.util.List;
 
 import static android.content.Context.MODE_PRIVATE;
 
+//We use PollSelectedFragment when we select a Poll from the HomeFragment
 public class PollSelectedFragment extends Fragment {
 
     private PollSelectedViewModel mViewModel;
@@ -92,6 +84,7 @@ public class PollSelectedFragment extends Fragment {
         String json = preferences.getString("User", "");
         User actualUser = gson.fromJson(json, User.class);
 
+        //The layout will be useful to store into a scrollView all the possible answers
         LinearLayout linearLayout = root.findViewById(R.id.linearLayoutAnswersPollSelected);
         Button validate = root.findViewById(R.id.validateAnswers);
         Button editPoll = root.findViewById(R.id.editPoll);
@@ -103,6 +96,8 @@ public class PollSelectedFragment extends Fragment {
 
         mViewModel = ViewModelProviders.of(this,factory).get(PollSelectedViewModel.class);
 
+        //This block sets the text elements created in the layout with the data in the database
+
         mViewModel.getPoll().observe(getActivity(),poll -> {
             if(this.isVisible()) {
                 UserViewModel.Factory factoryUser = new UserViewModel.Factory(getActivity().getApplication(), poll.getUser_id());
@@ -113,9 +108,6 @@ public class PollSelectedFragment extends Fragment {
 
                 });
             }
-
-
-
 
             TextView title = root.findViewById(R.id.titlePollSelected);
             title.setText(poll.getTitlePoll());
@@ -132,16 +124,22 @@ public class PollSelectedFragment extends Fragment {
             description.setText(poll.getDescPoll());
 
 
+            //We do the same as above and we get the data from the possibleAnswers table
+
             mViewModel.getPossibleAnswers().observe(getActivity(),possibleAnswers -> {
 
                 VoteViewModel.Factory factoryVote = new VoteViewModel.Factory(getActivity().getApplication(),actualUser.getUid(),poll.getPid());
                 voteViewModel = ViewModelProviders.of(this, factoryVote).get(VoteViewModel.class);
                 if(this.isVisible())
                 voteViewModel.getVotes().observe(getActivity(), votes -> {
+                    //If there is more than 1 vote, we create a list
                     if(votes.size()>=1){
                         List<CheckBox> list = new ArrayList<CheckBox>();
+                        //We go through this list and we declare a boolean with a false value
                         for(int i =0 ; i<possibleAnswers.size();i++) {
                             boolean exist =false;
+                            //We go through the votes and if a possible answers matches with Possible
+                            //Answers in the DB, we can say it exist
                             for (Vote vote : votes) {
                                 if (vote.getPossaid()==possibleAnswers.get(i).getPaid()) {
                                     exist = true;
@@ -176,12 +174,13 @@ public class PollSelectedFragment extends Fragment {
 
 
 
-                            //ACTION POUR EDIT ICI
+                            //Action for the edit button
 
                             editPoll.setOnClickListener(new View.OnClickListener() {
                                 public void onClick(View v) {
                                     //EDIT BUTTON
                                     for(CheckBox box : list){
+                                        //Allow to give the permission to cross the box
                                         box.setEnabled(true);
                                     }
                                     updatePoll.setVisibility(View.VISIBLE);
@@ -195,6 +194,7 @@ public class PollSelectedFragment extends Fragment {
 
                             });
 
+                            //Action for the update button
                             updatePoll.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
@@ -206,6 +206,7 @@ public class PollSelectedFragment extends Fragment {
                                     editPoll.setVisibility(View.VISIBLE);
                                     deletePoll.setVisibility(View.GONE);
 
+                                    //The toast give the message below when the answer(s) are updated
                                     Toast.makeText(getActivity(),"Answer(s) updated",Toast.LENGTH_SHORT).show();
 
                                     for(Vote vote : votes) {
@@ -227,6 +228,8 @@ public class PollSelectedFragment extends Fragment {
 
 
 
+                                    //In this part we create a list of the answers chosen by the
+                                    //user and we put the data of the list of checkboxes in it
 
                                     List<Integer> listChoosenAnswers = new ArrayList<Integer>();
 
@@ -269,6 +272,7 @@ public class PollSelectedFragment extends Fragment {
 
 
 
+                            //Action for the delete button
                             deletePoll.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
@@ -282,6 +286,7 @@ public class PollSelectedFragment extends Fragment {
 
                                         Toast.makeText(getActivity(),"Answers succesfully deleted !",Toast.LENGTH_SHORT).show();
 
+                                        //We delete each votes
                                         for(Vote vote : votes) {
 
                                             new DeleteVote(getActivity().getApplication(), new OnAsyncEventListener() {
@@ -323,7 +328,8 @@ public class PollSelectedFragment extends Fragment {
                             });
 
                         }
-
+                    //If there is less than 1 vote we create a list of checkbox where every possible
+                    //answers are put
                     }else{
 
                         List<CheckBox> list = new ArrayList<CheckBox>();
@@ -340,7 +346,7 @@ public class PollSelectedFragment extends Fragment {
                         }
 
 
-
+                        //If we click on the validate button we save all the data
                         validate.setOnClickListener(new View.OnClickListener() {
                             public void onClick(View v) {
 
@@ -376,6 +382,8 @@ public class PollSelectedFragment extends Fragment {
 
                                     }
                                 }
+
+                                //We finally get back to the main activity
                                 Activity a = getActivity();
                                 Intent intent = new Intent(a, MainActivity.class);
                                 startActivity(intent);

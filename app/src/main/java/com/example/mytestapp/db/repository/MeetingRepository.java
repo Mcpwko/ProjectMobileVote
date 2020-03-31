@@ -9,10 +9,10 @@ import com.example.mytestapp.db.async.CreateMeeting;
 import com.example.mytestapp.db.async.DeleteMeeting;
 import com.example.mytestapp.db.async.UpdateMeeting;
 import com.example.mytestapp.db.entities.Meeting;
-import com.example.mytestapp.db.entities.Poll;
 import com.example.mytestapp.util.OnAsyncEventListener;
 
 import java.util.List;
+//The class is used to transfer data from DAO to ViewModel
 
 public class MeetingRepository {
 
@@ -31,6 +31,7 @@ public class MeetingRepository {
         return instance;
     }
 
+    //The methods below are used to get datas from the DAO
 
     public LiveData<List<Meeting>> getActiveMeeting(Context context) {
         return AppDatabase.getInstance(context).meetingDao().getActiveMeetings();

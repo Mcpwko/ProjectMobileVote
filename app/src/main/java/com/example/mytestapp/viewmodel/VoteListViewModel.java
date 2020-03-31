@@ -7,13 +7,13 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
-import com.example.mytestapp.db.entities.Poll;
+
 import com.example.mytestapp.db.entities.Vote;
-import com.example.mytestapp.db.repository.MeetingRepository;
-import com.example.mytestapp.db.repository.PollRepository;
+
 import com.example.mytestapp.db.repository.VoteRepository;
 
 import java.util.List;
+//The ViewModel will use the observer pattern to get the data from the database
 
 public class VoteListViewModel extends AndroidViewModel {
 
@@ -34,9 +34,8 @@ public class VoteListViewModel extends AndroidViewModel {
         observableVotes = voteRepository.getVotesByPoll(idPoll,application);
     }
 
-    /**
-     * A creator is used to inject the account id into the ViewModel
-     */
+    //The Factory pattern is used to put the id into the ViewModel
+
     public static class Factory extends ViewModelProvider.NewInstanceFactory {
 
         @NonNull
@@ -61,9 +60,8 @@ public class VoteListViewModel extends AndroidViewModel {
 
 
 
-    /**
-     * Expose the LiveData ClientAccounts query so the UI can observe it.
-     */
+    //We expose the LiveData list query so that it can be observed
+
     public LiveData<List<Vote>> getVotes() {
         return observableVotes;
     }

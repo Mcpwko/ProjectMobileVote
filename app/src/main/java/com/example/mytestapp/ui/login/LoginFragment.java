@@ -1,9 +1,7 @@
 package com.example.mytestapp.ui.login;
 
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,11 +11,10 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.example.mytestapp.LoginActivity;
-import com.example.mytestapp.MainActivity;
 import com.example.mytestapp.R;
 
+//This class represents the first fragment the user see. It allows him to connect to the App
+//by entering his personal information
 public class LoginFragment extends Fragment {
 
     private LoginViewModel mViewModel;

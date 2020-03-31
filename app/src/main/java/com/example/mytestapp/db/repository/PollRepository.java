@@ -12,6 +12,7 @@ import com.example.mytestapp.db.entities.Poll;
 import com.example.mytestapp.util.OnAsyncEventListener;
 
 import java.util.List;
+//The class is used to transfer data from DAO to ViewModel
 
 public class PollRepository {
 
@@ -29,6 +30,7 @@ public class PollRepository {
         }
         return instance;
     }
+    //The methods below are used to get datas from the DAO
 
     public LiveData<Poll> getLastPoll( Context context) {
         return AppDatabase.getInstance(context).pollDao().getLastPoll();

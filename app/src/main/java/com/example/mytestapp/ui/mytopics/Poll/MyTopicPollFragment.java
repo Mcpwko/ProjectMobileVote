@@ -1,6 +1,5 @@
 package com.example.mytestapp.ui.mytopics.Poll;
 
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.app.Activity;
@@ -16,22 +15,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.mytestapp.MainActivity;
 import com.example.mytestapp.R;
-import com.example.mytestapp.db.async.CreateVote;
 import com.example.mytestapp.db.async.DeletePoll;
-import com.example.mytestapp.db.async.DeleteVote;
 import com.example.mytestapp.db.entities.Vote;
 import com.example.mytestapp.ui.Poll.PollSelectedViewModel;
-import com.example.mytestapp.ui.home.HomeFragment;
 import com.example.mytestapp.util.OnAsyncEventListener;
-import com.example.mytestapp.viewmodel.UserViewModel;
 import com.example.mytestapp.viewmodel.VoteListViewModel;
-import com.example.mytestapp.viewmodel.VoteViewModel;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -39,6 +32,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+//This class is used when we click on one of the Poll we created
 public class MyTopicPollFragment extends Fragment {
 
     private PollSelectedViewModel mViewModel;
@@ -48,6 +42,7 @@ public class MyTopicPollFragment extends Fragment {
     public MyTopicPollFragment(int idPoll){
         this.idPoll = idPoll;
     }
+
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -67,6 +62,7 @@ public class MyTopicPollFragment extends Fragment {
 
         mViewModel.getPoll().observe(getActivity(),poll -> {
 
+            //If the poll object is not null we can set the text of all our EditText
             if (poll != null){
                 TextView title = root.findViewById(R.id.titlePollMyTopic);
             title.setText(poll.getTitlePoll());
@@ -90,6 +86,8 @@ public class MyTopicPollFragment extends Fragment {
                 if (this.isVisible())
                     voteListViewModel.getVotes().observe(getActivity(), votes -> {
 
+                        //We increment the cpt when possible answers matches with vote. We use that
+                        //to know how much people vote for an answer
                         List<TextView> list = new ArrayList<TextView>();
                         for (int i = 0; i < possibleAnswers.size(); i++) {
                             int cpt = 0;
@@ -110,6 +108,8 @@ public class MyTopicPollFragment extends Fragment {
                             }
 
 
+                            //If we click on the delete button we delete Poll and we get back to
+                            // the main activity
                             delete.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {

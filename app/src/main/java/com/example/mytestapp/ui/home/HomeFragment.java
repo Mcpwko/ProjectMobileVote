@@ -3,41 +3,36 @@ package com.example.mytestapp.ui.home;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
+
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
+
 import android.widget.LinearLayout;
-import android.widget.TextView;
+
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.example.mytestapp.MainActivity;
 import com.example.mytestapp.R;
-import com.example.mytestapp.db.entities.Meeting;
 import com.example.mytestapp.db.entities.Poll;
 import com.example.mytestapp.db.repository.MeetingRepository;
 import com.example.mytestapp.db.repository.PollRepository;
 import com.example.mytestapp.ui.Meeting.MeetingSelectedFragment;
 import com.example.mytestapp.ui.Poll.PollSelectedFragment;
-import com.example.mytestapp.ui.addVote.ChooseVoteFragment;
 import com.example.mytestapp.viewmodel.HomeListViewModel;
 
-import java.util.ArrayList;
 import java.util.List;
-
+//We called this class "Home" because it's the main fragment of our App, you will find here
+//the declaration of the list of Polls and Meetings
 public class HomeFragment extends Fragment {
 
     private HomeListViewModel homeViewModel;
+    //Here we are going to use the repositories created to get the data from the Database
     private PollRepository pollRep;
     private MeetingRepository meetingRep;
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -51,31 +46,42 @@ public class HomeFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_home, container, false);
         LinearLayout linearLayout = root.findViewById(R.id.LinearLayoutHome);
 
+        //Create an instance of the ViewModel
+        //It's important to notice that we can't use "this" for the context, because we are in a
+        //fragment. We use then getActivity().getApplication()
         HomeListViewModel.Factory factory = new HomeListViewModel.Factory(
                 getActivity().getApplication());
 
         homeViewModel = ViewModelProviders.of(this,factory).get(HomeListViewModel.class);
 
-
+        //We are creating all buttons for the meetings from the Database
         homeViewModel.getMeetings().observe(getActivity(), list-> {
 
+                        //The IF is used to avoid the NullPointerException which returns true if the
+                        //fragment has been explicitly detached from the UI
                         if(isAdded())
+                            //We create as many buttons as we need for meetings
                         for(int i =0 ; i<list.size();i++) {
                             Button button = new Button(getActivity());
                             button.setText(list.get(i).getTitleMeeting());
                             button.setTextColor(getResources().getColor(R.color.TopicsHome));
                             int x = i;
                             button.setOnClickListener(new View.OnClickListener() {
+                                //We give then the action to change the fragment when the user of
+                                //the app click on a button of the list of Meetings
                                 public void onClick(View v) {
                                     FragmentTransaction transaction;
                                     transaction = getActivity().getSupportFragmentManager().beginTransaction();
                                     transaction.replace(R.id.home, new MeetingSelectedFragment(list.get(x).getMid())).commit();
                                 }
                             });
+                            //We create a linear Layout with a scroll view to allow the user to
+                            //create as many buttons he wants
                             linearLayout.addView(button);
                         }
                 });
 
+        //we do exactly the same thing with Polls
         homeViewModel.getPolls().observe(getViewLifecycleOwner(), new Observer<List<Poll>>() {
             @Override
             public void onChanged(List<Poll> list) {

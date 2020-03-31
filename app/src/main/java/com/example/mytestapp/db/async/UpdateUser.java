@@ -6,18 +6,20 @@ import android.os.AsyncTask;
 import com.example.mytestapp.db.AppDatabase;
 import com.example.mytestapp.db.entities.User;
 import com.example.mytestapp.util.OnAsyncEventListener;
+//This class is used to update a User in the Database via an AppDatabase Object
 
 public class UpdateUser extends AsyncTask<User, Void, Void> {
 
     private AppDatabase database;
     private OnAsyncEventListener callback;
     private Exception exception;
-
+    //This method is used to Update a User using the getInstance method
     public UpdateUser(Context context, OnAsyncEventListener callback) {
         database = AppDatabase.getInstance(context);
         this.callback = callback;
     }
-
+    //This method is used to perform a computation on a background thread.This will normally run
+    // on a background thread
     @Override
     protected Void doInBackground(User... params) {
         try {
@@ -28,7 +30,7 @@ public class UpdateUser extends AsyncTask<User, Void, Void> {
         }
         return null;
     }
-
+    //This method is used to check what must be done after the execution
     @Override
     protected void onPostExecute(Void aVoid) {
         if (callback != null) {

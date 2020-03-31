@@ -8,10 +8,11 @@ import com.example.mytestapp.db.AppDatabase;
 import com.example.mytestapp.db.async.CreateAttendance;
 import com.example.mytestapp.db.async.DeleteAttendance;
 import com.example.mytestapp.db.entities.Attendance;
-import com.example.mytestapp.db.entities.Meeting;
 import com.example.mytestapp.util.OnAsyncEventListener;
 
 import java.util.List;
+
+//The class is used to transfer data from DAO to ViewModel
 
 public class AttendanceRepository {
 
@@ -19,6 +20,7 @@ public class AttendanceRepository {
 
     private AttendanceRepository() {}
 
+    //The method getInstance is used in the ASYNC to get data
     public static AttendanceRepository getInstance() {
         if (instance == null) {
             synchronized (AttendanceRepository.class) {
@@ -29,6 +31,8 @@ public class AttendanceRepository {
         }
         return instance;
     }
+
+    //The methods below are used to get datas from the DAO
 
 
     public LiveData<Attendance> getAttendance (int idUser,int idMeeting, Context context) {

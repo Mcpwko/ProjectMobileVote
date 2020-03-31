@@ -21,12 +21,12 @@ import com.example.mytestapp.R;
 import com.example.mytestapp.db.entities.User;
 import com.example.mytestapp.db.repository.MeetingRepository;
 import com.example.mytestapp.db.repository.PollRepository;
-import com.example.mytestapp.ui.Meeting.MeetingSelectedFragment;
-import com.example.mytestapp.ui.Poll.PollSelectedFragment;
+
 import com.example.mytestapp.ui.mytopics.Meeting.MyTopicMeetingFragment;
 import com.example.mytestapp.ui.mytopics.Poll.MyTopicPollFragment;
 import com.google.gson.Gson;
 
+//MyTopics contains all the Polls and Meetings that we created
 public class MyTopicsFragment extends Fragment {
 
     private MyTopicsViewModel mViewModel;
@@ -57,8 +57,7 @@ public class MyTopicsFragment extends Fragment {
         String json = preferences.getString("User", "");
         User user = gson.fromJson(json, User.class);
 
-
-
+        //This part is reserved for creating all the buttons corresponding to a Poll
 
         pollRep.getMyPolls(user.getUid(),getActivity().getApplication()).observe(getActivity(), list ->{
             if(isAdded())
@@ -76,6 +75,8 @@ public class MyTopicsFragment extends Fragment {
                 linearLayout.addView(button);
             }
         });
+
+        //This part is reserved for creating all the buttons corresponding to a Meeting
 
         meetingRep.getMyMeetings(user.getUid(),getActivity().getApplication()).observe(getActivity(), list ->{
             if(isAdded())
@@ -109,7 +110,7 @@ public class MyTopicsFragment extends Fragment {
         // TODO: Use the ViewModel
     }
 
-
+    //Those methods are used to get PollRepository and MeetingRepository
     public PollRepository getPollRepository() {
         return PollRepository.getInstance();
     }

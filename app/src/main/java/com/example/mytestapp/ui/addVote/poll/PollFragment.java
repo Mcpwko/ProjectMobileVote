@@ -18,6 +18,7 @@ import android.widget.Spinner;
 import com.example.mytestapp.R;
 
 import java.util.Date;
+//This is the PollFragment class where all its specific operations are written
 
 public class PollFragment extends Fragment {
 
@@ -30,6 +31,7 @@ public class PollFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+        //This IF is used to avoid that one fragment comes over another one
         if (container != null) {
             container.removeAllViews();
         }

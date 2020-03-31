@@ -1,22 +1,18 @@
 package com.example.mytestapp.ui.addVote.poll;
 
 import androidx.lifecycle.ViewModelProviders;
-
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.LinearLayout;
-
 import com.example.mytestapp.R;
-import com.example.mytestapp.db.entities.Poll;
 
+//This is the PollStep2Fragment class where all its specific operations are written
+//The creation of a Poll is actually divided into 2 steps
+//Here you will find the information about the second step of the creation
 public class PollStep2Fragment extends Fragment {
 
     private PollStep2ViewModel mViewModel;
