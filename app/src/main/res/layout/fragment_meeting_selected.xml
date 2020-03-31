@@ -7,110 +7,168 @@
     tools:context=".ui.Meeting.MeetingSelectedFragment">
 
     <TextView
-        android:id="@+id/meetingSelectedTitle"
+        android:id="@+id/titleMeetingSelected"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="@string/titlemeeting"
+        android:layout_marginTop="40dp"
+        android:text="@string/titleMeetingSelected"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="0.434"
+        app:layout_constraintStart_toEndOf="@+id/titleLabelMeetingSelected"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/descriptionMeetingSelected"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="44dp"
-        android:text="TextView"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="124dp"
+        android:layout_marginTop="60dp"
+        android:text="@string/descriptionMeetingSelected"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/placeMeetingSelected" />
+        app:layout_constraintTop_toBottomOf="@+id/placeLabelMeetingSelected" />
 
     <TextView
-        android:id="@+id/nameOfCreator"
+        android:id="@+id/nameOfCreatorMeeting"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="84dp"
         android:layout_marginTop="44dp"
-        android:text="TextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/meetingSelectedTitle" />
+        android:text="@string/nameOfCreatorMeeting"
+        app:layout_constraintStart_toEndOf="@+id/nameofCreatorLabelMeeting"
+        app:layout_constraintTop_toBottomOf="@+id/titleMeetingSelected" />
 
     <TextView
         android:id="@+id/placeMeetingSelected"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="112dp"
         android:layout_marginTop="44dp"
-        android:text="TextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:text="@string/placeMeetingSelected"
+        app:layout_constraintStart_toEndOf="@+id/placeLabelMeetingSelected"
         app:layout_constraintTop_toBottomOf="@+id/hourMeetingSelected" />
 
     <TextView
         android:id="@+id/dayOfMeetingSelected"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="140dp"
         android:layout_marginTop="44dp"
-        android:text="TextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/nameOfCreator" />
+        android:text="@string/dayOfMeetingSelected"
+        app:layout_constraintStart_toEndOf="@+id/dayLabelOfMeetingSelected"
+        app:layout_constraintTop_toBottomOf="@+id/nameOfCreatorMeeting" />
 
     <TextView
         android:id="@+id/hourMeetingSelected"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="136dp"
         android:layout_marginTop="44dp"
-        android:text="TextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:text="@string/hourMeetingSelected"
+        app:layout_constraintStart_toEndOf="@+id/hourLabelMeetingSelected"
         app:layout_constraintTop_toBottomOf="@+id/dayOfMeetingSelected" />
 
     <Button
-        android:id="@+id/yesMeetingbtn"
+        android:id="@+id/yesBtnMeetingSelected"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/yesmeeting"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="64dp"
         android:onClick="acceptMeeting"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/noMeetingbtn"
-        app:layout_constraintHorizontal_bias="0.5"
+        android:text="@string/yesBtnMeetingSelected"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/hintmeetingselected" />
+        app:layout_constraintTop_toBottomOf="@+id/questionMeetingSelected" />
 
     <Button
-        android:id="@+id/noMeetingbtn"
+        android:id="@+id/noBtnMeetingSelected"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/Nobtn"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="64dp"
         android:onClick="refuseMeeting"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/yesMeetingbtn"
-        app:layout_constraintTop_toBottomOf="@+id/hintmeetingselected"
-        app:layout_constraintVertical_bias="0.501" />
+        android:text="@string/noBtnMeetingSelected"
+        app:layout_constraintStart_toEndOf="@+id/yesBtnMeetingSelected"
+        app:layout_constraintTop_toBottomOf="@+id/questionMeetingSelected" />
 
     <TextView
-        android:id="@+id/hintmeetingselected"
+        android:id="@+id/questionMeetingSelected"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
-        android:text="@string/hintmeetingselected"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="88dp"
+        android:layout_marginTop="56dp"
+        android:text="@string/questionMeetingSelected"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/descriptionMeetingSelected" />
+        app:layout_constraintTop_toBottomOf="@+id/descriptionMeetingSelected"
+        android:textStyle="bold" />
 
     <Button
         android:id="@+id/editmeeting"
-        android:layout_width="49dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="36dp"
-        android:visibility="gone"
+        android:layout_width="0dp"
+        android:layout_height="3dp"
+        android:layout_marginBottom="76dp"
         android:drawableBottom="@drawable/edit"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/yesMeetingbtn"
-        app:layout_constraintVertical_bias="0.06" />
+        app:layout_constraintTop_toBottomOf="@+id/yesBtnMeetingSelected" />
+
+    <TextView
+        android:id="@+id/nameofCreatorLabelMeeting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="44dp"
+        android:text="@string/nameOfCreatorLabelMeeting"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.143"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/titleLabelMeetingSelected"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/titleLabelMeetingSelected"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:text="@string/tileLabelMeetingSelected"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.141"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/dayLabelOfMeetingSelected"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="44dp"
+        android:text="@string/dayLabelofMeetingSelected"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/nameofCreatorLabelMeeting"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/hourLabelMeetingSelected"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="44dp"
+        android:text="@string/hourLabelMeetingSelected"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dayLabelOfMeetingSelected"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/placeLabelMeetingSelected"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="44dp"
+        android:text="@string/placeLabelMeetingSelected"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/hourLabelMeetingSelected"
+        android:textStyle="bold" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

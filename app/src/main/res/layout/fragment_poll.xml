@@ -7,100 +7,94 @@
     tools:context=".ui.addVote.poll.PollFragment">
 
     <TextView
-        android:id="@+id/titlestep1"
-        android:layout_width="340dp"
-        android:layout_height="49dp"
-        android:layout_marginTop="36dp"
-        android:text="@string/TitlePollStep1"
+        android:id="@+id/titleStep1Poll"
+        android:layout_width="344dp"
+        android:layout_height="83dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="24dp"
+        android:text="@string/titleStep1Poll"
         android:textAlignment="center"
         android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.492"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/title"
+        android:id="@+id/titlePoll"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="32dp"
         android:ems="10"
-        android:hint="@string/TitleQuestion"
+        android:hint="@string/TitlePoll"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titlestep1" />
+        app:layout_constraintTop_toBottomOf="@+id/titleStep1Poll"
+        android:autofillHints="" />
 
     <Spinner
-        android:id="@+id/spinnerCategory"
+        android:id="@+id/spinnerCategoryPoll"
         android:layout_width="234dp"
         android:layout_height="37dp"
-        android:layout_marginTop="24dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/titlecategory"
-        app:layout_constraintTop_toBottomOf="@+id/title" />
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="28dp"
+        app:layout_constraintStart_toEndOf="@+id/categoryLabelPoll"
+        app:layout_constraintTop_toBottomOf="@+id/titlePoll" />
 
     <TextView
-        android:id="@+id/titlecategory"
+        android:id="@+id/categoryLabelPoll"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
-        android:text="@string/titlecategory"
-        app:layout_constraintEnd_toStartOf="@+id/spinnerCategory"
-        app:layout_constraintHorizontal_bias="0.5"
+        android:layout_marginTop="36dp"
+        android:text="@string/categoryLabelPoll"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/title" />
+        app:layout_constraintTop_toBottomOf="@+id/titlePoll" />
 
     <EditText
-        android:id="@+id/description"
+        android:id="@+id/descriptionPoll"
         android:layout_width="350dp"
         android:layout_height="75dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="56dp"
         android:ems="10"
-        android:hint="@string/addDecription"
+        android:hint="@string/descriptionPoll"
         android:inputType="textMultiLine"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.524"
+        app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerCategory" />
+        app:layout_constraintTop_toBottomOf="@+id/spinnerCategoryPoll"
+        android:autofillHints="" />
 
     <DatePicker
         android:id="@+id/datePoll"
         android:layout_width="385dp"
         android:layout_height="110dp"
-        android:layout_marginTop="44dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="52dp"
         android:calendarViewShown="false"
         android:datePickerMode="spinner"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/deadline" />
+        app:layout_constraintTop_toBottomOf="@+id/deadlineLabelPoll" />
 
     <Button
-        android:id="@+id/next"
+        android:id="@+id/nextStepPoll"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="44dp"
+        android:layout_marginStart="292dp"
+        android:layout_marginTop="56dp"
         android:onClick="nextStep"
-        android:text="@string/next"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.888"
+        android:text="@string/nextStepPoll"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/datePoll"
-        app:layout_constraintVertical_bias="0.761" />
+        app:layout_constraintTop_toBottomOf="@+id/datePoll" />
 
     <TextView
-        android:id="@+id/deadline"
+        android:id="@+id/deadlineLabelPoll"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
-        android:text="@string/deadline"
+        android:layout_marginTop="28dp"
+        android:text="@string/deadlineLabelPoll"
         android:textAlignment="center"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.503"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/description" />
+        app:layout_constraintTop_toBottomOf="@+id/descriptionPoll" />
 </androidx.constraintlayout.widget.ConstraintLayout>

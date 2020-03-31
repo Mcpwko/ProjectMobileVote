@@ -102,9 +102,9 @@ public class LoginActivity extends AppCompatActivity {
 
 
     public void connect(View view){
-        EditText userName = findViewById(R.id.userName);
+        EditText userName = findViewById(R.id.userNameLogin);
         String email = userName.getText().toString();
-        EditText password = (EditText) findViewById(R.id.password);
+        EditText password = (EditText) findViewById(R.id.passwordLogin);
         String password1 = password.getText().toString();
 
 
@@ -181,35 +181,35 @@ public class LoginActivity extends AppCompatActivity {
 
 
     public void create(View view){
-        boolean result = isValidEmail((EditText)findViewById(R.id.email));
-        boolean result2 = isValidPassword((EditText)findViewById(R.id.password),(EditText)findViewById(R.id.passwordCheck));
+        boolean result = isValidEmail((EditText)findViewById(R.id.emailRegister));
+        boolean result2 = isValidPassword((EditText)findViewById(R.id.passwordRegister),(EditText)findViewById(R.id.passwordCheckRegister));
         if(result==true && result2==true ) {
 
             User user = new User();
 
 
-            EditText firstname = (EditText) findViewById(R.id.editText4);
+            EditText firstname = (EditText) findViewById(R.id.firstnameRegister);
             user.setFirstName(firstname.getText().toString());
 
-            EditText name = (EditText) findViewById(R.id.editText3);
+            EditText name = (EditText) findViewById(R.id.lastNameRegister);
             user.setLastName(name.getText().toString());
 
-            DatePicker date = (DatePicker) findViewById(R.id.datePicker1);
+            DatePicker date = (DatePicker) findViewById(R.id.datePickerRegister);
             SimpleDateFormat dateformat = new SimpleDateFormat("yyyy.MM.dd");
             String dateFormat = dateformat.format(new Date(date.getYear(),date.getMonth(),date.getDayOfMonth()));
             user.setBirthdate(dateFormat);
 
-            EditText phone = (EditText) findViewById(R.id.phoneNumber);
+            EditText phone = (EditText) findViewById(R.id.phoneNumberRegister);
             user.setPhoneNumber(phone.getText().toString());
 
-            EditText address = (EditText) findViewById(R.id.editText6);
-            Spinner mySpinner = (Spinner) findViewById(R.id.spinnerCityList);
+            EditText address = (EditText) findViewById(R.id.adressRegister);
+            Spinner mySpinner = (Spinner) findViewById(R.id.spinnerCityListRegister);
             user.setAddress(new Address1(address.getText().toString(),mySpinner.getSelectedItem().toString()));
 
-            EditText email = (EditText) findViewById(R.id.email);
+            EditText email = (EditText) findViewById(R.id.emailRegister);
             user.setEmail(email.getText().toString());
 
-            EditText password = (EditText) findViewById(R.id.password);
+            EditText password = (EditText) findViewById(R.id.passwordRegister);
             user.setPassword(password.getText().toString());
 
             new CreateUser(getApplication(), new OnAsyncEventListener() {

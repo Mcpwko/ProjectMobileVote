@@ -7,211 +7,215 @@
     tools:context=".ui.account.AccountFragment">
 
     <TextView
-        android:id="@+id/textView12"
+        android:id="@+id/passwordLabelAccount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
+        android:layout_marginStart="28dp"
         android:layout_marginTop="24dp"
-        android:text="@string/password_change"
+        android:text="@string/passwordLabelAccount"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView11" />
+        app:layout_constraintTop_toBottomOf="@+id/emailEditAccount" />
 
     <EditText
-        android:id="@+id/textView11"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="20dp"
-        android:text="@string/mail"
-        android:inputType="textEmailAddress"
-        android:enabled="false"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView9" />
-
-    <TextView
-        android:id="@+id/textView9"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="20dp"
-        android:text="@string/email_address"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2"
-        android:textStyle="bold"/>
-
-    <EditText
-        android:id="@+id/textView8"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="148dp"
-        android:layout_marginTop="20dp"
-        android:text="TextView"
-        android:enabled="false"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.038"
-        app:layout_constraintStart_toEndOf="@+id/textView2"
-        app:layout_constraintTop_toBottomOf="@+id/textView3" />
-
-    <TextView
-        android:id="@+id/textView6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="20dp"
-        android:text="@string/firstname"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView20" />
-
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="160dp"
-        android:layout_marginTop="52dp"
-        android:text="@string/lastName"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/textView6"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="20dp"
-        android:text="TextView"
-        android:enabled="false"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView6" />
-
-    <EditText
-        android:id="@+id/textView13"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="20dp"
-        android:text="Current Password"
-        android:inputType="textPassword"
-        android:enabled="false"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView12"
-        tools:text="@string/password" />
-
-    <TextView
-        android:id="@+id/textView14"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
-        android:text="@string/additional_information"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView13"
-        android:textStyle="bold"/>
-
-    <TextView
-        android:id="@+id/textView20"
+        android:id="@+id/emailEditAccount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="28dp"
         android:layout_marginTop="16dp"
-        android:text="@string/general_information"
+        android:enabled="false"
+        android:inputType="textEmailAddress"
+        android:text="@string/emailEditAccount"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/emailLabelAccount"
+        android:autofillHints="" />
+
+    <TextView
+        android:id="@+id/emailLabelAccount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="28dp"
+        android:text="@string/emailLabelAccount"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/firstNameEditAccount" />
+
+    <EditText
+        android:id="@+id/lastNameEditAccount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="96dp"
+        android:layout_marginTop="16dp"
+        android:enabled="false"
+        android:text="@string/lastNameEditAccount"
+        app:layout_constraintStart_toEndOf="@+id/firstNameEditAccount"
+        app:layout_constraintTop_toBottomOf="@+id/lastNameLabelAccount"
+        android:inputType="text"
+        android:autofillHints="" />
+
+    <TextView
+        android:id="@+id/firstNameLabelAccount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="24dp"
+        android:text="@string/firstNameLabelAccount"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/generalInformationLabelAccount" />
+
+    <TextView
+        android:id="@+id/lastNameLabelAccount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="108dp"
+        android:layout_marginTop="24dp"
+        android:text="@string/lastNameLabelAccount"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/firstNameLabelAccount"
+        app:layout_constraintTop_toBottomOf="@+id/generalInformationLabelAccount" />
+
+    <EditText
+        android:id="@+id/firstNameEditAccount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="16dp"
+        android:enabled="false"
+        android:text="@string/firstNameEditAccount"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/firstNameLabelAccount"
+        android:autofillHints=""
+        android:inputType="text" />
+
+    <EditText
+        android:id="@+id/passwordEditAccount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="16dp"
+        android:enabled="false"
+        android:inputType="textPassword"
+        android:text="@string/passwordEditAccount"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/passwordLabelAccount"
+        tools:text="@string/password"
+        android:autofillHints="" />
+
+    <TextView
+        android:id="@+id/additionalInformationLabelAccount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="24dp"
+        android:text="@string/additionalInformationLabelAccount"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/passwordEditAccount" />
+
+    <TextView
+        android:id="@+id/generalInformationLabelAccount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="24dp"
+        android:text="@string/generalInformationLabelAccount"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView15"
+        android:id="@+id/addressLabelAccount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="20dp"
-        android:text="@string/address"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="24dp"
+        android:text="@string/addressLabelAccount"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView14" />
+        app:layout_constraintTop_toBottomOf="@+id/additionalInformationLabelAccount" />
 
     <EditText
-        android:id="@+id/textView16"
+        android:id="@+id/addressEditAccount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="20dp"
-        android:text="TextView"
+        android:layout_marginTop="16dp"
         android:enabled="false"
+        android:text="@string/addressEditAccount"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView15"/>
+        app:layout_constraintTop_toBottomOf="@+id/addressLabelAccount"
+        android:autofillHints=""
+        android:inputType="text" />
 
     <TextView
-        android:id="@+id/textView17"
+        android:id="@+id/cityLabelAccount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="12dp"
-        android:text="@string/city"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="24dp"
+        android:text="@string/cityLabelAccount"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView16" />
+        app:layout_constraintTop_toBottomOf="@+id/addressEditAccount" />
 
     <Spinner
-        android:id="@+id/spinner2"
+        android:id="@+id/spinnerCityListAccount"
         android:layout_width="148dp"
         android:layout_height="0dp"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView17" />
+        app:layout_constraintTop_toBottomOf="@+id/cityLabelAccount" />
 
     <TextView
-        android:id="@+id/textView18"
+        android:id="@+id/birthdateLabelAccount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="172dp"
-        android:layout_marginTop="20dp"
-        android:text="@string/birthdate"
+        android:layout_marginStart="120dp"
+        android:layout_marginTop="24dp"
+        android:text="@string/birthdateLabelAccount"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/textView15"
-        app:layout_constraintTop_toBottomOf="@+id/textView14" />
+        app:layout_constraintStart_toEndOf="@+id/addressLabelAccount"
+        app:layout_constraintTop_toBottomOf="@+id/additionalInformationLabelAccount" />
 
     <EditText
-        android:id="@+id/textView19"
+        android:id="@+id/birthdateEditAccount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="72dp"
-        android:text="TextView"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="120dp"
         android:enabled="false"
+        android:text="@string/birthdateEditAccount"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView18" />
+        app:layout_constraintHorizontal_bias="0.973"
+        app:layout_constraintStart_toEndOf="@+id/addressEditAccount"
+        app:layout_constraintTop_toBottomOf="@+id/birthdateLabelAccount"
+        android:autofillHints=""
+        android:inputType="text" />
 
     <Button
-        android:id="@+id/button6"
+        android:id="@+id/saveChangesAccount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="60dp"
         android:layout_marginBottom="52dp"
         android:onClick="saveSettings"
-        android:text="Save changes"
+        android:text="@string/saveChangesAccount"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/deleteAccount"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinner2"
-        app:layout_constraintVertical_bias="1.0"
         tools:ignore="OnClick" />
 
     <Button
         android:id="@+id/deleteAccount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="44dp"
+        android:layout_marginStart="20dp"
         android:layout_marginBottom="52dp"
         android:onClick="deleteAccount"
         android:text="@string/deleteAccount"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/saveChangesAccount"
         tools:ignore="OnClick" />
 </androidx.constraintlayout.widget.ConstraintLayout>

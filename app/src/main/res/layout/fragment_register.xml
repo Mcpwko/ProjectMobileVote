@@ -9,163 +9,137 @@
     tools:context=".ui.register.RegisterFragment">
 
     <EditText
-        android:id="@+id/editText4"
+        android:id="@+id/firstnameRegister"
         android:layout_width="153dp"
         android:layout_height="44dp"
-        android:layout_marginEnd="24dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="56dp"
         android:autofillHints=""
         android:ems="10"
-        android:hint="@string/firstname"
+        android:hint="@string/firstnameRegister"
         android:inputType="textPersonName"
-        app:layout_constraintBaseline_toBaselineOf="@+id/editText3"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/editText3" />
+        app:layout_constraintStart_toEndOf="@+id/lastNameRegister"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/editText3"
+        android:id="@+id/lastNameRegister"
         android:layout_width="153dp"
         android:layout_height="44dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="80dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="56dp"
         android:autofillHints=""
         android:ems="10"
-        android:hint="@string/name"
+        android:hint="@string/LastNameRegister"
         android:inputType="textPersonName"
-        app:layout_constraintEnd_toStartOf="@+id/editText4"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <DatePicker
-        android:id="@+id/datePicker1"
+        android:id="@+id/datePickerRegister"
         android:layout_width="377dp"
         android:layout_height="172dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="36dp"
         android:calendarViewShown="false"
         android:datePickerMode="spinner"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText3" />
+        app:layout_constraintTop_toBottomOf="@+id/lastNameRegister" />
 
     <EditText
-        android:id="@+id/editText6"
+        android:id="@+id/adressRegister"
         android:layout_width="344dp"
         android:layout_height="44dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="36dp"
-        android:layout_marginEnd="24dp"
+        android:layout_marginTop="24dp"
         android:autofillHints=""
         android:ems="10"
-        android:hint="@string/address"
+        android:hint="@string/addressRegister"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.507"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/datePicker1" />
+        app:layout_constraintTop_toBottomOf="@+id/spinnerCityListRegister" />
 
     <Spinner
-        android:id="@+id/spinnerCityList"
+        android:id="@+id/spinnerCityListRegister"
         android:layout_width="256dp"
         android:layout_height="44dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="24dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/textView5"
-        app:layout_constraintTop_toBottomOf="@+id/editText6" />
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="12dp"
+        app:layout_constraintStart_toEndOf="@+id/cityRegister"
+        app:layout_constraintTop_toBottomOf="@+id/phoneNumberRegister" />
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/cityRegister"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="24dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="24dp"
         android:text="@string/city"
         android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/phoneNumber"
-        app:layout_constraintEnd_toStartOf="@+id/spinnerCityList"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText6"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/phoneNumberRegister" />
 
     <EditText
-        android:id="@+id/phoneNumber"
+        android:id="@+id/phoneNumberRegister"
         android:layout_width="344dp"
         android:layout_height="44dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="24dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="24dp"
         android:autofillHints=""
         android:ems="10"
-        android:hint="@string/phone_number"
+        android:hint="@string/phoneNumberRegister"
         android:inputType="phone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerCityList" />
+        app:layout_constraintTop_toBottomOf="@+id/datePickerRegister" />
 
     <EditText
-        android:id="@+id/email"
+        android:id="@+id/emailRegister"
         android:layout_width="344dp"
         android:layout_height="44dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="24dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="20dp"
         android:autofillHints=""
         android:ems="10"
-        android:hint="@string/mail"
+        android:hint="@string/mailRegister"
         android:inputType="textEmailAddress"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.571"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/phoneNumber" />
+        app:layout_constraintTop_toBottomOf="@+id/adressRegister" />
 
     <EditText
-        android:id="@+id/password"
+        android:id="@+id/passwordRegister"
         android:layout_width="153dp"
         android:layout_height="44dp"
         android:layout_marginStart="32dp"
-        android:layout_marginEnd="36dp"
+        android:layout_marginTop="20dp"
         android:autofillHints=""
         android:ems="10"
-        android:hint="@string/password"
+        android:hint="@string/passwordRegister"
         android:inputType="textPassword"
-        app:layout_constraintBaseline_toBaselineOf="@+id/passwordCheck"
-        app:layout_constraintEnd_toStartOf="@+id/passwordCheck"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/emailRegister" />
 
     <EditText
-        android:id="@+id/passwordCheck"
+        android:id="@+id/passwordCheckRegister"
         android:layout_width="153dp"
         android:layout_height="44dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="32dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="20dp"
         android:autofillHints=""
         android:ems="10"
-        android:hint="@string/repeat_password"
+        android:hint="@string/repeatPasswordRegister"
         android:inputType="textPassword"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/password"
-        app:layout_constraintTop_toBottomOf="@+id/email" />
+        app:layout_constraintStart_toEndOf="@+id/passwordRegister"
+        app:layout_constraintTop_toBottomOf="@+id/emailRegister" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/CreateRegister"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="24dp"
+        android:layout_marginStart="160dp"
+        android:layout_marginTop="28dp"
         android:onClick="create"
-        android:text="@string/create"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        android:text="@string/createRegister"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/passwordCheck"
-        app:layout_constraintVertical_bias="0.251" />
+        app:layout_constraintTop_toBottomOf="@+id/passwordRegister" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

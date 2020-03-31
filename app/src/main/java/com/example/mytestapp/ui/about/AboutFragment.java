@@ -25,7 +25,7 @@ public class AboutFragment extends Fragment {
 
 
         View root = inflater.inflate(R.layout.fragment_about, container, false);
-        final TextView textView = root.findViewById(R.id.textView21);
+        final TextView textView = root.findViewById(R.id.about);
 
         aboutViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override

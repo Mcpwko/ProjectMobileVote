@@ -40,31 +40,31 @@ public class AccountFragment extends Fragment {
         User user = gson.fromJson(json, User.class);
 
 
-        TextView firstname = root.findViewById(R.id.textView2);
+        TextView firstname = root.findViewById(R.id.firstNameEditAccount);
         firstname.setText(user.getFirstName());
 
-        TextView name = root.findViewById(R.id.textView8);
+        TextView name = root.findViewById(R.id.lastNameEditAccount);
         name.setText(user.getLastName());
 
-        TextView birthDate = root.findViewById(R.id.textView19);
+        TextView birthDate = root.findViewById(R.id.birthdateEditAccount);
         birthDate.setText(user.getBirthDate());
 
-        TextView address = root.findViewById(R.id.textView16);
+        TextView address = root.findViewById(R.id.addressEditAccount);
         address.setText(user.getAddress().getAddress());
 
-        TextView email = root.findViewById(R.id.textView11);
+        TextView email = root.findViewById(R.id.emailEditAccount);
         email.setText(user.getEmail());
 
-        TextView password = root.findViewById(R.id.textView13);
+        TextView password = root.findViewById(R.id.passwordEditAccount);
         password.setText(user.getPassword());
 
-        Button button = root.findViewById(R.id.button6);
+        Button button = root.findViewById(R.id.saveChangesAccount);
         button.setVisibility(View.GONE);
 
         Button button2 = root.findViewById(R.id.deleteAccount);
         button2.setVisibility(View.GONE);
 
-        Spinner mySpinner = root.findViewById(R.id.spinner2);
+        Spinner mySpinner = root.findViewById(R.id.spinnerCityListAccount);
 
         String city = user.getAddress().getCity();
 

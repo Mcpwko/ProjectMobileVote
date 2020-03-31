@@ -34,7 +34,7 @@ public class PollFragment extends Fragment {
             container.removeAllViews();
         }
         View root = inflater.inflate(R.layout.fragment_poll, container, false);
-        Spinner mySpinner = root.findViewById(R.id.spinnerCategory);
+        Spinner mySpinner = root.findViewById(R.id.spinnerCategoryPoll);
 
         ArrayAdapter<String> myAdapter = new ArrayAdapter<String>(this.getActivity(),android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.category));
         myAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

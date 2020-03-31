@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,82 +7,79 @@
     tools:context=".ui.addVote.poll.PollStep2Fragment">
 
     <TextView
-        android:id="@+id/titlestep2"
+        android:id="@+id/titleStep2Poll"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="@string/titlestep2"
+        android:layout_marginStart="52dp"
+        android:layout_marginTop="28dp"
+        android:text="@string/titleStep2Poll"
         android:textAlignment="center"
         android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ScrollView
-        android:id="@+id/scrollView2"
+        android:id="@+id/scrollViewStep2Poll"
         android:layout_width="410dp"
         android:layout_height="277dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="36dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titlestep2">
+        app:layout_constraintTop_toBottomOf="@+id/titleStep2Poll">
 
         <LinearLayout
             android:id="@+id/linearLayoutAnswers"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:scrollbars="vertical"
             android:layout_marginStart="24dp"
-            android:paddingBottom="24dp"
             android:layout_marginEnd="45dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="24dp"
+            android:scrollbars="vertical">
 
             <EditText
-                android:id="@+id/answer1"
+                android:id="@+id/answer1Step2Poll"
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
                 android:layout_marginTop="5dp"
                 android:ems="10"
-                android:hint="@string/answer1"
+                android:hint="@string/answer1Step2Poll"
                 android:inputType="textPersonName" />
 
             <EditText
-                android:id="@+id/answer2"
+                android:id="@+id/answer2Step2Poll"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:ems="10"
-                android:hint="@string/answer2"
+                android:hint="@string/answer2Step2Poll"
                 android:inputType="textPersonName" />
 
         </LinearLayout>
     </ScrollView>
 
     <Button
-        android:id="@+id/finish"
+        android:id="@+id/doneStep2Poll"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="28dp"
-        android:text="@string/finish"
+        android:layout_marginStart="160dp"
+        android:layout_marginTop="212dp"
         android:onClick="donePoll"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        android:text="@string/doneStep2Poll"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageButton" />
+        app:layout_constraintTop_toBottomOf="@+id/addAnswerBtnStep2Poll" />
 
     <ImageButton
-        android:id="@+id/imageButton"
+        android:id="@+id/addAnswerBtnStep2Poll"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="188dp"
         android:layout_marginTop="28dp"
         android:background="@color/colorPrimaryNight"
         android:onClick="addAnswer"
         android:src="@android:drawable/ic_menu_add"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/scrollView2" />
+        app:layout_constraintTop_toBottomOf="@+id/scrollViewStep2Poll" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

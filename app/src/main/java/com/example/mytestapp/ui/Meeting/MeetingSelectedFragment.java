@@ -83,7 +83,7 @@ public class MeetingSelectedFragment extends Fragment {
                 userViewModel = ViewModelProviders.of(this, factoryUser).get(UserViewModel.class);
             }
 
-                    TextView title = root.findViewById(R.id.meetingSelectedTitle);
+                    TextView title = root.findViewById(R.id.titleMeetingSelected);
                     title.setText(meeting.getTitleMeeting());
 
                     TextView day = root.findViewById(R.id.dayOfMeetingSelected);
@@ -101,12 +101,12 @@ public class MeetingSelectedFragment extends Fragment {
                     description.setText(meeting.getDescMeeting());
 
                     userViewModel.getUser().observe(getActivity(), user -> {
-                        TextView name = root.findViewById(R.id.nameOfCreator);
+                        TextView name = root.findViewById(R.id.nameOfCreatorMeeting);
                         name.setText(user.getLastName() + " " + user.getFirstName());
                     });
 
-                    Button btnyes = root.findViewById(R.id.yesMeetingbtn);
-                    Button btnNo = root.findViewById(R.id.noMeetingbtn);
+                    Button btnyes = root.findViewById(R.id.yesBtnMeetingSelected);
+                    Button btnNo = root.findViewById(R.id.noBtnMeetingSelected);
 
 
                     Button btnEdit = root.findViewById(R.id.editmeeting);

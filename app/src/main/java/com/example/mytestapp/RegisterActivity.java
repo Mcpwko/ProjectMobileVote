@@ -1,4 +1,4 @@
-package com.example.mytestapp;
+/*package com.example.mytestapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -66,3 +66,5 @@ public class RegisterActivity extends AppCompatActivity {
 
 
 }
+
+ */

@@ -209,8 +209,8 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
 
 
         View hView = navigationView.getHeaderView(0);
-        TextView navViewName = (TextView) hView.findViewById(R.id.navviewName);
-        TextView navViewEmail = (TextView) hView.findViewById(R.id.navviewEmail);
+        TextView navViewName = (TextView) hView.findViewById(R.id.nameAndroidNav);
+        TextView navViewEmail = (TextView) hView.findViewById(R.id.emailAndroidNav);
         navViewName.setText(user.getLastName() + " " + user.getFirstName());
         navViewEmail.setText(user.getEmail());
 
@@ -222,7 +222,7 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
         //TENTATIVE DE CHANGEMENT D'IMAGE DU NAVIGATION DRAWER
 
 
-        ImageButton button = hView.findViewById(R.id.imageButton);
+        ImageButton button = hView.findViewById(R.id.imgAndroidBtnNav);
 
 
         SharedPreferences sp = getSharedPreferences("profilpic", Context.MODE_PRIVATE);
@@ -236,7 +236,7 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
 
                 selectedImage = getResizedBitmap(selectedImage, 300);// 400 is for example, replace with desired size
 
-                ImageView profilpic = hView.findViewById(R.id.imageButton);
+                ImageView profilpic = hView.findViewById(R.id.imgAndroidBtnNav);
                 profilpic.setImageBitmap(selectedImage);
             }
 
@@ -299,7 +299,7 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        ImageView imageView = findViewById(R.id.imageButton);
+        ImageView imageView = findViewById(R.id.addAnswerBtnStep2Poll);
         if (resultCode == RESULT_OK && requestCode == IMAGE_PICK_CODE) {
             try {
                 Uri imageUri = data.getData();
@@ -390,28 +390,28 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
             case R.id.sort:
                 break;
             case R.id.edit:
-                findViewById(R.id.button6).setVisibility(View.VISIBLE);
+                findViewById(R.id.saveChangesAccount).setVisibility(View.VISIBLE);
                 findViewById(R.id.deleteAccount).setVisibility(View.VISIBLE);
-                EditText mail = findViewById(R.id.textView11);
+                EditText mail = findViewById(R.id.emailEditAccount);
                 mail.setEnabled(true);
                 mail.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
 
-                EditText lastName = findViewById(R.id.textView8);
+                EditText lastName = findViewById(R.id.lastNameEditAccount);
                 lastName.setEnabled(true);
 
-                EditText firstName = findViewById(R.id.textView2);
+                EditText firstName = findViewById(R.id.firstNameEditAccount);
                 firstName.setEnabled(true);
 
-                EditText password = findViewById(R.id.textView13);
+                EditText password = findViewById(R.id.passwordEditAccount);
                 password.setEnabled(true);
 
-                EditText address = findViewById(R.id.textView16);
+                EditText address = findViewById(R.id.addressEditAccount);
                 address.setEnabled(true);
 
-                EditText birthdate = findViewById(R.id.textView19);
+                EditText birthdate = findViewById(R.id.birthdateEditAccount);
                 birthdate.setEnabled(true);
 
-                Spinner spinner = findViewById(R.id.spinner2);
+                Spinner spinner = findViewById(R.id.spinnerCityListAccount);
                 spinner.setEnabled(true);
 
                 break;
@@ -434,34 +434,34 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
 
     public void saveSettings(View view){
 
-        findViewById(R.id.button6).setVisibility(View.GONE);
+        findViewById(R.id.saveChangesAccount).setVisibility(View.GONE);
         findViewById(R.id.deleteAccount).setVisibility(View.GONE);
         User user = new User();
 
-        EditText mail = findViewById(R.id.textView11);
+        EditText mail = findViewById(R.id.emailEditAccount);
         mail.setEnabled(false);
         user.setEmail(mail.getText().toString());
 
-        EditText lastName = findViewById(R.id.textView8);
+        EditText lastName = findViewById(R.id.lastNameEditAccount);
         lastName.setEnabled(false);
         user.setLastName(lastName.getText().toString());
 
-        EditText firstName = findViewById(R.id.textView2);
+        EditText firstName = findViewById(R.id.firstNameEditAccount);
         firstName.setEnabled(false);
         user.setFirstName(firstName.getText().toString());
 
-        EditText password = findViewById(R.id.textView13);
+        EditText password = findViewById(R.id.passwordEditAccount);
         password.setEnabled(false);
         user.setPassword(password.getText().toString());
 
-        EditText address = findViewById(R.id.textView16);
+        EditText address = findViewById(R.id.addressEditAccount);
         address.setEnabled(false);
-        Spinner spinner = findViewById(R.id.spinner2);
+        Spinner spinner = findViewById(R.id.spinnerCityListAccount);
         spinner.setEnabled(false);
 
         user.setAddress(new Address1(address.getText().toString(),spinner.getSelectedItem().toString()));
 
-        EditText birthdate = findViewById(R.id.textView19);
+        EditText birthdate = findViewById(R.id.birthdateEditAccount);
         birthdate.setEnabled(false);
         user.setBirthdate(birthdate.getText().toString());
 
@@ -580,13 +580,13 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
         Poll poll = new Poll();
 
 
-        EditText title = (EditText) findViewById(R.id.title);
+        EditText title = (EditText) findViewById(R.id.titlePoll);
         poll.setTitlePoll(title.getText().toString());
 
-        Spinner mySpinner = (Spinner) findViewById(R.id.spinnerCategory);
+        Spinner mySpinner = (Spinner) findViewById(R.id.spinnerCategoryPoll);
         poll.setCategoryPoll(mySpinner.getSelectedItem().toString());
 
-        EditText description = (EditText) findViewById(R.id.description);
+        EditText description = (EditText) findViewById(R.id.descriptionPoll);
         poll.setDescPoll(description.getText().toString());
 
         DatePicker date = (DatePicker) findViewById(R.id.datePoll);
@@ -669,8 +669,8 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
         if(listAnswers==null)
             listAnswers = new ArrayList<Integer>();
 
-        listAnswers.add(R.id.answer1);
-        listAnswers.add(R.id.answer2);
+        listAnswers.add(R.id.answer1Step2Poll);
+        listAnswers.add(R.id.answer2Step2Poll);
 
         List<String> answers = new ArrayList<String>();
 
@@ -744,22 +744,22 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
         Meeting meeting = new Meeting();
 
 
-        EditText title = (EditText) findViewById(R.id.subjectmeeting);
+        EditText title = (EditText) findViewById(R.id.subjectMeeting);
         meeting.setTitleMeeting(title.getText().toString());
 
         DatePicker date = (DatePicker) findViewById(R.id.dateMeeting);
         Date date2 = getDateFromDatePicker(date);
         meeting.setDayMeeting(date2);
 
-        TimePicker hour = (TimePicker) findViewById(R.id.timePicker);
+        TimePicker hour = (TimePicker) findViewById(R.id.timeMeeting);
         int a =hour.getCurrentHour();
         int b = hour.getCurrentMinute();
         meeting.setTimeMeeting(a +":"+ b);
 
-        EditText place = (EditText) findViewById(R.id.place);
+        EditText place = (EditText) findViewById(R.id.placeMeeting);
         meeting.setPlaceMeeting(place.getText().toString());
 
-        EditText description = (EditText) findViewById(R.id.descriptionmeeting);
+        EditText description = (EditText) findViewById(R.id.descriptionMeeting);
         meeting.setDescMeeting(description.getText().toString());
 
         meeting.setStatusOpen(true);

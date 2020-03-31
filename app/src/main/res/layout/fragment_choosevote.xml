@@ -8,41 +8,41 @@
 
 
     <TextView
-        android:id="@+id/chooseOption"
+        android:id="@+id/chooseVoteLabel"
         android:layout_width="384dp"
         android:layout_height="35dp"
-        android:layout_marginTop="88dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="64dp"
         android:layout_weight="1"
-        android:text="@string/chooseOption"
+        android:text="@string/chooseVote"
         android:textAlignment="center"
         android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/Meeting"
+        android:id="@+id/meetingOption"
         android:layout_width="171dp"
         android:layout_height="73dp"
-        android:layout_marginTop="112dp"
+        android:layout_marginStart="120dp"
+        android:layout_marginTop="92dp"
         android:layout_weight="1"
         android:onClick="selectMeeting"
-        android:text="@string/Meeting"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:text="@string/meetingOption"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/chooseOption" />
+        app:layout_constraintTop_toBottomOf="@+id/chooseVoteLabel" />
 
     <Button
-        android:id="@+id/Poll"
+        android:id="@+id/pollOption"
         android:layout_width="171dp"
         android:layout_height="73dp"
-        android:layout_marginTop="80dp"
+        android:layout_marginStart="120dp"
+        android:layout_marginTop="56dp"
         android:layout_weight="1"
         android:onClick="selectPoll"
-        android:text="@string/Poll"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:text="@string/pollOption"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Meeting" />
+        app:layout_constraintTop_toBottomOf="@+id/meetingOption" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

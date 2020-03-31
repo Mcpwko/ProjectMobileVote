@@ -7,91 +7,88 @@
     tools:context=".ui.addVote.meeting.MeetingFragment">
 
     <TextView
-        android:id="@+id/titlemeeting"
+        android:id="@+id/titleMeeting"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="@string/titlemeeting"
+        android:layout_marginStart="96dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/titleMeeting"
         android:textAlignment="center"
         android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/subjectmeeting"
+        android:id="@+id/subjectMeeting"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginStart="96dp"
+        android:layout_marginTop="32dp"
         android:ems="10"
-        android:hint="@string/subjectmeeting"
+        android:hint="@string/subjectMeeting"
         android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titlemeeting" />
+        app:layout_constraintTop_toBottomOf="@+id/titleMeeting"
+        android:autofillHints="" />
 
     <DatePicker
         android:id="@+id/dateMeeting"
         android:layout_width="385dp"
         android:layout_height="110dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="32dp"
         android:calendarViewShown="false"
         android:datePickerMode="spinner"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.484"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/subjectmeeting" />
+        app:layout_constraintTop_toBottomOf="@+id/subjectMeeting" />
 
     <TimePicker
-        android:id="@+id/timePicker"
+        android:id="@+id/timeMeeting"
         android:layout_width="385dp"
         android:layout_height="110dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="40dp"
         android:scrollbarSize="10dp"
         android:timePickerMode="spinner"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.484"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dateMeeting" />
 
     <EditText
-        android:id="@+id/descriptionmeeting"
+        android:id="@+id/descriptionMeeting"
         android:layout_width="379dp"
         android:layout_height="81dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="32dp"
         android:ems="10"
-        android:hint="@string/description"
+        android:hint="@string/descriptionMeeting"
         android:inputType="textMultiLine"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/place" />
+        app:layout_constraintTop_toBottomOf="@+id/placeMeeting"
+        android:autofillHints="" />
 
     <EditText
-        android:id="@+id/place"
+        android:id="@+id/placeMeeting"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_marginStart="88dp"
+        android:layout_marginTop="24dp"
         android:ems="10"
-        android:hint="@string/place"
+        android:hint="@string/placeMeeting"
         android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/timePicker" />
+        app:layout_constraintTop_toBottomOf="@+id/timeMeeting"
+        android:autofillHints="" />
 
     <Button
         android:id="@+id/doneMeeting"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="44dp"
-        android:text="@string/done"
+        android:layout_marginTop="52dp"
         android:onClick="doneMeeting"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="@string/doneMeeting"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/descriptionmeeting"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/descriptionMeeting" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

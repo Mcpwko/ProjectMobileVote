@@ -33,13 +33,13 @@ public class RegisterFragment extends Fragment {
 
         View root = inflater.inflate(R.layout.fragment_register, container, false);
 
-        Spinner mySpinner = root.findViewById(R.id.spinnerCityList);
+        Spinner mySpinner = root.findViewById(R.id.spinnerCityListRegister);
 
         ArrayAdapter<String> myAdapter = new ArrayAdapter<String>(this.getActivity(),android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.names));
         myAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mySpinner.setAdapter(myAdapter);
 
-        DatePicker datePicker = root.findViewById(R.id.datePicker1);
+        DatePicker datePicker = root.findViewById(R.id.datePickerRegister);
         datePicker.setMaxDate(new Date().getTime());
 
         return root;

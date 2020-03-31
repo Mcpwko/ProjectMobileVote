@@ -9,7 +9,7 @@
 
 
     <ScrollView
-        android:id="@+id/scrollView4"
+        android:id="@+id/scrollViewMyTopic"
         android:layout_width="410dp"
         android:layout_height="623dp"
         android:layout_marginTop="24dp"
@@ -31,8 +31,9 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
+            <!-- A vérifier ce que c'est parce qu'en supprimant ça marche quand même...-->
             <TextView
-                android:id="@+id/text_home"
+                android:id="@+id/textMyTopic"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
