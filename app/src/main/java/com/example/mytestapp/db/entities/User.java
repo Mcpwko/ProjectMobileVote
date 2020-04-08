@@ -1,48 +1,39 @@
 package com.example.mytestapp.db.entities;
 
-import androidx.annotation.NonNull;
-import androidx.room.ColumnInfo;
-import androidx.room.Embedded;
-import androidx.room.Entity;
-import androidx.room.Ignore;
-import androidx.room.PrimaryKey;
+
 //This class represents the User Entity
+import androidx.annotation.NonNull;
+
+import com.google.firebase.database.Exclude;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 
+public class User implements Comparable{
 
-@Entity (tableName = "user")
-public class User {
+    private String uid;
 
-    @PrimaryKey(autoGenerate = true)
-    private int uid;
-
-    @ColumnInfo(name = "first_name")
     private String firstName;
 
-    @ColumnInfo(name="last_name")
     private String lastName;
 
-    @ColumnInfo(name = "birth_date")
-    private String birthDate;
+    private Date birthDate;
 
-    @Embedded
     public Address1 address;
 
-    @ColumnInfo (name = "phone_number")
     private String phoneNumber;
 
-    @ColumnInfo (name = "email")
     private String email;
 
-    @ColumnInfo(name = "password")
     private String password;
 
-    @Ignore
     public User(){
 
     }
 
-    public User(@NonNull String firstName, String lastName, String birthDate, Address1 address, String phoneNumber, String email, String password) {
+    public User(@NonNull String firstName, String lastName, Date birthDate, Address1 address, String phoneNumber, String email, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthDate = birthDate;
@@ -80,23 +71,23 @@ public class User {
         this.password = password;
     }
 
-    public String getBirthDate() {
+    public Date getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthdate(String birthdate) {
-        this.birthDate = birthdate;
+    public void setBirthDate(Date birthDate) {
+        this.birthDate = birthDate;
     }
 
     public Address1 getAddress() {
         return address;
     }
 
-    public int getUid() {
+    public String getUid() {
         return uid;
     }
 
-    public void setUid(int uid) {
+    public void setUid(String uid) {
         this.uid = uid;
     }
 
@@ -116,7 +107,35 @@ public class User {
         this.lastName = lastName;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) return false;
+        if (obj == this) return true;
+        if (!(obj instanceof User)) return false;
+        User o = (User) obj;
+        return o.getEmail().equals(this.getEmail());
+    }
 
+
+    @Override
+    public String toString() {
+        return firstName + " " + lastName;
+    }
+
+    @Override
+    public int compareTo(@NonNull Object o) {
+        return toString().compareTo(o.toString());
+    }
+
+    @Exclude
+    public Map<String, Object> toMap() {
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("firstName", firstName);
+        result.put("lastName", lastName);
+        result.put("email", email);
+
+        return result;
+    }
 }
 
 

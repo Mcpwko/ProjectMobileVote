@@ -1,24 +1,29 @@
 package com.example.mytestapp.db.repository;
 
-import android.content.Context;
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 
-import com.example.mytestapp.db.AppDatabase;
-import com.example.mytestapp.db.async.CreateUser;
-import com.example.mytestapp.db.async.DeleteUser;
-import com.example.mytestapp.db.async.UpdateUser;
 import com.example.mytestapp.db.entities.User;
+import com.example.mytestapp.db.firebase.UserLiveData;
 import com.example.mytestapp.util.OnAsyncEventListener;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.List;
 //The class is used to transfer data from DAO to ViewModel
 
 public class UserRepository {
 
+    private static final String TAG = "UserRepository";
+
     private static UserRepository instance;
 
-    private UserRepository() {}
+    private UserRepository() {
+    }
 
     public static UserRepository getInstance() {
         if (instance == null) {
@@ -30,29 +35,85 @@ public class UserRepository {
         }
         return instance;
     }
-    //The methods below are used to get datas from the DAO
 
-    public LiveData<User> getUser(final String email, Context context) {
-        return AppDatabase.getInstance(context).userDao().getUserByEmail(email);
+    public void signIn(final String email, final String password,
+                       final OnCompleteListener<AuthResult> listener) {
+        FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(listener);
     }
 
-    public LiveData<User> getUserById(final int id, Context context) {
-        return AppDatabase.getInstance(context).userDao().getUserById(id);
+    public LiveData<User> getUser(final String userId) {
+        DatabaseReference reference = FirebaseDatabase.getInstance()
+                .getReference("users")
+                .child(userId);
+        return new UserLiveData(reference);
     }
 
-    public LiveData<List<User>> getAllUsers(Context context) {
-        return AppDatabase.getInstance(context).userDao().getAllUsers();
+    public void register(final User user, final OnAsyncEventListener callback) {
+        FirebaseAuth.getInstance().createUserWithEmailAndPassword(
+                user.getEmail(),
+                user.getPassword()
+        ).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                user.setUid(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                insert(user, callback);
+            } else {
+                callback.onFailure(task.getException());
+            }
+        });
     }
 
-    public void insertUser(final User user, OnAsyncEventListener callback, Context context) {
-        new CreateUser(context, callback).execute(user);
+    private void insert(final User user, final OnAsyncEventListener callback) {
+        FirebaseDatabase.getInstance()
+                .getReference("users")
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .setValue(user, (databaseError, databaseReference) -> {
+                    if (databaseError != null) {
+                        callback.onFailure(databaseError.toException());
+                        FirebaseAuth.getInstance().getCurrentUser().delete()
+                                .addOnCompleteListener(task -> {
+                                    if (task.isSuccessful()) {
+                                        callback.onFailure(null);
+                                        Log.d(TAG, "Rollback successful: User account deleted");
+                                    } else {
+                                        callback.onFailure(task.getException());
+                                        Log.d(TAG, "Rollback failed: signInWithEmail:failure",
+                                                task.getException());
+                                    }
+                                });
+                    } else {
+                        callback.onSuccess();
+                    }
+                });
     }
 
-    public void updateUser(final User user, OnAsyncEventListener callback, Context context) {
-        new UpdateUser(context, callback).execute(user);
+    public void update(final User user, final OnAsyncEventListener callback) {
+        FirebaseDatabase.getInstance()
+                .getReference("users")
+                .child(user.getUid())
+                .updateChildren(user.toMap(), (databaseError, databaseReference) -> {
+                    if (databaseError != null) {
+                        callback.onFailure(databaseError.toException());
+                    } else {
+                        callback.onSuccess();
+                    }
+                });
+        FirebaseAuth.getInstance().getCurrentUser().updatePassword(user.getPassword())
+                .addOnFailureListener(
+                        e -> Log.d(TAG, "updatePassword failure!", e)
+                );
     }
 
-    public void deleteUser(final User user, OnAsyncEventListener callback, Context context) {
-        new DeleteUser(context, callback).execute(user);
+    public void delete(final User user, OnAsyncEventListener callback) {
+        FirebaseDatabase.getInstance()
+                .getReference("users")
+                .child(user.getUid())
+                .removeValue((databaseError, databaseReference) -> {
+                    if (databaseError != null) {
+                        callback.onFailure(databaseError.toException());
+                    } else {
+                        callback.onSuccess();
+                    }
+                });
     }
 }

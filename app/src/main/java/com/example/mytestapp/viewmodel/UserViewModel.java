@@ -7,63 +7,80 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
+import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.mytestapp.db.entities.User;
 import com.example.mytestapp.db.repository.UserRepository;
+import com.example.mytestapp.util.OnAsyncEventListener;
 
 //The ViewModel will use the observer pattern to get the data from the database
 
 public class UserViewModel extends AndroidViewModel {
 
+    private static final String TAG = "UserViewModel";
+
     private UserRepository repository;
-    private Application application;
 
     // MediatorLiveData can observe other LiveData objects and react on their emissions.
-    private final LiveData<User> observableClient;
+    private final MediatorLiveData<User> observableUser;
 
     public UserViewModel(@NonNull Application application,
-                           final int idUser, UserRepository userRepository) {
+                           final String userId, UserRepository userRepository) {
         super(application);
 
         repository = userRepository;
 
-        this.application = application;
+        observableUser = new MediatorLiveData<>();
+        // set by default null, until we get data from the database.
+        observableUser.setValue(null);
 
+        LiveData<User> account = repository.getUser(userId);
 
-        observableClient = repository.getUserById(idUser, application);
+        // observe the changes of the client entity from the database and forward them
+        observableUser.addSource(account, observableUser::setValue);
     }
 
-    //The Factory pattern is used to put the id into the ViewModel
-
+    /**
+     * A creator is used to inject the account id into the ViewModel
+     */
     public static class Factory extends ViewModelProvider.NewInstanceFactory {
 
         @NonNull
         private final Application application;
 
-        private final int idUser;
+        private final String userId;
 
         private final UserRepository repository;
 
-        public Factory(@NonNull Application application, int idUser) {
+        public Factory(@NonNull Application application, String userId) {
             this.application = application;
-            this.idUser = idUser;
+            this.userId = userId;
             repository = getUserRepository();
         }
 
         @Override
         public <T extends ViewModel> T create(Class<T> modelClass) {
             //noinspection unchecked
-            return (T) new UserViewModel(application, idUser, repository);
+            return (T) new UserViewModel(application, userId, repository);
         }
     }
 
-    //We expose the LiveData list query so that it can be observed
-
+    /**
+     * Expose the LiveData ClientEntity query so the UI can observe it.
+     */
     public LiveData<User> getUser() {
-        return observableClient;
+        return observableUser;
     }
 
-    public static UserRepository getUserRepository(){ return UserRepository.getInstance(); }
+    public void updateUser(User user, OnAsyncEventListener callback) {
+        getUserRepository().update(user, callback);
+    }
+
+    public void deleteClient(User user, OnAsyncEventListener callback) {
+        getUserRepository().delete(user, callback);
+    }
+
+    public static UserRepository getUserRepository(){return UserRepository.getInstance(); }
 }
