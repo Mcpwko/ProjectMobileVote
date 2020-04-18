@@ -60,7 +60,7 @@ public class Attendance {
         this.meeting_id = meeting_id;
     }
 
-    public int getAid() {
+    public String getAid() {
         return aid;
     }
 

@@ -75,7 +75,7 @@ public class User implements Comparable{
         return birthDate;
     }
 
-    public void setBirthDate(Date birthDate) {
+    public void setBirthDate(String birthDate) {
         this.birthDate = birthDate;
     }
 
@@ -83,6 +83,7 @@ public class User implements Comparable{
         return address;
     }
 
+    @Exclude
     public String getUid() {
         return uid;
     }

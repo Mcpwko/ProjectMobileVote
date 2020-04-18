@@ -28,8 +28,11 @@ public class PossibleAnswersRepository {
     }
     //The methods below are used to get datas from the DAO
 
+    //A voir comment faire
     public LiveData<List<PossibleAnswers>> getPossibleAnswersByPoll (int id, Context context) {
         return AppDatabase.getInstance(context).possibleAnswerDao().getPossibleAnswersByPoll(id);
     }
+
+
 
 }

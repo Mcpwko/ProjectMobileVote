@@ -8,7 +8,16 @@ import com.example.mytestapp.db.AppDatabase;
 import com.example.mytestapp.db.async.CreateAttendance;
 import com.example.mytestapp.db.async.DeleteAttendance;
 import com.example.mytestapp.db.entities.Attendance;
+import com.example.mytestapp.db.entities.Attendance2;
+import com.example.mytestapp.db.entities.Meeting2;
+import com.example.mytestapp.db.entities.Vote2;
+import com.example.mytestapp.db.firebase.AttendanceListLiveData;
+import com.example.mytestapp.db.firebase.AttendanceLiveData;
+import com.example.mytestapp.db.firebase.MeetingLiveData;
+import com.example.mytestapp.db.firebase.VoteListLiveData;
 import com.example.mytestapp.util.OnAsyncEventListener;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.List;
 
@@ -32,29 +41,53 @@ public class AttendanceRepository {
         return instance;
     }
 
-    //The methods below are used to get datas from the DAO
 
-
-    public LiveData<Attendance> getAttendance (int idUser,int idMeeting, Context context) {
-        return AppDatabase.getInstance(context).attendanceDao().getAttendance(idUser,idMeeting);
+    public LiveData<Attendance2> getAttendance(final String id) {
+        DatabaseReference reference = FirebaseDatabase.getInstance()
+                .getReference("votes")
+                .child(id);
+        return new AttendanceLiveData(reference);
     }
 
+    // A voir comment faire
     public LiveData<Attendance> getAttendanceById (int id, Context context) {
         return AppDatabase.getInstance(context).attendanceDao().getAttendanceById(id);
     }
 
-    public LiveData<List<Attendance>> getAttendances(int idMeeting,Context context){
-        return AppDatabase.getInstance(context).attendanceDao().getAttendances(idMeeting);
+
+    public LiveData<List<Attendance2>> getAttendances() {
+        DatabaseReference reference = FirebaseDatabase.getInstance()
+                .getReference("votes");
+        return new AttendanceListLiveData(reference);
     }
 
 
-
-    public void insertAttendance(final Attendance attendance, OnAsyncEventListener callback, Context context) {
-        new CreateAttendance(context, callback).execute(attendance);
+    public void insertAttendance(final Attendance attendance, final OnAsyncEventListener callback) {
+        String id = FirebaseDatabase.getInstance().getReference("votes").push().getKey();
+        FirebaseDatabase.getInstance()
+                .getReference("votes")
+                .child(id)
+                .setValue(attendance, (databaseError, databaseReference) -> {
+                    if (databaseError != null) {
+                        callback.onFailure(databaseError.toException());
+                    } else {
+                        callback.onSuccess();
+                    }
+                });
     }
 
-    public void deleteAttendance(final Attendance attendance, OnAsyncEventListener callback, Context context){
-        new DeleteAttendance(context, callback).execute(attendance);
+    public void deleteAttendance(final Attendance attendance, final OnAsyncEventListener callback) {
+        FirebaseDatabase.getInstance()
+                .getReference("votes")
+                .child(attendance.getAid())
+                .removeValue((databaseError, databaseReference) -> {
+                    if (databaseError != null) {
+                        callback.onFailure(databaseError.toException());
+                    } else {
+                        callback.onSuccess();
+                    }
+                });
     }
+
 
 }

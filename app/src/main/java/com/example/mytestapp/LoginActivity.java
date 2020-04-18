@@ -202,7 +202,7 @@ public class LoginActivity extends AppCompatActivity {
             DatePicker date = (DatePicker) findViewById(R.id.datePickerRegister);
             SimpleDateFormat dateformat = new SimpleDateFormat("yyyy.MM.dd");
             String dateFormat = dateformat.format(new Date(date.getYear(),date.getMonth(),date.getDayOfMonth()));
-            user.setBirthdate(dateFormat);
+            user.setBirthDate(dateFormat);
 
             EditText phone = (EditText) findViewById(R.id.phoneNumberRegister);
             user.setPhoneNumber(phone.getText().toString());
@@ -240,7 +240,6 @@ public class LoginActivity extends AppCompatActivity {
 
             }else {
 
-
                 //This is what we do if the mail is already in the database
                 userRepository.getUser(emailAdress, getApplication()).observe(LoginActivity.this, userEntity -> {
                     if(userEntity!=null){
@@ -271,7 +270,12 @@ public class LoginActivity extends AppCompatActivity {
 
 
 
+
+
             }
+
+
+
         }else{
             if(!result)
                 Toast.makeText(this, "Give a real email!", Toast.LENGTH_SHORT).show();
