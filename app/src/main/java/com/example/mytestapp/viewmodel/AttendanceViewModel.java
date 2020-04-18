@@ -22,7 +22,7 @@ public class AttendanceViewModel extends AndroidViewModel {
     private AttendanceRepository attendanceRepository;
 
     // MediatorLiveData can observe other LiveData objects and react on their emissions.
-    private final LiveData<List<Attendance>> observableAttendance;
+    //private final LiveData<List<Attendance>> observableAttendance;
 
     public AttendanceViewModel(@NonNull Application application, final int idMeeting,
                              AttendanceRepository attendanceRepository) {
@@ -31,7 +31,7 @@ public class AttendanceViewModel extends AndroidViewModel {
         this.application = application;
 
         this.attendanceRepository = attendanceRepository;
-        observableAttendance = attendanceRepository.getAttendances(idMeeting,application);
+        //observableAttendance = attendanceRepository.getAttendances(idMeeting,application);
     }
 
 
@@ -63,9 +63,9 @@ public class AttendanceViewModel extends AndroidViewModel {
 
     //We expose the LiveData list query so that it can be observed
 
-    public LiveData<List<Attendance>> getAttendances() {
+    /*public LiveData<List<Attendance>> getAttendances() {
         return observableAttendance;
-    }
+    }*/
 
 
     public static AttendanceRepository getAttendanceRepository(){ return AttendanceRepository.getInstance(); }

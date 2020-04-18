@@ -93,4 +93,7 @@
     <string name="edit">Edit</string>
     <string name="deleteAttedance">Are you sure you want to change your answer ?</string>
     <string name="delete">Delete</string>
+    <string name="account_created">Account Created !</string>
+    <string name="error_used_email">Email already used !</string>
+    <string name="error_invalid_email">Wrong credentials</string>
 </resources>

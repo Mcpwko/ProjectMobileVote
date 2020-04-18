@@ -20,7 +20,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.mytestapp.R;
-import com.example.mytestapp.db.async.DeleteAttendance;
 import com.example.mytestapp.db.entities.User;
 
 import com.example.mytestapp.util.OnAsyncEventListener;
@@ -66,7 +65,7 @@ public class MeetingSelectedFragment extends Fragment {
         User actualUser = gson.fromJson(json, User.class);
 
 
-        MeetingSelectedViewModel.Factory factory = new MeetingSelectedViewModel.Factory(
+        /*MeetingSelectedViewModel.Factory factory = new MeetingSelectedViewModel.Factory(
                 getActivity().getApplication(),idMeeting,actualUser.getUid());
 
         mViewModel = ViewModelProviders.of(this,factory).get(MeetingSelectedViewModel.class);
@@ -75,7 +74,7 @@ public class MeetingSelectedFragment extends Fragment {
         //To set the text the EditTexts created in the layout, we need to get the data in the
         //in the database, that's why we use a userViewModel which search for the Meetings associated
         //to a meeting
-        mViewModel.getMeeting().observe(getActivity(), meeting-> {
+        /*mViewModel.getMeeting().observe(getActivity(), meeting-> {
             if(this.isVisible()) {
                 UserViewModel.Factory factoryUser = new UserViewModel.Factory(getActivity().getApplication(), meeting.getUser_id());
                 userViewModel = ViewModelProviders.of(this, factoryUser).get(UserViewModel.class);
@@ -133,7 +132,7 @@ public class MeetingSelectedFragment extends Fragment {
 
 
                                     //We then proceed with the deletion of the Attendance
-                                    new DeleteAttendance(getActivity().getApplication(), new OnAsyncEventListener() {
+                                    /*new DeleteAttendance(getActivity().getApplication(), new OnAsyncEventListener() {
                                         @Override
                                         public void onSuccess() {
                                             Log.d(TAG, "createUserWithEmail: success");
@@ -148,9 +147,9 @@ public class MeetingSelectedFragment extends Fragment {
 
 
                                 });
-                                alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.Nobtn), (dialog, which) -> alertDialog.dismiss());
-                                alertDialog.show();
-
+                                /*alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.Nobtn), (dialog, which) -> alertDialog.dismiss());
+                                alertDialog.show();*/
+/*
 
                             }
                         });
@@ -189,7 +188,7 @@ public class MeetingSelectedFragment extends Fragment {
                         }
 
                     });
-        });
+        });*/
 
 
 

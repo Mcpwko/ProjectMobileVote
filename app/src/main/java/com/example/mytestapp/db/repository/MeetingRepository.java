@@ -4,11 +4,8 @@ import android.content.Context;
 
 import androidx.lifecycle.LiveData;
 
-import com.example.mytestapp.db.AppDatabase;
-
 import com.example.mytestapp.db.entities.Meeting;
 import com.example.mytestapp.db.entities.Meeting2;
-import com.example.mytestapp.db.entities.Poll2;
 import com.example.mytestapp.db.firebase.MeetingLiveData;
 import com.example.mytestapp.util.OnAsyncEventListener;
 import com.google.firebase.database.DatabaseReference;
@@ -36,14 +33,14 @@ public class MeetingRepository {
 
     //A voir comment faire
 
-    public LiveData<List<Meeting>> getActiveMeeting(Context context) {
+   /* public LiveData<List<Meeting>> getActiveMeeting(Context context) {
         return AppDatabase.getInstance(context).meetingDao().getActiveMeetings();
     }
 
     //A voir comment faire
     public LiveData<List<Meeting>> getMyMeetings (int id, Context context) {
         return AppDatabase.getInstance(context).meetingDao().getMyMeetings(id);
-    }
+    }*/
 
 
     public LiveData<Meeting2> getMeeting(final String id) {

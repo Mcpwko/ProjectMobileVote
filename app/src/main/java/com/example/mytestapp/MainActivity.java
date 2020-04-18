@@ -30,14 +30,6 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
-
-import com.example.mytestapp.db.async.CreateAttendance;
-import com.example.mytestapp.db.async.CreateMeeting;
-import com.example.mytestapp.db.async.CreatePoll;
-import com.example.mytestapp.db.async.CreatePossibleAnswer;
-
-import com.example.mytestapp.db.async.DeleteUser;
-import com.example.mytestapp.db.async.UpdateUser;
 import com.example.mytestapp.db.entities.Address1;
 import com.example.mytestapp.db.entities.Attendance;
 import com.example.mytestapp.db.entities.Meeting;
@@ -446,7 +438,7 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
 
         EditText birthdate = findViewById(R.id.birthdateEditAccount);
         birthdate.setEnabled(false);
-        user.setBirthdate(birthdate.getText().toString());
+        //user.setBirthdate(birthdate.getText().toString());
 
         SharedPreferences preferences = getSharedPreferences("User", Context.MODE_PRIVATE);
         Gson gson2 = new Gson();
@@ -457,17 +449,7 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
 
 
         //Then we can update the user
-        new UpdateUser(getApplication(), new OnAsyncEventListener() {
-            @Override
-            public void onSuccess() {
-                Log.d(TAG, "createUserWithEmail: success");
-            }
-
-            @Override
-            public void onFailure(Exception e) {
-                Log.d(TAG, "createUserWithEmail: failure", e);
-            }
-        }).execute(user);
+        //METHODE POUR UPDATE USER
 
 
         preferences = getApplicationContext().getSharedPreferences("User", MODE_PRIVATE);
@@ -489,17 +471,7 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
         User user = gson2.fromJson(json2, User.class);
 
 
-        new DeleteUser(getApplication(), new OnAsyncEventListener() {
-            @Override
-            public void onSuccess() {
-                Log.d(TAG, "createUserWithEmail: success");
-            }
-
-            @Override
-            public void onFailure(Exception e) {
-                Log.d(TAG, "createUserWithEmail: failure", e);
-            }
-        }).execute(user);
+        //METHODE POUR DELETE USER
 
         Intent newAct = new Intent(this, LoginActivity.class);
         startActivity(newAct);
@@ -608,7 +580,7 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
         String json2 = preferences.getString("User", "");
         User user = gson2.fromJson(json2, User.class);
 
-        poll.setUser_id(user.getUid());
+        //poll.setUser_id(user.getUid());
 
         pollSharedPreferences = getApplicationContext().getSharedPreferences("Poll", MODE_PRIVATE);
         SharedPreferences.Editor edt = pollSharedPreferences.edit();
@@ -733,22 +705,12 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
 
             poll.setStatusOpen(true);
 
-            new CreatePoll(getApplication(), new OnAsyncEventListener() {
-                @Override
-                public void onSuccess() {
-                    Log.d(TAG, "createUserWithEmail: success");
-                }
-
-                @Override
-                public void onFailure(Exception e) {
-                    Log.d(TAG, "createUserWithEmail: failure", e);
-                }
-            }).execute(poll);
+            //METHODE CREATION DE POLL
 
 
             //We get the last poll in the database and we put the data into a listwithout duplicates
 
-            pollRepository.getLastPoll(getApplication()).observe(MainActivity.this, pollentity -> {
+            /*pollRepository.getLastPoll(getApplication()).observe(MainActivity.this, pollentity -> {
                 Poll poll2 = pollentity;
 
 
@@ -761,19 +723,9 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
 
 
                     //We create the possible answers
-                    new CreatePossibleAnswer(getApplication(), new OnAsyncEventListener() {
-                        @Override
-                        public void onSuccess() {
-                            Log.d(TAG, "createUserWithEmail: success");
-                        }
-
-                        @Override
-                        public void onFailure(Exception e) {
-                            Log.d(TAG, "createUserWithEmail: failure", e);
-                        }
-                    }).execute(possibleAnswers);
+                    //METHODE CRATION POSSIBLE ANSWERS
                 }
-            });
+            });*/
 
             //We change the fragment
             FragmentManager fragmentManager = getSupportFragmentManager();
@@ -832,20 +784,10 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
         String json2 = userpreferences.getString("User", "");
         User user = gson2.fromJson(json2, User.class);
 
-        meeting.setUser_id(user.getUid());
+        //meeting.setUser_id(user.getUid());
 
 
-        new CreateMeeting(getApplication(), new OnAsyncEventListener() {
-            @Override
-            public void onSuccess() {
-                Log.d(TAG, "createUserWithEmail: success");
-            }
-
-            @Override
-            public void onFailure(Exception e) {
-                Log.d(TAG, "createUserWithEmail: failure", e);
-            }
-        }).execute(meeting);
+        //METHODE CREATION DE MEETING
 
 
         Intent intent = new Intent(this, MainActivity.class);
@@ -866,20 +808,10 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
 
         Attendance attendance = new Attendance();
         attendance.setAnswerAttendance(true);
-        attendance.setUser_id(user.getUid());
+        //attendance.setUser_id(user.getUid());
         attendance.setMeeting_id(view.getId());
 
-        new CreateAttendance(getApplication(), new OnAsyncEventListener() {
-            @Override
-            public void onSuccess() {
-                Log.d(TAG, "createUserWithEmail: success");
-            }
-
-            @Override
-            public void onFailure(Exception e) {
-                Log.d(TAG, "createUserWithEmail: failure", e);
-            }
-        }).execute(attendance);
+        //METHODE CREATION ATTENDANCE
 
 
 
@@ -907,20 +839,11 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
 
         Attendance attendance = new Attendance();
         attendance.setAnswerAttendance(false);
-        attendance.setUser_id(user.getUid());
+        //attendance.setUser_id(user.getUid());
         attendance.setMeeting_id(view.getId());
         //We create an attendance anyway
-        new CreateAttendance(getApplication(), new OnAsyncEventListener() {
-            @Override
-            public void onSuccess() {
-                Log.d(TAG, "createUserWithEmail: success");
-            }
 
-            @Override
-            public void onFailure(Exception e) {
-                Log.d(TAG, "createUserWithEmail: failure", e);
-            }
-        }).execute(attendance);
+        //METHODE CREATION ATTENDANCE
 
 
         Intent intent = new Intent(this, MainActivity.class);

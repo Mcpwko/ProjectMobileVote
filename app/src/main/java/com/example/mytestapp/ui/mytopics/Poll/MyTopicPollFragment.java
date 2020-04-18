@@ -20,7 +20,6 @@ import android.widget.TextView;
 
 import com.example.mytestapp.MainActivity;
 import com.example.mytestapp.R;
-import com.example.mytestapp.db.async.DeletePoll;
 import com.example.mytestapp.db.entities.Vote;
 import com.example.mytestapp.ui.Poll.PollSelectedViewModel;
 import com.example.mytestapp.util.OnAsyncEventListener;
@@ -60,7 +59,7 @@ public class MyTopicPollFragment extends Fragment {
 
         mViewModel = ViewModelProviders.of(this,factory).get(PollSelectedViewModel.class);
 
-        mViewModel.getPoll().observe(getActivity(),poll -> {
+        /*mViewModel.getPoll().observe(getActivity(),poll -> {
 
             //If the poll object is not null we can set the text of all our EditText
             if (poll != null){
@@ -116,7 +115,7 @@ public class MyTopicPollFragment extends Fragment {
                                     //DELETE BUTTON
 
 
-                                    new DeletePoll(getActivity().getApplication(), new OnAsyncEventListener() {
+                                    /*new DeletePoll(getActivity().getApplication(), new OnAsyncEventListener() {
                                         @Override
                                         public void onSuccess() {
                                             Log.d(TAG, "createUserWithEmail: success");
@@ -145,6 +144,7 @@ public class MyTopicPollFragment extends Fragment {
 
         }
         });
+*/
 
         return root;
     }

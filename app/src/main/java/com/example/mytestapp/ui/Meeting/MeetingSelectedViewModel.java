@@ -26,8 +26,8 @@ public class MeetingSelectedViewModel extends AndroidViewModel {
     private AttendanceRepository attendanceRepository;
 
 
-    private final LiveData<Meeting> observableMeeting;
-    private final LiveData<Attendance> observableAttendance;
+    //private final LiveData<Meeting> observableMeeting;
+   // private final LiveData<Attendance> observableAttendance;
 
     public MeetingSelectedViewModel(@NonNull Application application,final int idMeeting, final int idUser,
                              MeetingRepository meetingRepository,AttendanceRepository attendanceRepository,UserRepository userRepository) {
@@ -41,8 +41,8 @@ public class MeetingSelectedViewModel extends AndroidViewModel {
 
 
 
-        observableMeeting = meetingRepository.getMeeting(idMeeting,application);
-        observableAttendance = attendanceRepository.getAttendance(idUser,idMeeting,application);
+       // observableMeeting = meetingRepository.getMeeting(idMeeting,application);
+        //observableAttendance = attendanceRepository.getAttendance(idUser,idMeeting,application);
     }
 
     /**
@@ -78,10 +78,10 @@ public class MeetingSelectedViewModel extends AndroidViewModel {
     /**
      * Expose the LiveData ClientAccounts query so the UI can observe it.
      */
-    public LiveData<Meeting> getMeeting() {
+   /* public LiveData<Meeting> getMeeting() {
         return observableMeeting;
     }
-    public LiveData<Attendance> getAttendance(){ return observableAttendance; }
+    public LiveData<Attendance> getAttendance(){ return observableAttendance; }*/
 
 
     public static MeetingRepository getMeetingRepository(){ return MeetingRepository.getInstance(); }

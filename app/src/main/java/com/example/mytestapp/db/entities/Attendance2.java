@@ -13,11 +13,11 @@ import java.util.Map;
 
 public class Attendance2 implements Comparable{
 
-    private int aid;
+    private String aid;
 
-    private int user_id;
+    private String user_id;
 
-    private int meeting_id;
+    private String meeting_id;
 
     private boolean answerAttendance;
 
@@ -25,7 +25,7 @@ public class Attendance2 implements Comparable{
 
     }
 
-    public Attendance2(int aid, int user_id, int meeting_id, boolean answerAttendance) {
+    public Attendance2(String aid, String user_id, String meeting_id, boolean answerAttendance) {
         this.aid = aid;
         this.user_id = user_id;
         this.meeting_id = meeting_id;
@@ -33,7 +33,7 @@ public class Attendance2 implements Comparable{
     }
 
     @Exclude
-    public int getAid() {
+    public String getAid() {
         return aid;
     }
 
@@ -41,19 +41,19 @@ public class Attendance2 implements Comparable{
         this.aid = aid;
     }
 
-    public int getUser_id() {
+    public String getUser_id() {
         return user_id;
     }
 
-    public void setUser_id(int user_id) {
+    public void setUser_id(String user_id) {
         this.user_id = user_id;
     }
 
-    public int getMeeting_id() {
+    public String getMeeting_id() {
         return meeting_id;
     }
 
-    public void setMeeting_id(int meeting_id) {
+    public void setMeeting_id(String meeting_id) {
         this.meeting_id = meeting_id;
     }
 

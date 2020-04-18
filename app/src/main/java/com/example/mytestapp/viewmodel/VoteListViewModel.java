@@ -22,7 +22,7 @@ public class VoteListViewModel extends AndroidViewModel {
     private VoteRepository voteRepository;
 
     // MediatorLiveData can observe other LiveData objects and react on their emissions.
-    private final LiveData<List<Vote>> observableVotes;
+    //private final LiveData<List<Vote>> observableVotes;
 
     public VoteListViewModel(@NonNull Application application,final int idPoll,
                              VoteRepository voteRepository) {
@@ -31,7 +31,7 @@ public class VoteListViewModel extends AndroidViewModel {
         this.application = application;
 
         this.voteRepository = voteRepository;
-        observableVotes = voteRepository.getVotesByPoll(idPoll,application);
+        //observableVotes = voteRepository.getVotesByPoll(idPoll,application);
     }
 
     //The Factory pattern is used to put the id into the ViewModel
@@ -62,10 +62,10 @@ public class VoteListViewModel extends AndroidViewModel {
 
     //We expose the LiveData list query so that it can be observed
 
-    public LiveData<List<Vote>> getVotes() {
+    /*public LiveData<List<Vote>> getVotes() {
         return observableVotes;
     }
-
+*/
 
     public static VoteRepository getVoteRepository(){ return VoteRepository.getInstance(); }
 }

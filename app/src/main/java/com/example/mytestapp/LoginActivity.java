@@ -25,8 +25,6 @@ import android.widget.Spinner;
 
 import android.widget.Toast;
 
-
-import com.example.mytestapp.db.async.CreateUser;
 import com.example.mytestapp.db.entities.Address1;
 import com.example.mytestapp.db.entities.User;
 import com.example.mytestapp.db.repository.UserRepository;
@@ -101,13 +99,27 @@ public class LoginActivity extends AppCompatActivity {
         EditText userName = findViewById(R.id.userNameLogin);
         String email = userName.getText().toString();
         EditText password = (EditText) findViewById(R.id.passwordLogin);
-        String password1 = password.getText().toString();
+        String passwordtext = password.getText().toString();
 
 
-
+        repository.signIn(email, passwordtext, task -> {
+            if (task.isSuccessful()) {
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+                userName.setText("");
+                password.setText("");
+            } else {
+                userName.setError(getString(R.string.error_invalid_email));
+                userName.requestFocus();
+                password.setText("");
+            }
+        });
 
         //We try to match what he wrote to what there is in the database
-        repository.getUser(email, getApplication()).observe(LoginActivity.this, userEntity -> {
+
+
+
+        /*repository.getUser(email, getApplication()).observe(LoginActivity.this, userEntity -> {
             if (userEntity != null) {
                 if (userEntity.getPassword().equals(password1)) {
 
@@ -151,7 +163,7 @@ public class LoginActivity extends AppCompatActivity {
                 });
                 alertDialog.show();
             }
-        });
+        });*/
 
 
 
@@ -201,8 +213,8 @@ public class LoginActivity extends AppCompatActivity {
 
             DatePicker date = (DatePicker) findViewById(R.id.datePickerRegister);
             SimpleDateFormat dateformat = new SimpleDateFormat("yyyy.MM.dd");
-            String dateFormat = dateformat.format(new Date(date.getYear(),date.getMonth(),date.getDayOfMonth()));
-            user.setBirthDate(dateFormat);
+            //String dateFormat = dateformat.format(new Date(date.getYear(),date.getMonth(),date.getDayOfMonth()));
+            user.setBirthDate(new Date(date.getYear(),date.getMonth(),date.getDayOfMonth()));
 
             EditText phone = (EditText) findViewById(R.id.phoneNumberRegister);
             user.setPhoneNumber(phone.getText().toString());
@@ -213,7 +225,6 @@ public class LoginActivity extends AppCompatActivity {
 
             EditText email = (EditText) findViewById(R.id.emailRegister);
             user.setEmail(email.getText().toString());
-            String emailAdress = email.getText().toString();
 
             EditText password = (EditText) findViewById(R.id.passwordRegister);
             user.setPassword(password.getText().toString());
@@ -238,10 +249,32 @@ public class LoginActivity extends AppCompatActivity {
 
 
 
+
+
+
+
             }else {
 
+                repository.register(user, new OnAsyncEventListener() {
+                    @Override
+                    public void onSuccess() {
+                        Log.d(TAG, "createUserWithEmail: success");
+
+                        FragmentTransaction transaction;
+                        transaction = getSupportFragmentManager().beginTransaction();
+                        transaction.replace(R.id.guest_layout, new LoginFragment()).commit();
+                    }
+
+                    @Override
+                    public void onFailure(Exception e) {
+                        Log.d(TAG, "createUserWithEmail: failure", e);
+                        email.setError(getString(R.string.error_used_email));
+                        email.requestFocus();
+                    }
+                });
+
                 //This is what we do if the mail is already in the database
-                userRepository.getUser(emailAdress, getApplication()).observe(LoginActivity.this, userEntity -> {
+                /*userRepository.getUser(emailAdress, getApplication()).observe(LoginActivity.this, userEntity -> {
                     if(userEntity!=null){
                         Toast.makeText(this, "Email already used !", Toast.LENGTH_SHORT).show();
                     }else{
@@ -266,22 +299,17 @@ public class LoginActivity extends AppCompatActivity {
 
                     }
 
-                });
-
-
-
-
-
+                });*/
             }
 
+        }
+    }
 
 
-        }else{
-            if(!result)
-                Toast.makeText(this, "Give a real email!", Toast.LENGTH_SHORT).show();
-            else{
-                Toast.makeText(this, "Password not the same !", Toast.LENGTH_SHORT).show();
-            }
+    private void setResponse(Boolean response) {
+
+        if (response) {
+
         }
     }
 

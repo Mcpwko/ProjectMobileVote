@@ -59,7 +59,7 @@ public class MyTopicsFragment extends Fragment {
 
         //This part is reserved for creating all the buttons corresponding to a Poll
 
-        pollRep.getMyPolls(user.getUid(),getActivity().getApplication()).observe(getActivity(), list ->{
+        /*pollRep.getMyPolls(user.getUid(),getActivity().getApplication()).observe(getActivity(), list ->{
             if(isAdded())
             for(int i =0 ; i<list.size();i++) {
                 Button button = new Button(getActivity());
@@ -74,11 +74,11 @@ public class MyTopicsFragment extends Fragment {
                 });
                 linearLayout.addView(button);
             }
-        });
+        });*/
 
         //This part is reserved for creating all the buttons corresponding to a Meeting
 
-        meetingRep.getMyMeetings(user.getUid(),getActivity().getApplication()).observe(getActivity(), list ->{
+        /*meetingRep.getMyMeetings(user.getUid(),getActivity().getApplication()).observe(getActivity(), list ->{
             if(isAdded())
             for(int i =0 ; i<list.size();i++) {
                 Button button = new Button(getActivity());
@@ -95,7 +95,7 @@ public class MyTopicsFragment extends Fragment {
                 linearLayout.addView(button);
             }
 
-        });
+        });*/
 
 
 

@@ -23,8 +23,8 @@ public class HomeListViewModel extends AndroidViewModel {
     private MeetingRepository meetingRepository;
 
     // MediatorLiveData can observe other LiveData objects and react on their emissions.
-    private final LiveData<List<Meeting>> observableMeetings;
-    private final LiveData<List<Poll>> observablePolls;
+    //private final LiveData<List<Meeting>> observableMeetings;
+    //private final LiveData<List<Poll>> observablePolls;
 
     public HomeListViewModel(@NonNull Application application,
                                 MeetingRepository meetingRepository,
@@ -38,8 +38,9 @@ public class HomeListViewModel extends AndroidViewModel {
 
 
 
-        observableMeetings = meetingRepository.getActiveMeeting(application);
-        observablePolls = pollRepository.getActivePolls(application);
+        //observableMeetings = meetingRepository.getActiveMeeting(application);
+        //observablePolls = pollRepository.getActivePolls(application);
+
     }
 
     //The Factory pattern is used to put the id into the ViewModel
@@ -68,12 +69,12 @@ public class HomeListViewModel extends AndroidViewModel {
 
     //We expose the LiveData list query so that it can be observed
 
-    public LiveData<List<Meeting>> getMeetings() {
+    /*public LiveData<List<Meeting>> getMeetings() {
         return observableMeetings;
     }
     public LiveData<List<Poll>> getPolls() {
         return observablePolls;
-    }
+    }*/
 
     public static PollRepository getPollRepository(){ return PollRepository.getInstance(); }
     public static MeetingRepository getMeetingRepository(){ return MeetingRepository.getInstance(); }

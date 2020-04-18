@@ -24,9 +24,6 @@ import android.widget.TimePicker;
 
 
 import com.example.mytestapp.R;
-import com.example.mytestapp.db.async.DeleteMeeting;
-
-import com.example.mytestapp.db.async.UpdateMeeting;
 import com.example.mytestapp.db.entities.Attendance;
 
 import com.example.mytestapp.db.entities.User;
@@ -74,7 +71,7 @@ public class MyTopicMeetingFragment extends Fragment {
         AttendanceViewModel.Factory factoryAttendance = new AttendanceViewModel.Factory(idMeeting, getActivity().getApplication());
         attendanceViewModel = ViewModelProviders.of(this,factoryAttendance).get(AttendanceViewModel.class);
 
-        MeetingSelectedViewModel.Factory factory = new MeetingSelectedViewModel.Factory(
+        /*MeetingSelectedViewModel.Factory factory = new MeetingSelectedViewModel.Factory(
                 getActivity().getApplication(),idMeeting,actualUser.getUid());
 
         mViewModel = ViewModelProviders.of(this,factory).get(MeetingSelectedViewModel.class);
@@ -228,7 +225,7 @@ public class MyTopicMeetingFragment extends Fragment {
             }
 
 
-        });
+        });*/
 
 
         return root;

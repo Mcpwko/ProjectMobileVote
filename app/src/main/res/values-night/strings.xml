@@ -20,4 +20,5 @@
     <string name="additional_information">ADDITIONAL INFORMATION</string>
     <string name="email_address">Email address</string>
     <string name="birthdate">Birthdate</string>
+    <string name="account_created">Account Created !</string>
 </resources>

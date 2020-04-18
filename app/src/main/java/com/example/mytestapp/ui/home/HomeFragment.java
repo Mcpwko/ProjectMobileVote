@@ -55,7 +55,7 @@ public class HomeFragment extends Fragment {
         homeViewModel = ViewModelProviders.of(this,factory).get(HomeListViewModel.class);
 
         //We are creating all buttons for the meetings from the Database
-        homeViewModel.getMeetings().observe(getActivity(), list-> {
+        /*homeViewModel.getMeetings().observe(getActivity(), list-> {
 
                         //The IF is used to avoid the NullPointerException which returns true if the
                         //fragment has been explicitly detached from the UI
@@ -101,7 +101,7 @@ public class HomeFragment extends Fragment {
                 }
 
             }
-        });
+        });*/
 
 
         return root;

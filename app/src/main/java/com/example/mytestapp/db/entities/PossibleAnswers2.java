@@ -13,9 +13,9 @@ import java.util.Map;
 
 public class PossibleAnswers2 implements Comparable{
 
-    private int paid;
+    private String paid;
 
-    private int pollid;
+    private String pollid;
 
     private String answer;
 
@@ -23,13 +23,13 @@ public class PossibleAnswers2 implements Comparable{
 
     }
 
-    public PossibleAnswers2(int paid, int pollid, String answer) {
+    public PossibleAnswers2(String paid, String pollid, String answer) {
         this.paid = paid;
         this.pollid = pollid;
         this.answer = answer;
     }
     @Exclude
-    public int getPaid() {
+    public String getPaid() {
         return paid;
     }
 
@@ -37,11 +37,11 @@ public class PossibleAnswers2 implements Comparable{
         this.paid = paid;
     }
 
-    public int getPollid() {
+    public String getPollid() {
         return pollid;
     }
 
-    public void setPollid(int pollid) {
+    public void setPollid(String pollid) {
         this.pollid = pollid;
     }
 

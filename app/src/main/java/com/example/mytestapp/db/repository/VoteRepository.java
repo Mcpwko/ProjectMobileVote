@@ -4,14 +4,9 @@ import android.content.Context;
 
 import androidx.lifecycle.LiveData;
 
-import com.example.mytestapp.db.AppDatabase;
-import com.example.mytestapp.db.async.CreateVote;
-import com.example.mytestapp.db.entities.Poll2;
 import com.example.mytestapp.db.entities.Vote;
 import com.example.mytestapp.db.entities.Vote2;
-import com.example.mytestapp.db.firebase.UserLiveData;
 import com.example.mytestapp.db.firebase.VoteListLiveData;
-import com.example.mytestapp.db.firebase.VoteLiveData;
 import com.example.mytestapp.util.OnAsyncEventListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -44,9 +39,9 @@ public class VoteRepository {
     }
 
     // A voir comment faire
-    public LiveData<List<Vote>> getVotesByPoll(int idPoll, Context context){
+    /*public LiveData<List<Vote>> getVotesByPoll(int idPoll, Context context){
         return AppDatabase.getInstance(context).voteDao().getVoteByPoll(idPoll);
-    }
+    }*/
 
     public void insertVote(final Vote2 vote, final OnAsyncEventListener callback) {
         String id = FirebaseDatabase.getInstance().getReference("votes").push().getKey();

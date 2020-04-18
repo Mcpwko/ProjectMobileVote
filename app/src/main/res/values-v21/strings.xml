@@ -73,4 +73,5 @@
     <string name="okbutton">Ok</string>
     <string name="pleasefillall">Please fill all the gaps !</string>
     <string name="pleasegiveanswers">Please give at least 2 answers !</string>
+    <string name="account_created">Account Created !</string>
 </resources>

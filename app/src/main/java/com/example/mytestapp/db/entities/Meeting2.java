@@ -13,9 +13,9 @@ import java.util.Map;
 
 public class Meeting2 implements Comparable{
 
-    private int mid;
+    private String mid;
 
-    private int user_id;
+    private String user_id;
 
     private String titleMeeting;
 
@@ -33,7 +33,7 @@ public class Meeting2 implements Comparable{
 
     }
 
-    public Meeting2(int mid, int user_id, String titleMeeting, Date dayMeeting, String timeMeeting, String placeMeeting, String descMeeting, boolean statusOpen) {
+    public Meeting2(String mid, String user_id, String titleMeeting, Date dayMeeting, String timeMeeting, String placeMeeting, String descMeeting, boolean statusOpen) {
         this.mid = mid;
         this.user_id = user_id;
         this.titleMeeting = titleMeeting;
@@ -48,15 +48,15 @@ public class Meeting2 implements Comparable{
         return mid;
     }
 
-    public void setMid(int mid) {
+    public void setMid(String mid) {
         this.mid = mid;
     }
 
-    public int getUser_id() {
+    public String getUser_id() {
         return user_id;
     }
 
-    public void setUser_id(int user_id) {
+    public void setUser_id(String user_id) {
         this.user_id = user_id;
     }
 

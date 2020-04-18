@@ -1,21 +1,13 @@
 package com.example.mytestapp.db.repository;
 
 import android.content.Context;
-import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 
-import com.example.mytestapp.db.AppDatabase;
-import com.example.mytestapp.db.async.CreatePoll;
-import com.example.mytestapp.db.async.DeletePoll;
-import com.example.mytestapp.db.async.UpdatePoll;
 import com.example.mytestapp.db.entities.Poll;
 import com.example.mytestapp.db.entities.Poll2;
-import com.example.mytestapp.db.entities.User;
 import com.example.mytestapp.db.firebase.PollLiveData;
-import com.example.mytestapp.db.firebase.UserLiveData;
 import com.example.mytestapp.util.OnAsyncEventListener;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -40,7 +32,7 @@ public class PollRepository {
     }
 
 
-    // A voir comment faire
+    /*// A voir comment faire
     public LiveData<Poll> getLastPoll( Context context) {
         return AppDatabase.getInstance(context).pollDao().getLastPoll();
     }
@@ -48,10 +40,10 @@ public class PollRepository {
     // A voir comment faire
     public LiveData<List<Poll>> getMyPolls (int id, Context context) {
         return AppDatabase.getInstance(context).pollDao().getMyPolls(id);
-    }
+    }*/
 
     //FAIT
-    public LiveData<Poll> getPoll(final String idPoll) {
+    /*public LiveData<Poll> getPoll(final String idPoll) {
         DatabaseReference reference = FirebaseDatabase.getInstance()
                 .getReference("polls")
                 .child(idPoll);
@@ -62,7 +54,7 @@ public class PollRepository {
     // A voir comment faire
     public LiveData<List<Poll>> getActivePolls(Context context) {
         return AppDatabase.getInstance(context).pollDao().getActivePolls();
-    }
+    }*/
 
 
  //FAIT  INSERT, UPDATE ET DELETE

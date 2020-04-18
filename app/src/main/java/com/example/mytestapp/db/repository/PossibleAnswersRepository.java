@@ -4,7 +4,6 @@ import android.content.Context;
 
 import androidx.lifecycle.LiveData;
 
-import com.example.mytestapp.db.AppDatabase;
 import com.example.mytestapp.db.entities.PossibleAnswers;
 
 import java.util.List;
@@ -29,9 +28,9 @@ public class PossibleAnswersRepository {
     //The methods below are used to get datas from the DAO
 
     //A voir comment faire
-    public LiveData<List<PossibleAnswers>> getPossibleAnswersByPoll (int id, Context context) {
+    /*public LiveData<List<PossibleAnswers>> getPossibleAnswersByPoll (int id, Context context) {
         return AppDatabase.getInstance(context).possibleAnswerDao().getPossibleAnswersByPoll(id);
-    }
+    }*/
 
 
 

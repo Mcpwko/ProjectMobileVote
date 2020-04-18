@@ -50,7 +50,7 @@ public class AccountFragment extends Fragment {
         name.setText(user.getLastName());
 
         TextView birthDate = root.findViewById(R.id.birthdateEditAccount);
-        birthDate.setText(user.getBirthDate());
+        birthDate.setText(user.getBirthDate()+ "");
 
         TextView address = root.findViewById(R.id.addressEditAccount);
         address.setText(user.getAddress().getAddress());

@@ -4,17 +4,10 @@ import android.content.Context;
 
 import androidx.lifecycle.LiveData;
 
-import com.example.mytestapp.db.AppDatabase;
-import com.example.mytestapp.db.async.CreateAttendance;
-import com.example.mytestapp.db.async.DeleteAttendance;
 import com.example.mytestapp.db.entities.Attendance;
 import com.example.mytestapp.db.entities.Attendance2;
-import com.example.mytestapp.db.entities.Meeting2;
-import com.example.mytestapp.db.entities.Vote2;
 import com.example.mytestapp.db.firebase.AttendanceListLiveData;
 import com.example.mytestapp.db.firebase.AttendanceLiveData;
-import com.example.mytestapp.db.firebase.MeetingLiveData;
-import com.example.mytestapp.db.firebase.VoteListLiveData;
 import com.example.mytestapp.util.OnAsyncEventListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -50,9 +43,9 @@ public class AttendanceRepository {
     }
 
     // A voir comment faire
-    public LiveData<Attendance> getAttendanceById (int id, Context context) {
+    /*public LiveData<Attendance> getAttendanceById (int id, Context context) {
         return AppDatabase.getInstance(context).attendanceDao().getAttendanceById(id);
-    }
+    }*/
 
 
     public LiveData<List<Attendance2>> getAttendances() {
@@ -76,7 +69,7 @@ public class AttendanceRepository {
                 });
     }
 
-    public void deleteAttendance(final Attendance attendance, final OnAsyncEventListener callback) {
+    /*public void deleteAttendance(final Attendance attendance, final OnAsyncEventListener callback) {
         FirebaseDatabase.getInstance()
                 .getReference("votes")
                 .child(attendance.getAid())
@@ -87,7 +80,7 @@ public class AttendanceRepository {
                         callback.onSuccess();
                     }
                 });
-    }
+    }*/
 
 
 }

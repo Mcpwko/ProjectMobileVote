@@ -27,9 +27,6 @@ import android.widget.Toast;
 
 import com.example.mytestapp.MainActivity;
 import com.example.mytestapp.R;
-import com.example.mytestapp.db.async.CreateVote;
-
-import com.example.mytestapp.db.async.DeleteVote;
 
 import com.example.mytestapp.db.entities.User;
 import com.example.mytestapp.db.entities.Vote;
@@ -98,7 +95,7 @@ public class PollSelectedFragment extends Fragment {
 
         //This block sets the text elements created in the layout with the data in the database
 
-        mViewModel.getPoll().observe(getActivity(),poll -> {
+        /*mViewModel.getPoll().observe(getActivity(),poll -> {
             if(this.isVisible()) {
                 UserViewModel.Factory factoryUser = new UserViewModel.Factory(getActivity().getApplication(), poll.getUser_id());
                 userViewModel = ViewModelProviders.of(this, factoryUser).get(UserViewModel.class);
@@ -402,7 +399,7 @@ public class PollSelectedFragment extends Fragment {
             });
 
         });
-
+*/
 
 
 
