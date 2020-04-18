@@ -45,7 +45,14 @@ import com.example.mytestapp.ui.addVote.poll.PollFragment;
 import com.example.mytestapp.ui.addVote.poll.PollStep2Fragment;
 import com.example.mytestapp.ui.home.HomeFragment;
 import com.example.mytestapp.util.OnAsyncEventListener;
+import com.example.mytestapp.viewmodel.UserViewModel;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -57,6 +64,7 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -179,16 +187,15 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
         });
 
 
-        SharedPreferences userpreferences = getSharedPreferences("User", Context.MODE_PRIVATE);
-        Gson gson2 = new Gson();
-        String json2 = userpreferences.getString("User", "");
-        User user = gson2.fromJson(json2, User.class);
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+
 
         //We set the text present at the top of navigation drawer
         View hView = navigationView.getHeaderView(0);
         TextView navViewName = (TextView) hView.findViewById(R.id.nameAndroidNav);
         TextView navViewEmail = (TextView) hView.findViewById(R.id.emailAndroidNav);
-        navViewName.setText(user.getLastName() + " " + user.getFirstName());
+        navViewName.setText(user.getDisplayName());
         navViewEmail.setText(user.getEmail());
 
         navViewName.setTextColor(Color.WHITE);
@@ -409,6 +416,7 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
     //This method is used to save the updated account
     public void saveSettings(View view){
 
+
         findViewById(R.id.saveChangesAccount).setVisibility(View.GONE);
         findViewById(R.id.deleteAccount).setVisibility(View.GONE);
         User user = new User();
@@ -440,10 +448,7 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
         birthdate.setEnabled(false);
         //user.setBirthdate(birthdate.getText().toString());
 
-        SharedPreferences preferences = getSharedPreferences("User", Context.MODE_PRIVATE);
-        Gson gson2 = new Gson();
-        String json2 = preferences.getString("User", "");
-        User usera = gson2.fromJson(json2, User.class);
+        FirebaseUser usera = FirebaseAuth.getInstance().getCurrentUser();
 
         user.setUid(usera.getUid());
 
@@ -451,27 +456,45 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
         //Then we can update the user
         //METHODE POUR UPDATE USER
 
+        UserViewModel.Factory factory = new UserViewModel.Factory(
+                getApplication(),
+                FirebaseAuth.getInstance().getCurrentUser().getUid()
+        );
+        UserViewModel viewModel = new ViewModelProvider(this, factory).get(UserViewModel.class);
 
-        preferences = getApplicationContext().getSharedPreferences("User", MODE_PRIVATE);
-        SharedPreferences.Editor edt = preferences.edit();
+        viewModel.updateUser(user, new OnAsyncEventListener() {
+            @Override
+            public void onSuccess() {
+                Log.d(TAG, "update: success");
+            }
 
-        Gson gson = new Gson();
-        String json = gson.toJson(user);
-        edt.putString("User", json);
-        edt.apply();
+            @Override
+            public void onFailure(Exception e) {
+                Log.d(TAG, "update: failure", e);
+            }
+        });
 
 
     }
 
     //the method is used to delete an account from the database
     public void deleteAccount(View view){
-        SharedPreferences preferences = getSharedPreferences("User", Context.MODE_PRIVATE);
-        Gson gson2 = new Gson();
-        String json2 = preferences.getString("User", "");
-        User user = gson2.fromJson(json2, User.class);
 
 
-        //METHODE POUR DELETE USER
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        user.delete()
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Log.d(TAG, "User account deleted.");
+                            DatabaseReference mPostReference = FirebaseDatabase.getInstance().getReference()
+                                    .child("users").child(user.getUid());
+                            mPostReference.removeValue();
+                        }
+                    }
+                });
 
         Intent newAct = new Intent(this, LoginActivity.class);
         startActivity(newAct);

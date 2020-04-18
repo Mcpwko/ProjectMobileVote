@@ -78,7 +78,7 @@ public class UserViewModel extends AndroidViewModel {
         getUserRepository().update(user, callback);
     }
 
-    public void deleteClient(User user, OnAsyncEventListener callback) {
+    public void deleteUser(User user, OnAsyncEventListener callback) {
         getUserRepository().delete(user, callback);
     }
 
