@@ -1,13 +1,13 @@
 package com.example.mytestapp.db.repository;
 
-import android.content.Context;
-
 import androidx.lifecycle.LiveData;
 
 import com.example.mytestapp.db.entities.Meeting;
-import com.example.mytestapp.db.entities.Meeting2;
+import com.example.mytestapp.db.firebase.MeetingListLiveData;
 import com.example.mytestapp.db.firebase.MeetingLiveData;
 import com.example.mytestapp.util.OnAsyncEventListener;
+import com.google.android.gms.common.api.Api;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -15,6 +15,8 @@ import java.util.List;
 //The class is used to transfer data from DAO to ViewModel
 
 public class MeetingRepository {
+
+    private static final String TAG = "MeetingRepository";
 
     private static MeetingRepository instance;
 
@@ -33,17 +35,20 @@ public class MeetingRepository {
 
     //A voir comment faire
 
-   /* public LiveData<List<Meeting>> getActiveMeeting(Context context) {
-        return AppDatabase.getInstance(context).meetingDao().getActiveMeetings();
+    public LiveData<List<Meeting>> getActiveMeetings() {
+        DatabaseReference reference = FirebaseDatabase.getInstance()
+                .getReference("votes");
+        return new MeetingListLiveData(reference);
     }
 
+
     //A voir comment faire
-    public LiveData<List<Meeting>> getMyMeetings (int id, Context context) {
+    /*public LiveData<List<Meeting>> getMyMeetings (int id, Context context) {
         return AppDatabase.getInstance(context).meetingDao().getMyMeetings(id);
     }*/
 
 
-    public LiveData<Meeting2> getMeeting(final String id) {
+    public LiveData<Meeting> getMeeting(final String id) {
         DatabaseReference reference = FirebaseDatabase.getInstance()
                 .getReference("votes")
                 .child(id);
@@ -53,7 +58,7 @@ public class MeetingRepository {
 
 
 
-    public void insertMeeting(final Meeting2 meeting, final OnAsyncEventListener callback) {
+    public void insertMeeting(final Meeting meeting, final OnAsyncEventListener callback) {
         String id = FirebaseDatabase.getInstance().getReference("votes").push().getKey();
         FirebaseDatabase.getInstance()
                 .getReference("votes")
@@ -67,7 +72,27 @@ public class MeetingRepository {
                 });
     }
 
-    public void updateMeeting(final Meeting2 meeting, final OnAsyncEventListener callback) {
+
+
+
+    public void insert(final Meeting meeting, final OnAsyncEventListener callback) {
+        DatabaseReference reference = FirebaseDatabase.getInstance()
+                .getReference("users")
+                .child(meeting.getUser_id());
+        String key = reference.push().getKey();
+        FirebaseDatabase.getInstance()
+                .getReference("votes")
+                .child(key)
+                .setValue(meeting, (databaseError, databaseReference) -> {
+                    if (databaseError != null) {
+                        callback.onFailure(databaseError.toException());
+                    } else {
+                        callback.onSuccess();
+                    }
+                });
+    }
+
+    public void updateMeeting(final Meeting meeting, final OnAsyncEventListener callback) {
         FirebaseDatabase.getInstance()
                 .getReference("votes")
                 .child(meeting.getMid())
@@ -80,7 +105,7 @@ public class MeetingRepository {
                 });
     }
 
-    public void deleteMeeting(final Meeting2 meeting, final OnAsyncEventListener callback) {
+    public void deleteMeeting(final Meeting meeting, final OnAsyncEventListener callback) {
         FirebaseDatabase.getInstance()
                 .getReference("votes")
                 .child(meeting.getMid())

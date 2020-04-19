@@ -2,8 +2,7 @@ package com.example.mytestapp.db.firebase;
 
 import android.util.Log;
 
-import com.example.mytestapp.db.entities.Attendance2;
-import com.example.mytestapp.db.entities.Vote2;
+import com.example.mytestapp.db.entities.Attendance;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -15,7 +14,7 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 
-public class AttendanceListLiveData extends LiveData<List<Attendance2>> {
+public class AttendanceListLiveData extends LiveData<List<Attendance>> {
 
     private static final String TAG = "ClientAccountsLiveData";
 
@@ -49,10 +48,10 @@ public class AttendanceListLiveData extends LiveData<List<Attendance2>> {
         }
     }
 
-    private List<Attendance2> toAttendanceList(DataSnapshot snapshot) {
-        List<Attendance2> attendances = new ArrayList<>();
+    private List<Attendance> toAttendanceList(DataSnapshot snapshot) {
+        List<Attendance> attendances = new ArrayList<>();
         for (DataSnapshot childSnapshot : snapshot.getChildren()) {
-            Attendance2 entity = childSnapshot.getValue(Attendance2.class);
+            Attendance entity = childSnapshot.getValue(Attendance.class);
             entity.setAid(childSnapshot.getKey());
             attendances.add(entity);
         }

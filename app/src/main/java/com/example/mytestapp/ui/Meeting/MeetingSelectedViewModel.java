@@ -8,15 +8,11 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.mytestapp.db.entities.Attendance;
 import com.example.mytestapp.db.entities.Meeting;
-
 import com.example.mytestapp.db.repository.AttendanceRepository;
 import com.example.mytestapp.db.repository.MeetingRepository;
 
 import com.example.mytestapp.db.repository.UserRepository;
-
-import java.util.List;
 
 public class MeetingSelectedViewModel extends AndroidViewModel {
 
@@ -26,10 +22,10 @@ public class MeetingSelectedViewModel extends AndroidViewModel {
     private AttendanceRepository attendanceRepository;
 
 
-    //private final LiveData<Meeting> observableMeeting;
+    private final LiveData<Meeting> observableMeeting;
    // private final LiveData<Attendance> observableAttendance;
 
-    public MeetingSelectedViewModel(@NonNull Application application,final int idMeeting, final int idUser,
+    public MeetingSelectedViewModel(@NonNull Application application,final String idMeeting,
                              MeetingRepository meetingRepository,AttendanceRepository attendanceRepository,UserRepository userRepository) {
         super(application);
 
@@ -41,7 +37,7 @@ public class MeetingSelectedViewModel extends AndroidViewModel {
 
 
 
-       // observableMeeting = meetingRepository.getMeeting(idMeeting,application);
+       observableMeeting = meetingRepository.getMeeting(idMeeting);
         //observableAttendance = attendanceRepository.getAttendance(idUser,idMeeting,application);
     }
 
@@ -52,15 +48,13 @@ public class MeetingSelectedViewModel extends AndroidViewModel {
 
         @NonNull
         private final Application application;
-        private final int idMeeting;
-        private final int idUser;
+        private final String idMeeting;
         private final MeetingRepository meetingRepository;
         private final AttendanceRepository attendanceRepository;
         private final UserRepository userRepository;
 
-        public Factory(@NonNull Application application, int idMeeting,int idUser) {
+        public Factory(@NonNull Application application, String idMeeting) {
             this.idMeeting = idMeeting;
-            this.idUser = idUser;
             this.application = application;
             meetingRepository = getMeetingRepository();
             attendanceRepository = getAttendanceRepository();
@@ -69,7 +63,7 @@ public class MeetingSelectedViewModel extends AndroidViewModel {
 
         @Override
         public <T extends ViewModel> T create(Class<T> modelClass) {
-            return (T) new com.example.mytestapp.ui.Meeting.MeetingSelectedViewModel(application,idMeeting,idUser,
+            return (T) new com.example.mytestapp.ui.Meeting.MeetingSelectedViewModel(application,idMeeting,
                                                             meetingRepository,attendanceRepository,userRepository);
         }
     }
@@ -78,10 +72,10 @@ public class MeetingSelectedViewModel extends AndroidViewModel {
     /**
      * Expose the LiveData ClientAccounts query so the UI can observe it.
      */
-   /* public LiveData<Meeting> getMeeting() {
+    public LiveData<Meeting> getMeeting() {
         return observableMeeting;
     }
-    public LiveData<Attendance> getAttendance(){ return observableAttendance; }*/
+    /*public LiveData<Attendance> getAttendance(){ return observableAttendance; }*/
 
 
     public static MeetingRepository getMeetingRepository(){ return MeetingRepository.getInstance(); }

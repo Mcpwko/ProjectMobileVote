@@ -1,5 +1,7 @@
 package com.example.mytestapp.ui.home;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -7,8 +9,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
+import android.widget.Button;
 import android.widget.LinearLayout;
 
 
@@ -17,6 +19,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.preference.PreferenceManager;
 
 import com.example.mytestapp.R;
 import com.example.mytestapp.db.entities.Poll;
@@ -27,6 +30,7 @@ import com.example.mytestapp.ui.Poll.PollSelectedFragment;
 import com.example.mytestapp.viewmodel.HomeListViewModel;
 
 import java.util.List;
+
 //We called this class "Home" because it's the main fragment of our App, you will find here
 //the declaration of the list of Polls and Meetings
 public class HomeFragment extends Fragment {
@@ -55,29 +59,36 @@ public class HomeFragment extends Fragment {
         homeViewModel = ViewModelProviders.of(this,factory).get(HomeListViewModel.class);
 
         //We are creating all buttons for the meetings from the Database
-        /*homeViewModel.getMeetings().observe(getActivity(), list-> {
+        homeViewModel.getMeetings().observe(getActivity(), list-> {
 
                         //The IF is used to avoid the NullPointerException which returns true if the
                         //fragment has been explicitly detached from the UI
                         if(isAdded())
                             //We create as many buttons as we need for meetings
                         for(int i =0 ; i<list.size();i++) {
-                            Button button = new Button(getActivity());
-                            button.setText(list.get(i).getTitleMeeting());
-                            button.setTextColor(getResources().getColor(R.color.TopicsHome));
-                            int x = i;
-                            button.setOnClickListener(new View.OnClickListener() {
-                                //We give then the action to change the fragment when the user of
-                                //the app click on a button of the list of Meetings
-                                public void onClick(View v) {
-                                    FragmentTransaction transaction;
-                                    transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                                    transaction.replace(R.id.home, new MeetingSelectedFragment(list.get(x).getMid())).commit();
-                                }
-                            });
-                            //We create a linear Layout with a scroll view to allow the user to
-                            //create as many buttons he wants
-                            linearLayout.addView(button);
+
+                            if(list.get(i)!=null) {
+                                Button button = new Button(getActivity());
+                                button.setText(list.get(i).getTitleMeeting());
+                                button.setTextColor(getResources().getColor(R.color.TopicsHome));
+                                int x = i;
+                                button.setOnClickListener(new View.OnClickListener() {
+                                    //We give then the action to change the fragment when the user of
+                                    //the app click on a button of the list of Meetings
+                                    public void onClick(View v) {
+                                        FragmentTransaction transaction;
+                                        transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                                        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+                                        SharedPreferences.Editor editor = preferences.edit();
+                                        editor.putString("SelectedItem", list.get(x).getMid());
+                                        editor.apply();
+                                        transaction.replace(R.id.home, new MeetingSelectedFragment()).commit();
+                                    }
+                                });
+                                //We create a linear Layout with a scroll view to allow the user to
+                                //create as many buttons he wants
+                                linearLayout.addView(button);
+                            }
                         }
                 });
 
@@ -94,14 +105,18 @@ public class HomeFragment extends Fragment {
                         public void onClick(View v) {
                             FragmentTransaction transaction;
                             transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                            transaction.replace(R.id.home, new PollSelectedFragment(list.get(x).getPid())).commit();
+                            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+                            SharedPreferences.Editor editor = preferences.edit();
+                            editor.putString("SelectedItem", list.get(x).getPid());
+                            editor.apply();
+                            transaction.replace(R.id.home, new PollSelectedFragment()).commit();
                         }
                     });
                     linearLayout.addView(button);
                 }
 
             }
-        });*/
+        });
 
 
         return root;

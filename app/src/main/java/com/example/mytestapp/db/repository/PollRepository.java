@@ -1,11 +1,11 @@
 package com.example.mytestapp.db.repository;
 
-import android.content.Context;
-
 import androidx.lifecycle.LiveData;
 
+import com.example.mytestapp.db.entities.Meeting;
 import com.example.mytestapp.db.entities.Poll;
-import com.example.mytestapp.db.entities.Poll2;
+import com.example.mytestapp.db.firebase.MeetingLiveData;
+import com.example.mytestapp.db.firebase.PollListLiveData;
 import com.example.mytestapp.db.firebase.PollLiveData;
 import com.example.mytestapp.util.OnAsyncEventListener;
 import com.google.firebase.database.DatabaseReference;
@@ -43,28 +43,33 @@ public class PollRepository {
     }*/
 
     //FAIT
-    /*public LiveData<Poll> getPoll(final String idPoll) {
+
+
+    public LiveData<Poll> getPoll(final String id) {
         DatabaseReference reference = FirebaseDatabase.getInstance()
-                .getReference("polls")
-                .child(idPoll);
-        PollLiveData pl = new PollLiveData(reference);
-        return (LiveData) pl;
+                .getReference("votes")
+                .child(id);
+        return new PollLiveData(reference);
     }
 
-    // A voir comment faire
-    public LiveData<List<Poll>> getActivePolls(Context context) {
-        return AppDatabase.getInstance(context).pollDao().getActivePolls();
-    }*/
+    public LiveData<List<Poll>> getActivePolls() {
+        DatabaseReference reference = FirebaseDatabase.getInstance()
+                    .getReference("votes");
+            return new PollListLiveData(reference);
+    }
 
 
  //FAIT  INSERT, UPDATE ET DELETE
 
 
-    public void insertPoll(final Poll2 poll, final OnAsyncEventListener callback) {
-        String id = FirebaseDatabase.getInstance().getReference("votes").push().getKey();
+    public void insert(final Poll poll, final OnAsyncEventListener callback) {
+        DatabaseReference reference = FirebaseDatabase.getInstance()
+                .getReference("users")
+                .child(poll.getUser_id());
+        String key = reference.push().getKey();
         FirebaseDatabase.getInstance()
-                .getReference("clients")
-                .child(id)
+                .getReference("votes")
+                .child(key)
                 .setValue(poll, (databaseError, databaseReference) -> {
                     if (databaseError != null) {
                         callback.onFailure(databaseError.toException());
@@ -75,7 +80,7 @@ public class PollRepository {
     }
 
 
-    public void updatePoll(final Poll2 poll, final OnAsyncEventListener callback) {
+    public void updatePoll(final Poll poll, final OnAsyncEventListener callback) {
         FirebaseDatabase.getInstance()
                 .getReference("votes")
                 .child(poll.getPid())
@@ -89,7 +94,7 @@ public class PollRepository {
     }
 
 
-    public void deletePoll(final Poll2 poll, final OnAsyncEventListener callback) {
+    public void deletePoll(final Poll poll, final OnAsyncEventListener callback) {
         FirebaseDatabase.getInstance()
                 .getReference("votes")
                 .child(poll.getPid())

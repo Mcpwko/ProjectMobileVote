@@ -2,43 +2,30 @@ package com.example.mytestapp.ui.mytopics.Poll;
 
 import androidx.lifecycle.ViewModelProviders;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
-import com.example.mytestapp.MainActivity;
 import com.example.mytestapp.R;
-import com.example.mytestapp.db.entities.Vote;
 import com.example.mytestapp.ui.Poll.PollSelectedViewModel;
-import com.example.mytestapp.util.OnAsyncEventListener;
 import com.example.mytestapp.viewmodel.VoteListViewModel;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 //This class is used when we click on one of the Poll we created
 public class MyTopicPollFragment extends Fragment {
 
     private PollSelectedViewModel mViewModel;
-    private int idPoll;
+    private String idPoll;
     private static final String TAG = "MyTopicPollFragment";
     private VoteListViewModel voteListViewModel;
-    public MyTopicPollFragment(int idPoll){
+    public MyTopicPollFragment(String idPoll){
         this.idPoll = idPoll;
     }
 

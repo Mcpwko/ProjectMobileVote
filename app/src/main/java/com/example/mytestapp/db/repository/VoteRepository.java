@@ -1,11 +1,8 @@
 package com.example.mytestapp.db.repository;
 
-import android.content.Context;
-
 import androidx.lifecycle.LiveData;
 
 import com.example.mytestapp.db.entities.Vote;
-import com.example.mytestapp.db.entities.Vote2;
 import com.example.mytestapp.db.firebase.VoteListLiveData;
 import com.example.mytestapp.util.OnAsyncEventListener;
 import com.google.firebase.database.DatabaseReference;
@@ -32,7 +29,7 @@ public class VoteRepository {
     }
 
 
-    public LiveData<List<Vote2>> getVote() {
+    public LiveData<List<Vote>> getVote() {
         DatabaseReference reference = FirebaseDatabase.getInstance()
                 .getReference("votes");
         return new VoteListLiveData(reference);
@@ -43,7 +40,7 @@ public class VoteRepository {
         return AppDatabase.getInstance(context).voteDao().getVoteByPoll(idPoll);
     }*/
 
-    public void insertVote(final Vote2 vote, final OnAsyncEventListener callback) {
+    public void insertVote(final Vote vote, final OnAsyncEventListener callback) {
         String id = FirebaseDatabase.getInstance().getReference("votes").push().getKey();
         FirebaseDatabase.getInstance()
                 .getReference("votes")

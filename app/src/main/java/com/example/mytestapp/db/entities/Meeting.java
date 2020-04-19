@@ -1,70 +1,63 @@
 package com.example.mytestapp.db.entities;
 
-import androidx.room.ColumnInfo;
-import androidx.room.Entity;
-import androidx.room.ForeignKey;
-import androidx.room.Index;
-import androidx.room.PrimaryKey;
+
+//This class represents the User Entity
+import androidx.annotation.NonNull;
+
+import com.google.firebase.database.Exclude;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
-import static androidx.room.ForeignKey.CASCADE;
-//This class represents the Meeting Entity
 
-//We use foreign keys to create links with the User Entity
-@Entity(foreignKeys = @ForeignKey(entity = User.class,
-        parentColumns = "uid", childColumns = "user_id",
-        onDelete = CASCADE),indices = {
-        @Index(value = {"user_id"}
-        )})
+public class Meeting implements Comparable{
 
-public class Meeting {
-    @PrimaryKey(autoGenerate = true)
-    private int mid;
+    private String mid;
 
-    @ColumnInfo (name = "user_id")
-    private int user_id;
+    private String user_id;
 
-    @ColumnInfo (name = "title_meeting")
     private String titleMeeting;
 
-    @ColumnInfo (name = "day_meeting")
     private Date dayMeeting;
 
-    @ColumnInfo (name = "time_meeting")
     private String timeMeeting;
 
-    @ColumnInfo (name = "place_meeting")
     private String placeMeeting;
 
-    @ColumnInfo (name = "desc_meeting")
     private String descMeeting;
 
-    @ColumnInfo (name = "statusOpen")
-    private boolean statusOpen;
+    private String type;
 
-    public int getMid() {
+    public Meeting(){
+
+    }
+
+    public Meeting(String mid, String user_id, String titleMeeting, Date dayMeeting, String timeMeeting, String placeMeeting, String descMeeting, String type) {
+        this.mid = mid;
+        this.user_id = user_id;
+        this.titleMeeting = titleMeeting;
+        this.dayMeeting = dayMeeting;
+        this.timeMeeting = timeMeeting;
+        this.placeMeeting = placeMeeting;
+        this.descMeeting = descMeeting;
+        this.type = type;
+    }
+    @Exclude
+    public String getMid() {
         return mid;
     }
 
-    public  void setMid(int mid) {
+    public void setMid(String mid) {
         this.mid = mid;
     }
 
-    public int getUser_id() {
+    public String getUser_id() {
         return user_id;
     }
 
-    public void setUser_id(int user_id) {
+    public void setUser_id(String user_id) {
         this.user_id = user_id;
-    }
-
-    public boolean isStatusOpen() {
-        return statusOpen;
-    }
-
-    public void setStatusOpen(boolean statusOpen) {
-        this.statusOpen = statusOpen;
     }
 
     public String getTitleMeeting() {
@@ -106,4 +99,34 @@ public class Meeting {
     public void setDescMeeting(String descMeeting) {
         this.descMeeting = descMeeting;
     }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    @Override
+    public int compareTo(@NonNull Object o) {
+        return toString().compareTo(o.toString());
+    }
+
+    @Exclude
+    public Map<String, Object> toMap() {
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("titleMeeting", titleMeeting);
+        result.put("dayMeeting", dayMeeting);
+        result.put("timeMeeting", timeMeeting);
+        result.put("placeMeeting", placeMeeting);
+        result.put("descMeeting", descMeeting);
+        result.put("type", type);
+
+
+        return result;
+    }
 }
+
+
+

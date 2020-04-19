@@ -29,6 +29,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.Gson;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 //This is the AccountFragment class where all its specific operations are written
 
 public class AccountFragment extends Fragment {
@@ -75,7 +79,9 @@ public class AccountFragment extends Fragment {
             name.setText(user.getLastName());
 
             TextView birthDate = root.findViewById(R.id.birthdateEditAccount);
-            birthDate.setText(user.getBirthDate()+ "");
+            DateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd");
+            String strDate = dateFormat.format(new Date(user.getBirthDate()));
+            birthDate.setText(strDate);
 
             TextView address = root.findViewById(R.id.addressEditAccount);
             address.setText(user.getAddress().getAddress());

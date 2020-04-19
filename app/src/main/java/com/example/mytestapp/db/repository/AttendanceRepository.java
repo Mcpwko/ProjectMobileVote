@@ -1,11 +1,8 @@
 package com.example.mytestapp.db.repository;
 
-import android.content.Context;
-
 import androidx.lifecycle.LiveData;
 
 import com.example.mytestapp.db.entities.Attendance;
-import com.example.mytestapp.db.entities.Attendance2;
 import com.example.mytestapp.db.firebase.AttendanceListLiveData;
 import com.example.mytestapp.db.firebase.AttendanceLiveData;
 import com.example.mytestapp.util.OnAsyncEventListener;
@@ -35,7 +32,7 @@ public class AttendanceRepository {
     }
 
 
-    public LiveData<Attendance2> getAttendance(final String id) {
+    public LiveData<Attendance> getAttendance(final String id) {
         DatabaseReference reference = FirebaseDatabase.getInstance()
                 .getReference("votes")
                 .child(id);
@@ -48,7 +45,7 @@ public class AttendanceRepository {
     }*/
 
 
-    public LiveData<List<Attendance2>> getAttendances() {
+    public LiveData<List<Attendance>> getAttendances() {
         DatabaseReference reference = FirebaseDatabase.getInstance()
                 .getReference("votes");
         return new AttendanceListLiveData(reference);

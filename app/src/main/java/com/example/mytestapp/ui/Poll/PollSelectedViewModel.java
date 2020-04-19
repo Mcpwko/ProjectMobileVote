@@ -9,12 +9,8 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.mytestapp.db.entities.Poll;
-import com.example.mytestapp.db.entities.PossibleAnswers;
 import com.example.mytestapp.db.repository.PollRepository;
 import com.example.mytestapp.db.repository.PossibleAnswersRepository;
-
-
-import java.util.List;
 
 public class PollSelectedViewModel extends AndroidViewModel {
     private Application application;
@@ -22,10 +18,10 @@ public class PollSelectedViewModel extends AndroidViewModel {
     private PossibleAnswersRepository possibleAnswersRepository;
 
 
-    //private final LiveData<Poll> observablePoll;
+    private final LiveData<Poll> observablePoll;
     //private final LiveData<List<PossibleAnswers>> observableAnswers;
 
-    public PollSelectedViewModel(@NonNull Application application, final int idPoll,
+    public PollSelectedViewModel(@NonNull Application application, final String idPoll,
                                     PollRepository pollRepository, PossibleAnswersRepository possibleAnswersRepository) {
         super(application);
 
@@ -35,7 +31,7 @@ public class PollSelectedViewModel extends AndroidViewModel {
 
 
 
-        //observablePoll = pollRepository.getPoll(idPoll,application);
+        observablePoll = pollRepository.getPoll(idPoll);
         //observableAnswers = possibleAnswersRepository.getPossibleAnswersByPoll(idPoll,application);
     }
 
@@ -46,11 +42,11 @@ public class PollSelectedViewModel extends AndroidViewModel {
 
         @NonNull
         private final Application application;
-        private final int idPoll;
+        private final String idPoll;
         private final PollRepository pollRepository;
         private final PossibleAnswersRepository possibleAnswersRepository;
 
-        public Factory(@NonNull Application application, int idPoll) {
+        public Factory(@NonNull Application application, String idPoll) {
             this.idPoll = idPoll;
             this.application = application;
             pollRepository = getPollRepository();
@@ -68,9 +64,10 @@ public class PollSelectedViewModel extends AndroidViewModel {
     /**
      * Expose the LiveData ClientAccounts query so the UI can observe it.
      */
-    /*public LiveData<Poll> getPoll() {
+    public LiveData<Poll> getPoll() {
         return observablePoll;
     }
+    /*
     public LiveData<List<PossibleAnswers>> getPossibleAnswers(){ return observableAnswers; }
 */
 

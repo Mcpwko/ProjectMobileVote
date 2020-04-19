@@ -34,13 +34,14 @@ import com.example.mytestapp.db.entities.Address1;
 import com.example.mytestapp.db.entities.Attendance;
 import com.example.mytestapp.db.entities.Meeting;
 import com.example.mytestapp.db.entities.Poll;
-import com.example.mytestapp.db.entities.PossibleAnswers;
 import com.example.mytestapp.db.entities.User;
 import com.example.mytestapp.db.repository.AttendanceRepository;
+import com.example.mytestapp.db.repository.MeetingRepository;
 import com.example.mytestapp.db.repository.PollRepository;
 import com.example.mytestapp.db.repository.UserRepository;
 import com.example.mytestapp.ui.addVote.ChooseVoteFragment;
 import com.example.mytestapp.ui.addVote.meeting.MeetingFragment;
+import com.example.mytestapp.ui.addVote.meeting.MeetingViewModel;
 import com.example.mytestapp.ui.addVote.poll.PollFragment;
 import com.example.mytestapp.ui.addVote.poll.PollStep2Fragment;
 import com.example.mytestapp.ui.home.HomeFragment;
@@ -79,6 +80,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.LinkedHashSet;
 import java.util.List;
 
@@ -101,6 +103,7 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
     private static final int IMAGE_PICK_CODE = 1000;
     private static final int PERMISSION_CODE = 1001;
     private Switch aSwitch;
+    private MeetingRepository meetingRepository;
     private PollRepository pollRepository;
     private UserRepository userRepository;
     private AttendanceRepository attendanceRepository;
@@ -119,6 +122,7 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
         userRepository = getUserRepository();
         pollRepository = getPollRepository();
         attendanceRepository = getAttendanceRepository();
+        meetingRepository = getMeetingRepository();
 
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -256,6 +260,8 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
     public UserRepository getUserRepository() {
         return UserRepository.getInstance();
     }
+
+    public MeetingRepository getMeetingRepository() { return MeetingRepository.getInstance();}
 
     public void Logout(View view){
         Intent intent = new Intent(this, LoginActivity.class);
@@ -446,7 +452,9 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
 
         EditText birthdate = findViewById(R.id.birthdateEditAccount);
         birthdate.setEnabled(false);
-        //user.setBirthdate(birthdate.getText().toString());
+        /*Calendar calendar = new GregorianCalendar();
+        Long time = calendar.getTimeInMillis();
+        user.setBirthDate();*/
 
         FirebaseUser usera = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -597,14 +605,6 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
 
 
 
-
-        SharedPreferences preferences = getSharedPreferences("User", Context.MODE_PRIVATE);
-        Gson gson2 = new Gson();
-        String json2 = preferences.getString("User", "");
-        User user = gson2.fromJson(json2, User.class);
-
-        //poll.setUser_id(user.getUid());
-
         pollSharedPreferences = getApplicationContext().getSharedPreferences("Poll", MODE_PRIVATE);
         SharedPreferences.Editor edt = pollSharedPreferences.edit();
 
@@ -726,9 +726,24 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
             Poll poll = gson.fromJson(json, Poll.class);
 
 
-            poll.setStatusOpen(true);
+            poll.setType("Poll");
 
             //METHODE CREATION DE POLL
+
+            FirebaseUser actual = FirebaseAuth.getInstance().getCurrentUser();
+            poll.setUser_id(actual.getUid());
+
+            //METHODE CREATION DE MEETING
+            OnAsyncEventListener callback = new OnAsyncEventListener() {
+                @Override
+                public void onSuccess() {
+                }
+
+                @Override
+                public void onFailure(Exception e) {
+                }
+            };
+            pollRepository.insert(poll, callback);
 
 
             //We get the last poll in the database and we put the data into a listwithout duplicates
@@ -744,9 +759,6 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
                     possibleAnswers.setAnswer(test);
                     possibleAnswers.setPollid(poll2.getPid());
 
-
-                    //We create the possible answers
-                    //METHODE CRATION POSSIBLE ANSWERS
                 }
             });*/
 
@@ -783,6 +795,8 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
         EditText description = (EditText) findViewById(R.id.descriptionMeeting);
         meeting.setDescMeeting(description.getText().toString());
 
+        meeting.setType("Meeting");
+
         if(title.getText().toString().equals("") || place.getText().toString().equals("") || description.getText().toString().equals("")){
 
 
@@ -799,22 +813,33 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
         }else{
 
 
-
-        meeting.setStatusOpen(true);
-
-        SharedPreferences userpreferences = getSharedPreferences("User", Context.MODE_PRIVATE);
-        Gson gson2 = new Gson();
-        String json2 = userpreferences.getString("User", "");
-        User user = gson2.fromJson(json2, User.class);
-
-        //meeting.setUser_id(user.getUid());
+        FirebaseUser actual = FirebaseAuth.getInstance().getCurrentUser();
+        meeting.setUser_id(actual.getUid());
 
 
+            Intent intent = new Intent(this, MainActivity.class);
         //METHODE CREATION DE MEETING
+            OnAsyncEventListener callback = new OnAsyncEventListener() {
+                @Override
+                public void onSuccess() {
+
+                    startActivity(intent);
+                }
+
+                @Override
+                public void onFailure(Exception e) {
+
+                }
+            };
+            meetingRepository.insert(meeting, callback);
 
 
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
+
+
+
+
+
+
         }
     }
 
@@ -832,7 +857,7 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
         Attendance attendance = new Attendance();
         attendance.setAnswerAttendance(true);
         //attendance.setUser_id(user.getUid());
-        attendance.setMeeting_id(view.getId());
+        attendance.setMeeting_id(view.getId() + "");
 
         //METHODE CREATION ATTENDANCE
 
@@ -863,7 +888,7 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
         Attendance attendance = new Attendance();
         attendance.setAnswerAttendance(false);
         //attendance.setUser_id(user.getUid());
-        attendance.setMeeting_id(view.getId());
+        attendance.setMeeting_id(view.getId()+ "");
         //We create an attendance anyway
 
         //METHODE CREATION ATTENDANCE

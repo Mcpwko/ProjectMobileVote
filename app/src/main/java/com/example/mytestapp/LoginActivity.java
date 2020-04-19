@@ -35,7 +35,9 @@ import com.example.mytestapp.util.OnAsyncEventListener;
 import com.google.gson.Gson;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 //This activity is represented by the login menu at the beginning of the app
 public class LoginActivity extends AppCompatActivity {
@@ -212,9 +214,12 @@ public class LoginActivity extends AppCompatActivity {
             user.setLastName(name.getText().toString());
 
             DatePicker date = (DatePicker) findViewById(R.id.datePickerRegister);
-            SimpleDateFormat dateformat = new SimpleDateFormat("yyyy.MM.dd");
-            //String dateFormat = dateformat.format(new Date(date.getYear(),date.getMonth(),date.getDayOfMonth()));
-            user.setBirthDate(new Date(date.getYear(),date.getMonth(),date.getDayOfMonth()));
+            int day   = date.getDayOfMonth();
+            int month = date.getMonth()+1;  // here I added 1 to the month
+            int year  = date.getYear();
+            Calendar calendar = new GregorianCalendar(year, month, day);
+            Long time = calendar.getTimeInMillis();
+            user.setBirthDate(time);
 
             EditText phone = (EditText) findViewById(R.id.phoneNumberRegister);
             user.setPhoneNumber(phone.getText().toString());

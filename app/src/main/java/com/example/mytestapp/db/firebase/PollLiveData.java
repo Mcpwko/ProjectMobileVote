@@ -5,13 +5,13 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 
-import com.example.mytestapp.db.entities.Poll2;
+import com.example.mytestapp.db.entities.Poll;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
-public class PollLiveData extends LiveData<Poll2> {
+public class PollLiveData extends LiveData<Poll> {
     private static final String TAG = "PollLiveData";
 
     private final DatabaseReference reference;
@@ -36,7 +36,7 @@ public class PollLiveData extends LiveData<Poll2> {
     private class MyValueEventListener implements ValueEventListener {
         @Override
         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-            Poll2 entity = dataSnapshot.getValue(Poll2.class);
+            Poll entity = dataSnapshot.getValue(Poll.class);
             entity.setPid(dataSnapshot.getKey());
             setValue(entity);
         }

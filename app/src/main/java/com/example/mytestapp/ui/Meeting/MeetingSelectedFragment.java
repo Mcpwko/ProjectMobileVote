@@ -1,6 +1,8 @@
 package com.example.mytestapp.ui.Meeting;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.content.SharedPreferences;
@@ -9,6 +11,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.preference.PreferenceManager;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,9 +25,11 @@ import android.widget.TextView;
 import com.example.mytestapp.R;
 import com.example.mytestapp.db.entities.User;
 
+import com.example.mytestapp.db.repository.UserRepository;
 import com.example.mytestapp.util.OnAsyncEventListener;
 
 import com.example.mytestapp.viewmodel.UserViewModel;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
 
 import java.text.DateFormat;
@@ -38,12 +43,11 @@ import static android.content.Context.MODE_PRIVATE;
 public class MeetingSelectedFragment extends Fragment {
     private static final String TAG = "MeetingSelectedFragment";
     private MeetingSelectedViewModel mViewModel;
-    private int idMeeting;
     private UserViewModel userViewModel;
+    private UserRepository userRepository;
+    private User user;
 
-
-    public MeetingSelectedFragment(int idMeeting){
-        this.idMeeting = idMeeting;
+    public MeetingSelectedFragment(){
     }
 
 
@@ -57,16 +61,11 @@ public class MeetingSelectedFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_meeting_selected, container, false);
         setHasOptionsMenu(true);
 
+        String idMeeting = PreferenceManager.getDefaultSharedPreferences(getActivity()).getString("SelectedItem", "NotFound");
 
-        //We create a sharedPreference to get the name of the User
-        SharedPreferences preferences = getActivity().getSharedPreferences("User", MODE_PRIVATE);
-        Gson gson = new Gson();
-        String json = preferences.getString("User", "");
-        User actualUser = gson.fromJson(json, User.class);
-
-
-        /*MeetingSelectedViewModel.Factory factory = new MeetingSelectedViewModel.Factory(
-                getActivity().getApplication(),idMeeting,actualUser.getUid());
+        userRepository = getUserRepository();
+        MeetingSelectedViewModel.Factory factory = new MeetingSelectedViewModel.Factory(
+                getActivity().getApplication(),idMeeting);
 
         mViewModel = ViewModelProviders.of(this,factory).get(MeetingSelectedViewModel.class);
 
@@ -74,11 +73,8 @@ public class MeetingSelectedFragment extends Fragment {
         //To set the text the EditTexts created in the layout, we need to get the data in the
         //in the database, that's why we use a userViewModel which search for the Meetings associated
         //to a meeting
-        /*mViewModel.getMeeting().observe(getActivity(), meeting-> {
-            if(this.isVisible()) {
-                UserViewModel.Factory factoryUser = new UserViewModel.Factory(getActivity().getApplication(), meeting.getUser_id());
-                userViewModel = ViewModelProviders.of(this, factoryUser).get(UserViewModel.class);
-            }
+        mViewModel.getMeeting().observe(getActivity(), meeting-> {
+
 
                     TextView title = root.findViewById(R.id.titleMeetingSelected);
                     title.setText(meeting.getTitleMeeting());
@@ -97,10 +93,27 @@ public class MeetingSelectedFragment extends Fragment {
                     TextView description = root.findViewById(R.id.descriptionMeetingSelected);
                     description.setText(meeting.getDescMeeting());
 
-                    userViewModel.getUser().observe(getActivity(), user -> {
-                        TextView name = root.findViewById(R.id.nameOfCreatorMeeting);
-                        name.setText(user.getLastName() + " " + user.getFirstName());
+
+                    UserViewModel.Factory factory2 = new UserViewModel.Factory(
+                            getActivity().getApplication(),
+                            meeting.getUser_id()
+
+                    );
+                    String salut = meeting.getUser_id();
+                    System.out.println("SALUT");
+                    userViewModel = new ViewModelProvider(this, factory2).get(UserViewModel.class);
+
+                    userViewModel.getUser().observe(getActivity(), accountEntity -> {
+                        if (accountEntity != null) {
+                            user = accountEntity;
+                            TextView name = root.findViewById(R.id.nameOfCreatorMeeting);
+                            name.setText(user.getLastName() + " " + user.getFirstName());
+                        }
                     });
+
+
+
+
 
                     Button btnyes = root.findViewById(R.id.yesBtnMeetingSelected);
                     Button btnNo = root.findViewById(R.id.noBtnMeetingSelected);
@@ -108,7 +121,7 @@ public class MeetingSelectedFragment extends Fragment {
 
                     Button btnEdit = root.findViewById(R.id.editmeeting);
 
-                    mViewModel.getAttendance().observe(getActivity(), attendance -> {
+                    /*mViewModel.getAttendance().observe(getActivity(), attendance -> {
 
 
 
@@ -132,7 +145,7 @@ public class MeetingSelectedFragment extends Fragment {
 
 
                                     //We then proceed with the deletion of the Attendance
-                                    /*new DeleteAttendance(getActivity().getApplication(), new OnAsyncEventListener() {
+                                    new DeleteAttendance(getActivity().getApplication(), new OnAsyncEventListener() {
                                         @Override
                                         public void onSuccess() {
                                             Log.d(TAG, "createUserWithEmail: success");
@@ -147,9 +160,9 @@ public class MeetingSelectedFragment extends Fragment {
 
 
                                 });
-                                /*alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.Nobtn), (dialog, which) -> alertDialog.dismiss());
-                                alertDialog.show();*/
-/*
+                                alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.Nobtn), (dialog, which) -> alertDialog.dismiss());
+                                alertDialog.show();
+
 
                             }
                         });
@@ -187,8 +200,8 @@ public class MeetingSelectedFragment extends Fragment {
                             btnEdit.setId(attendance.getAid());
                         }
 
-                    });
-        });*/
+                    });*/
+        });
 
 
 
@@ -201,6 +214,8 @@ public class MeetingSelectedFragment extends Fragment {
         MenuItem item=menu.findItem(R.id.sort);
         item.setVisible(false);
     }
+
+    public UserRepository getUserRepository(){return UserRepository.getInstance();}
 
 
 

@@ -4,15 +4,10 @@ import android.app.Application;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.mytestapp.db.entities.Vote;
-
 import com.example.mytestapp.db.repository.VoteRepository;
-
-import java.util.List;
 //The ViewModel will use the observer pattern to get the data from the database
 
 public class VoteListViewModel extends AndroidViewModel {

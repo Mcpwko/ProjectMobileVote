@@ -19,7 +19,7 @@ public class User implements Comparable{
 
     private String lastName;
 
-    private Date birthDate;
+    private Long birthDate;
 
     public Address1 address;
 
@@ -33,7 +33,7 @@ public class User implements Comparable{
 
     }
 
-    public User(@NonNull String firstName, String lastName, Date birthDate, Address1 address, String phoneNumber, String email, String password) {
+    public User(@NonNull String firstName, String lastName, Long birthDate, Address1 address, String phoneNumber, String email, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthDate = birthDate;
@@ -71,11 +71,11 @@ public class User implements Comparable{
         this.password = password;
     }
 
-    public Date getBirthDate() {
+    public Long getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(Date birthDate) {
+    public void setBirthDate(Long birthDate) {
         this.birthDate = birthDate;
     }
 
@@ -134,6 +134,7 @@ public class User implements Comparable{
         result.put("firstName", firstName);
         result.put("lastName", lastName);
         result.put("email", email);
+        result.put("birthdate",birthDate);
 
         return result;
     }

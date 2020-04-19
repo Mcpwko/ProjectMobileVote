@@ -1,68 +1,61 @@
 package com.example.mytestapp.db.entities;
 
-import androidx.room.ColumnInfo;
-import androidx.room.Entity;
-import androidx.room.ForeignKey;
-import androidx.room.Index;
-import androidx.room.PrimaryKey;
+
+//This class represents the User Entity
+import androidx.annotation.NonNull;
+
+import com.google.firebase.database.Exclude;
 
 import java.util.Date;
-
-import static androidx.room.ForeignKey.CASCADE;
-//This class represents the Poll Entity
-
-//We use foreign keys to create links with the User Entity
-@Entity(foreignKeys = @ForeignKey(entity = User.class,
-        parentColumns = "uid", childColumns = "user_id",
-        onDelete = CASCADE),indices = {
-        @Index(value = {"user_id"}
-        )})
+import java.util.HashMap;
+import java.util.Map;
 
 
-public class Poll {
-    @PrimaryKey(autoGenerate = true)
-    private int pid;
+public class Poll implements Comparable{
 
-    @ColumnInfo (name = "user_id")
-    private int user_id;
 
-    @ColumnInfo (name = "title_poll")
+    private String pid;
+
+    private String user_id;
+
     private String titlePoll;
 
-    @ColumnInfo (name = "category_poll")
     private String categoryPoll;
 
-    @ColumnInfo (name = "desc_poll")
     private String descPoll;
 
-    @ColumnInfo (name = "deadline_poll")
     private Date deadlinePoll;
 
-    @ColumnInfo (name = "statusOpen")
-    private boolean statusOpen;
+    private String type;
 
-    public int getPid() {
+    public Poll(){
+
+    }
+
+    public Poll(String pid, String user_id, String titlePoll, String categoryPoll, String descPoll, Date deadlinePoll, String type) {
+        this.pid = pid;
+        this.user_id = user_id;
+        this.titlePoll = titlePoll;
+        this.categoryPoll = categoryPoll;
+        this.descPoll = descPoll;
+        this.deadlinePoll = deadlinePoll;
+        this.type = type;
+    }
+    @Exclude
+    public String getPid() {
         return pid;
     }
 
-    public void setPid(int pid) {
+    public void setPid(String pid) {
         this.pid = pid;
     }
 
-    public int getUser_id() {
+    public String getUser_id() {
         return user_id;
     }
 
-    public void setUser_id(int user_id) {
+    public void setUser_id(String user_id) {
         this.user_id = user_id;
-    }
-
-    public boolean isStatusOpen() {
-        return statusOpen;
-    }
-
-    public void setStatusOpen(boolean statusOpen) {
-        this.statusOpen = statusOpen;
     }
 
     public String getTitlePoll() {
@@ -96,4 +89,31 @@ public class Poll {
     public void setDeadlinePoll(Date deadlinePoll) {
         this.deadlinePoll = deadlinePoll;
     }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    @Override
+    public int compareTo(@NonNull Object o) {
+        return toString().compareTo(o.toString());
+    }
+
+    @Exclude
+    public Map<String, Object> toMap() {
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("titlePoll", titlePoll);
+        result.put("categoryPoll", categoryPoll);
+        result.put("descPoll", descPoll);
+        result.put("deadlinePoll", deadlinePoll);
+        result.put("type", type);
+
+        return result;
+    }
 }
+
+

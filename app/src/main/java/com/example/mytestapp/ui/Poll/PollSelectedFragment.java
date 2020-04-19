@@ -1,52 +1,41 @@
 package com.example.mytestapp.ui.Poll;
 
-import androidx.appcompat.app.AlertDialog;
-import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.preference.PreferenceManager;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.mytestapp.MainActivity;
 import com.example.mytestapp.R;
 
 import com.example.mytestapp.db.entities.User;
-import com.example.mytestapp.db.entities.Vote;
 
 import com.example.mytestapp.db.repository.PollRepository;
 import com.example.mytestapp.db.repository.PossibleAnswersRepository;
 import com.example.mytestapp.db.repository.UserRepository;
 import com.example.mytestapp.db.repository.VoteRepository;
 
-import com.example.mytestapp.ui.home.HomeFragment;
-import com.example.mytestapp.util.OnAsyncEventListener;
 import com.example.mytestapp.viewmodel.UserViewModel;
 import com.example.mytestapp.viewmodel.VoteViewModel;
 import com.google.gson.Gson;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -56,14 +45,15 @@ public class PollSelectedFragment extends Fragment {
     private PollSelectedViewModel mViewModel;
     private UserViewModel userViewModel;
     private VoteViewModel voteViewModel;
-    private int idPoll;
     private PollRepository pollRep;
     private UserRepository userRep;
     private VoteRepository voteRep;
     private PossibleAnswersRepository possibleAnsRep;
     private static final String TAG = "PollSelectedFragment";
-    public PollSelectedFragment(int idPoll){
-        this.idPoll = idPoll;
+    private User user;
+
+
+    public PollSelectedFragment(){
     }
 
     @Override
@@ -76,10 +66,9 @@ public class PollSelectedFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_selected_poll, container, false);
         setHasOptionsMenu(true);
 
-        SharedPreferences preferences = getActivity().getSharedPreferences("User", MODE_PRIVATE);
-        Gson gson = new Gson();
-        String json = preferences.getString("User", "");
-        User actualUser = gson.fromJson(json, User.class);
+        String idPoll = PreferenceManager.getDefaultSharedPreferences(getActivity()).getString("SelectedItem", "NotFound");
+
+        //GET ACTUAL USER
 
         //The layout will be useful to store into a scrollView all the possible answers
         LinearLayout linearLayout = root.findViewById(R.id.linearLayoutAnswersPollSelected);
@@ -95,16 +84,26 @@ public class PollSelectedFragment extends Fragment {
 
         //This block sets the text elements created in the layout with the data in the database
 
-        /*mViewModel.getPoll().observe(getActivity(),poll -> {
-            if(this.isVisible()) {
-                UserViewModel.Factory factoryUser = new UserViewModel.Factory(getActivity().getApplication(), poll.getUser_id());
-                userViewModel = ViewModelProviders.of(this, factoryUser).get(UserViewModel.class);
-                userViewModel.getUser().observe(getActivity(), user -> {
-                    TextView name = root.findViewById(R.id.userCreatorPoll);
-                    name.setText(user.getLastName() + " " + user.getFirstName());
+        mViewModel.getPoll().observe(getActivity(),poll -> {
 
+            if(this.isVisible()) {
+                UserViewModel.Factory factoryUser = new UserViewModel.Factory(
+                        getActivity().getApplication(),
+                        poll.getUser_id()
+
+                );
+                userViewModel = new ViewModelProvider(this, factoryUser).get(UserViewModel.class);
+
+                userViewModel.getUser().observe(getActivity(), accountEntity -> {
+                    if (accountEntity != null) {
+                        user = accountEntity;
+                        TextView name = root.findViewById(R.id.userCreatorPoll);
+                        name.setText(user.getLastName() + " " + user.getFirstName());
+                    }
                 });
             }
+
+
 
             TextView title = root.findViewById(R.id.titlePollSelected);
             title.setText(poll.getTitlePoll());
@@ -123,7 +122,7 @@ public class PollSelectedFragment extends Fragment {
 
             //We do the same as above and we get the data from the possibleAnswers table
 
-            mViewModel.getPossibleAnswers().observe(getActivity(),possibleAnswers -> {
+            /*mViewModel.getPossibleAnswers().observe(getActivity(),possibleAnswers -> {
 
                 VoteViewModel.Factory factoryVote = new VoteViewModel.Factory(getActivity().getApplication(),actualUser.getUid(),poll.getPid());
                 voteViewModel = ViewModelProviders.of(this, factoryVote).get(VoteViewModel.class);
@@ -396,10 +395,10 @@ public class PollSelectedFragment extends Fragment {
                     }
                 });
 
-            });
+            });*/
 
         });
-*/
+
 
 
 

@@ -1,12 +1,5 @@
 package com.example.mytestapp.db.repository;
 
-import android.content.Context;
-
-import androidx.lifecycle.LiveData;
-
-import com.example.mytestapp.db.entities.PossibleAnswers;
-
-import java.util.List;
 //The class is used to transfer data from DAO to ViewModel
 
 public class PossibleAnswersRepository {

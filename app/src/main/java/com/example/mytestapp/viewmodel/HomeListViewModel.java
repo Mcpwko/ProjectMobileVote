@@ -7,6 +7,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
+
 import com.example.mytestapp.db.entities.Meeting;
 import com.example.mytestapp.db.entities.Poll;
 import com.example.mytestapp.db.repository.MeetingRepository;
@@ -23,8 +24,8 @@ public class HomeListViewModel extends AndroidViewModel {
     private MeetingRepository meetingRepository;
 
     // MediatorLiveData can observe other LiveData objects and react on their emissions.
-    //private final LiveData<List<Meeting>> observableMeetings;
-    //private final LiveData<List<Poll>> observablePolls;
+    private final LiveData<List<Meeting>> observableMeetings;
+    private final LiveData<List<Poll>> observablePolls;
 
     public HomeListViewModel(@NonNull Application application,
                                 MeetingRepository meetingRepository,
@@ -38,8 +39,8 @@ public class HomeListViewModel extends AndroidViewModel {
 
 
 
-        //observableMeetings = meetingRepository.getActiveMeeting(application);
-        //observablePolls = pollRepository.getActivePolls(application);
+        observableMeetings = meetingRepository.getActiveMeetings();
+        observablePolls = pollRepository.getActivePolls();
 
     }
 
@@ -69,12 +70,13 @@ public class HomeListViewModel extends AndroidViewModel {
 
     //We expose the LiveData list query so that it can be observed
 
-    /*public LiveData<List<Meeting>> getMeetings() {
+    public LiveData<List<Meeting>> getMeetings() {
         return observableMeetings;
     }
+
     public LiveData<List<Poll>> getPolls() {
         return observablePolls;
-    }*/
+    }
 
     public static PollRepository getPollRepository(){ return PollRepository.getInstance(); }
     public static MeetingRepository getMeetingRepository(){ return MeetingRepository.getInstance(); }

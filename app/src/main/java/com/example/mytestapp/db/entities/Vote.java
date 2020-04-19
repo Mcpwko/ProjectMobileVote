@@ -1,77 +1,43 @@
 package com.example.mytestapp.db.entities;
 
-import androidx.room.ColumnInfo;
-import androidx.room.Entity;
-import androidx.room.ForeignKey;
-import androidx.room.Index;
-import androidx.room.PrimaryKey;
 
-import static androidx.room.ForeignKey.CASCADE;
+import androidx.annotation.NonNull;
 
-//This class represents the Vote Entity. It is used as an Association Class.
+import com.google.firebase.database.Exclude;
 
-//We use foreign keys to create links with the User Entity, the Poll Entity and the PossibleAnswers Entity
 
-@Entity(foreignKeys = {
-        @ForeignKey(
-                entity = User.class,
-                parentColumns = "uid",
-                childColumns = "user_id",
-                onDelete = CASCADE
-        ),
-        @ForeignKey(
-                entity = Poll.class,
-                parentColumns = "pid",
-                childColumns = "poll_id",
-                onDelete = CASCADE
-        ),
-        @ForeignKey(
-                entity = PossibleAnswers.class,
-                parentColumns = "paid",
-                childColumns = "possaid",
-                onDelete = CASCADE
-        )},indices = {
-        @Index(value ={"user_id"}),
-        @Index(value ={"possaid"}),
-        @Index(value ={"poll_id"})
-})
+public class Vote implements Comparable{
 
-public class Vote {
 
-    @PrimaryKey(autoGenerate = true)
-    public int vid;
+    public String vid;
 
-    @ColumnInfo(name="user_id")
-    public int user_id;
+    public String user_id;
 
-    @ColumnInfo(name = "possaid")
     public int possaid;
 
-    @ColumnInfo(name = "poll_id")
     public int poll_id;
 
 
-    public int getVid() {
+    public Vote(String vid, String user_id, int possaid, int poll_id) {
+        this.vid = vid;
+        this.user_id = user_id;
+        this.possaid = possaid;
+        this.poll_id = poll_id;
+    }
+    @Exclude
+    public String getVid() {
         return vid;
     }
 
-    public void setVid(int vid) {
+    public void setVid(String vid) {
         this.vid = vid;
     }
 
-    public int getPoll_id() {
-        return poll_id;
-    }
-
-    public void setPoll_id(int poll_id) {
-        this.poll_id = poll_id;
-    }
-
-    public int getUser_id() {
+    public String getUser_id() {
         return user_id;
     }
 
-    public void setUser_id(int user_id) {
+    public void setUser_id(String user_id) {
         this.user_id = user_id;
     }
 
@@ -82,4 +48,19 @@ public class Vote {
     public void setPossaid(int possaid) {
         this.possaid = possaid;
     }
+
+    public int getPoll_id() {
+        return poll_id;
+    }
+
+    public void setPoll_id(int poll_id) {
+        this.poll_id = poll_id;
+    }
+
+    @Override
+    public int compareTo(@NonNull Object o) {
+        return toString().compareTo(o.toString());
+    }
 }
+
+

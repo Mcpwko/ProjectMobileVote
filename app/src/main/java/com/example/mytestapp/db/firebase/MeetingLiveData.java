@@ -5,14 +5,14 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 
-import com.example.mytestapp.db.entities.Meeting2;
+import com.example.mytestapp.db.entities.Meeting;
 import com.example.mytestapp.db.entities.User;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
-public class MeetingLiveData extends LiveData<Meeting2> {
+public class MeetingLiveData extends LiveData<Meeting> {
     private static final String TAG = "MeetingLiveData";
 
     private final DatabaseReference reference;
@@ -36,7 +36,7 @@ public class MeetingLiveData extends LiveData<Meeting2> {
     private class MyValueEventListener implements ValueEventListener {
         @Override
         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-            Meeting2 entity = dataSnapshot.getValue(Meeting2.class);
+            Meeting entity = dataSnapshot.getValue(Meeting.class);
             entity.setMid(dataSnapshot.getKey());
             setValue(entity);
         }

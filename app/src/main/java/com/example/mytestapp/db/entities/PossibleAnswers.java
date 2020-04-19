@@ -1,48 +1,47 @@
 package com.example.mytestapp.db.entities;
 
-import androidx.room.ColumnInfo;
-import androidx.room.Entity;
-import androidx.room.ForeignKey;
-import androidx.room.Index;
-import androidx.room.PrimaryKey;
 
-import static androidx.room.ForeignKey.CASCADE;
-//This class represents the PossibleAnswers Entity
+//This class represents the User Entity
+import androidx.annotation.NonNull;
 
-//We use foreign keys to create links with the Poll Entity
-@Entity(foreignKeys = @ForeignKey(entity = Poll.class,
-        parentColumns = "pid", childColumns = "pollid",
-        onDelete = CASCADE),
-        indices = {
-        @Index(value = {"pollid"}
-        )})
+import com.google.firebase.database.Exclude;
 
-public class PossibleAnswers {
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
-    @PrimaryKey(autoGenerate = true)
-    private int paid;
 
-    @ColumnInfo (name = "pollid")
-    private int pollid;
+public class PossibleAnswers implements Comparable{
 
-    @ColumnInfo (name = "answer")
+    private String paid;
+
+    private String pollid;
+
     private String answer;
 
+    public PossibleAnswers(){
 
+    }
 
-    public int getPaid() {
+    public PossibleAnswers(String paid, String pollid, String answer) {
+        this.paid = paid;
+        this.pollid = pollid;
+        this.answer = answer;
+    }
+    @Exclude
+    public String getPaid() {
         return paid;
     }
 
-    public void setPaid(int paid) {
+    public void setPaid(String paid) {
         this.paid = paid;
     }
 
-    public int getPollid() {
+    public String getPollid() {
         return pollid;
     }
 
-    public void setPollid(int pollid) {
+    public void setPollid(String pollid) {
         this.pollid = pollid;
     }
 
@@ -53,4 +52,19 @@ public class PossibleAnswers {
     public void setAnswer(String answer) {
         this.answer = answer;
     }
+
+    @Override
+    public int compareTo(@NonNull Object o) {
+        return toString().compareTo(o.toString());
+    }
+
+    @Exclude
+    public Map<String, Object> toMap() {
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("answer", answer);
+
+        return result;
+    }
 }
+
+
