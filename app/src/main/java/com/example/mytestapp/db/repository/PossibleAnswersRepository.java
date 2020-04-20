@@ -62,6 +62,19 @@ public class PossibleAnswersRepository {
                 });
     }
 
+    public void deletePossibleAnswers(final PossibleAnswers possibleAnswers, final OnAsyncEventListener callback) {
+        FirebaseDatabase.getInstance()
+                .getReference("possibleAnswers")
+                .child(possibleAnswers.getPaid())
+                .removeValue((databaseError, databaseReference) -> {
+                    if (databaseError != null) {
+                        callback.onFailure(databaseError.toException());
+                    } else {
+                        callback.onSuccess();
+                    }
+                });
+    }
+
 
 
 }

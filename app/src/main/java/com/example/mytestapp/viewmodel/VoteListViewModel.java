@@ -4,10 +4,14 @@ import android.app.Application;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.mytestapp.db.entities.Vote;
 import com.example.mytestapp.db.repository.VoteRepository;
+
+import java.util.List;
 //The ViewModel will use the observer pattern to get the data from the database
 
 public class VoteListViewModel extends AndroidViewModel {
@@ -17,16 +21,16 @@ public class VoteListViewModel extends AndroidViewModel {
     private VoteRepository voteRepository;
 
     // MediatorLiveData can observe other LiveData objects and react on their emissions.
-    //private final LiveData<List<Vote>> observableVotes;
+    private final LiveData<List<Vote>> observableVotes;
 
-    public VoteListViewModel(@NonNull Application application,final int idPoll,
+    public VoteListViewModel(@NonNull Application application,final String idPoll,
                              VoteRepository voteRepository) {
         super(application);
 
         this.application = application;
 
         this.voteRepository = voteRepository;
-        //observableVotes = voteRepository.getVotesByPoll(idPoll,application);
+        observableVotes = voteRepository.getVotesByPoll(idPoll);
     }
 
     //The Factory pattern is used to put the id into the ViewModel
@@ -37,9 +41,9 @@ public class VoteListViewModel extends AndroidViewModel {
         private final Application application;
 
         private final VoteRepository voteRepository;
-        private final int idPoll;
+        private final String idPoll;
 
-        public Factory(@NonNull int idPoll, Application application) {
+        public Factory(@NonNull String idPoll, Application application) {
             this.application = application;
             voteRepository = getVoteRepository();
             this.idPoll = idPoll;
@@ -57,10 +61,10 @@ public class VoteListViewModel extends AndroidViewModel {
 
     //We expose the LiveData list query so that it can be observed
 
-    /*public LiveData<List<Vote>> getVotes() {
+    public LiveData<List<Vote>> getVotes() {
         return observableVotes;
     }
-*/
+
 
     public static VoteRepository getVoteRepository(){ return VoteRepository.getInstance(); }
 }

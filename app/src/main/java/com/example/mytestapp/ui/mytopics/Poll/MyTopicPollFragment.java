@@ -2,6 +2,8 @@ package com.example.mytestapp.ui.mytopics.Poll;
 
 import androidx.lifecycle.ViewModelProviders;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -14,10 +16,24 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
+import com.example.mytestapp.MainActivity;
 import com.example.mytestapp.R;
+import com.example.mytestapp.db.entities.PossibleAnswers;
+import com.example.mytestapp.db.entities.Vote;
+import com.example.mytestapp.db.repository.PollRepository;
+import com.example.mytestapp.db.repository.PossibleAnswersRepository;
+import com.example.mytestapp.db.repository.VoteRepository;
 import com.example.mytestapp.ui.Poll.PollSelectedViewModel;
+import com.example.mytestapp.util.OnAsyncEventListener;
 import com.example.mytestapp.viewmodel.VoteListViewModel;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 //This class is used when we click on one of the Poll we created
 public class MyTopicPollFragment extends Fragment {
@@ -25,6 +41,9 @@ public class MyTopicPollFragment extends Fragment {
     private PollSelectedViewModel mViewModel;
     private static final String TAG = "MyTopicPollFragment";
     private VoteListViewModel voteListViewModel;
+    private PollRepository pollRepository;
+    private VoteRepository voteRepository;
+    private PossibleAnswersRepository possibleAnswersRepository;
     public MyTopicPollFragment(){
     }
 
@@ -39,13 +58,16 @@ public class MyTopicPollFragment extends Fragment {
         String idPoll = PreferenceManager.getDefaultSharedPreferences(getActivity()).getString("SelectedMyItem", "NotFound");
         LinearLayout linearLayout = root.findViewById(R.id.linearLayoutPollsMyTopics);
         Button delete = root.findViewById(R.id.deletePoll);
+        pollRepository = getPollRepository();
+        voteRepository = getVoteRepository();
+        possibleAnswersRepository = getPossibleAnswersRepository();
 
         PollSelectedViewModel.Factory factory = new PollSelectedViewModel.Factory(
                 getActivity().getApplication(),idPoll);
 
         mViewModel = ViewModelProviders.of(this,factory).get(PollSelectedViewModel.class);
 
-        /*mViewModel.getPoll().observe(getActivity(),poll -> {
+        mViewModel.getPoll().observe(getActivity(),poll -> {
 
             //If the poll object is not null we can set the text of all our EditText
             if (poll != null){
@@ -77,7 +99,7 @@ public class MyTopicPollFragment extends Fragment {
                         for (int i = 0; i < possibleAnswers.size(); i++) {
                             int cpt = 0;
                             for (Vote vote : votes) {
-                                if (vote.getPossaid() == possibleAnswers.get(i).getPaid()) {
+                                if (vote.getPossaid().equals( possibleAnswers.get(i).getPaid())) {
                                     cpt++;
                                 }
                             }
@@ -86,7 +108,7 @@ public class MyTopicPollFragment extends Fragment {
 
                                 TextView textView = new TextView(getActivity());
                                 textView.setText(possibleAnswers.get(i).getAnswer() + "    " + cpt + " votes");
-                                textView.setId(possibleAnswers.get(i).getPaid());
+                                textView.setHint(possibleAnswers.get(i).getPaid());
                                 list.add(textView);
 
                                 linearLayout.addView(textView);
@@ -98,20 +120,26 @@ public class MyTopicPollFragment extends Fragment {
                             delete.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    //DELETE BUTTON
-
-
-                                    /*new DeletePoll(getActivity().getApplication(), new OnAsyncEventListener() {
+                                    //DELETE POLLL
+                                    OnAsyncEventListener callback = new OnAsyncEventListener() {
                                         @Override
                                         public void onSuccess() {
-                                            Log.d(TAG, "createUserWithEmail: success");
+
                                         }
 
                                         @Override
                                         public void onFailure(Exception e) {
-                                            Log.d(TAG, "createUserWithEmail: failure", e);
+
                                         }
-                                    }).execute(poll);
+                                    };
+
+                                    pollRepository.deletePoll(poll,callback);
+                                    for(Vote vote :votes){
+                                        voteRepository.deleteVote(vote,callback);
+                                    }
+                                    for(PossibleAnswers possibleAns : possibleAnswers) {
+                                        possibleAnswersRepository.deletePossibleAnswers(possibleAns, callback);
+                                    }
 
 
                                     Activity a = getActivity();
@@ -130,10 +158,14 @@ public class MyTopicPollFragment extends Fragment {
 
         }
         });
-*/
+
 
         return root;
     }
+
+    public PollRepository getPollRepository(){return PollRepository.getInstance();}
+    public VoteRepository getVoteRepository(){return VoteRepository.getInstance();}
+    public PossibleAnswersRepository getPossibleAnswersRepository(){return PossibleAnswersRepository.getInstance();}
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {

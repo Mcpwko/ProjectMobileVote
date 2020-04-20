@@ -36,9 +36,11 @@ public class PollLiveData extends LiveData<Poll> {
     private class MyValueEventListener implements ValueEventListener {
         @Override
         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            if(dataSnapshot.exists()){
             Poll entity = dataSnapshot.getValue(Poll.class);
             entity.setPid(dataSnapshot.getKey());
             setValue(entity);
+            }
         }
 
         @Override

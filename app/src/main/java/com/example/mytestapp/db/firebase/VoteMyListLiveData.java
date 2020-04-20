@@ -5,7 +5,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 
-import com.example.mytestapp.db.entities.Poll;
+import com.example.mytestapp.db.entities.Vote;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -14,15 +14,17 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PollListLiveData extends LiveData<List<Poll>> {
+public class VoteMyListLiveData extends LiveData<List<Vote>> {
 
-    private static final String TAG = "PollListLiveData";
+    private static final String TAG = "VoteListLiveData";
 
     private final DatabaseReference reference;
+    private final String idPoll;
     private final MyValueEventListener listener = new MyValueEventListener();
 
-    public PollListLiveData(DatabaseReference ref) {
+    public VoteMyListLiveData(String idPoll, DatabaseReference ref) {
         reference = ref;
+        this.idPoll = idPoll;
     }
 
     @Override
@@ -40,7 +42,7 @@ public class PollListLiveData extends LiveData<List<Poll>> {
         @Override
         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
             if(dataSnapshot.exists())
-            setValue(getPolls(dataSnapshot));
+            setValue(toVoteList(dataSnapshot));
         }
 
         @Override
@@ -49,15 +51,16 @@ public class PollListLiveData extends LiveData<List<Poll>> {
         }
     }
 
-    private List<Poll> getPolls(DataSnapshot snapshot) {
-        List<Poll> accounts = new ArrayList<>();
+    private List<Vote> toVoteList(DataSnapshot snapshot) {
+        List<Vote> votes = new ArrayList<>();
         for (DataSnapshot childSnapshot : snapshot.getChildren()) {
-            if(childSnapshot.child("type").getValue().equals("Poll")) {
-                Poll entity = childSnapshot.getValue(Poll.class);
-                entity.setPid(childSnapshot.getKey());
-                accounts.add(entity);
-            }
+            if(childSnapshot.hasChild("poll_id"))
+                if(childSnapshot.child("poll_id").getValue().equals(idPoll)) {
+                    Vote entity = childSnapshot.getValue(Vote.class);
+                    entity.setVid(childSnapshot.getKey());
+                    votes.add(entity);
+                }
         }
-        return accounts;
+        return votes;
     }
 }
