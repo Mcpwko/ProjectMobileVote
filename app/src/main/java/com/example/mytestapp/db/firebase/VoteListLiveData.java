@@ -16,13 +16,17 @@ import androidx.lifecycle.LiveData;
 
 public class VoteListLiveData extends LiveData<List<Vote>> {
 
-    private static final String TAG = "ClientAccountsLiveData";
+    private static final String TAG = "VoteListLiveData";
 
     private final DatabaseReference reference;
+    private final String idUser;
+    private final String idPoll;
     private final MyValueEventListener listener = new MyValueEventListener();
 
-    public VoteListLiveData(DatabaseReference ref) {
+    public VoteListLiveData(String idPoll, String idUser, DatabaseReference ref) {
         reference = ref;
+        this.idPoll = idPoll;
+        this.idUser = idUser;
     }
 
     @Override
@@ -51,9 +55,12 @@ public class VoteListLiveData extends LiveData<List<Vote>> {
     private List<Vote> toVoteList(DataSnapshot snapshot) {
         List<Vote> votes = new ArrayList<>();
         for (DataSnapshot childSnapshot : snapshot.getChildren()) {
-            Vote entity = childSnapshot.getValue(Vote.class);
-            entity.setVid(childSnapshot.getKey());
-            votes.add(entity);
+            if(childSnapshot.hasChild("poll_id"))
+            if(childSnapshot.child("user_id").getValue().equals(idUser) && childSnapshot.child("poll_id").getValue().equals(idPoll)) {
+                Vote entity = childSnapshot.getValue(Vote.class);
+                entity.setVid(childSnapshot.getKey());
+                votes.add(entity);
+            }
         }
         return votes;
     }

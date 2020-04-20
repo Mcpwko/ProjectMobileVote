@@ -36,7 +36,7 @@ public class VoteLiveData extends LiveData<Vote> {
         @Override
         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
             Vote entity = dataSnapshot.getValue(Vote.class);
-            entity.setVid(dataSnapshot.getKey());
+            entity.setPoll_id(dataSnapshot.getKey());
             setValue(entity);
         }
 

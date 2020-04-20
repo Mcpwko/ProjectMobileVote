@@ -5,7 +5,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 
-import com.example.mytestapp.db.entities.Attendance;
+import com.example.mytestapp.db.entities.PossibleAnswers;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -14,18 +14,17 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AttendanceLiveData extends LiveData<Attendance> {
-    private static final String TAG = "MeetingLiveData";
+public class PossibleAnswerListLiveData extends LiveData<List<PossibleAnswers>> {
+
+    private static final String TAG = "MeetingListLiveData";
+    private String idPoll;
 
     private final DatabaseReference reference;
-    private final String idMeeting;
-    private final String idUser;
-    private final AttendanceLiveData.MyValueEventListener listener = new AttendanceLiveData.MyValueEventListener();
+    private final MyValueEventListener listener = new MyValueEventListener();
 
-    public AttendanceLiveData(String idMeeting, String idUser,DatabaseReference ref) {
-        this.reference = ref;
-        this.idMeeting = idMeeting;
-        this.idUser = idUser;
+    public PossibleAnswerListLiveData(String idPoll,DatabaseReference ref) {
+        reference = ref;
+        this.idPoll = idPoll;
     }
 
     @Override
@@ -42,8 +41,7 @@ public class AttendanceLiveData extends LiveData<Attendance> {
     private class MyValueEventListener implements ValueEventListener {
         @Override
         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-            if(dataSnapshot.exists())
-            setValue(getAttendance(dataSnapshot));
+            setValue(getPossibleAnswers(dataSnapshot));
         }
 
         @Override
@@ -52,15 +50,15 @@ public class AttendanceLiveData extends LiveData<Attendance> {
         }
     }
 
-    private Attendance getAttendance(DataSnapshot snapshot) {
+    private List<PossibleAnswers> getPossibleAnswers(DataSnapshot snapshot) {
+        List<PossibleAnswers> accounts = new ArrayList<>();
         for (DataSnapshot childSnapshot : snapshot.getChildren()) {
-            if(childSnapshot.hasChild("meeting_id"))
-            if( childSnapshot.child("user_id").getValue().equals(idUser) && childSnapshot.child("meeting_id").getValue().equals(idMeeting)) {
-                Attendance entity = childSnapshot.getValue(Attendance.class);
-                entity.setAid(childSnapshot.getKey());
-                return entity;
+            if(childSnapshot.child("pollid").getValue().equals(idPoll)) {
+                PossibleAnswers entity = childSnapshot.getValue(PossibleAnswers.class);
+                entity.setPaid(childSnapshot.getKey());
+                accounts.add(entity);
             }
         }
-        return null;
+        return accounts;
     }
 }

@@ -19,10 +19,12 @@ public class AttendanceListLiveData extends LiveData<List<Attendance>> {
     private static final String TAG = "ClientAccountsLiveData";
 
     private final DatabaseReference reference;
+    private final String idMeeting;
     private final MyValueEventListener listener = new MyValueEventListener();
 
-    public AttendanceListLiveData(DatabaseReference ref) {
+    public AttendanceListLiveData(String idMeeting,DatabaseReference ref) {
         reference = ref;
+        this.idMeeting = idMeeting;
     }
 
     @Override
@@ -39,6 +41,7 @@ public class AttendanceListLiveData extends LiveData<List<Attendance>> {
     private class MyValueEventListener implements ValueEventListener {
         @Override
         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            if(dataSnapshot.exists())
             setValue(toAttendanceList(dataSnapshot));
         }
 
@@ -51,9 +54,12 @@ public class AttendanceListLiveData extends LiveData<List<Attendance>> {
     private List<Attendance> toAttendanceList(DataSnapshot snapshot) {
         List<Attendance> attendances = new ArrayList<>();
         for (DataSnapshot childSnapshot : snapshot.getChildren()) {
-            Attendance entity = childSnapshot.getValue(Attendance.class);
-            entity.setAid(childSnapshot.getKey());
-            attendances.add(entity);
+            if(childSnapshot.hasChild("meeting_id"))
+                if( childSnapshot.child("meeting_id").getValue().equals(idMeeting)) {
+                    Attendance entity = childSnapshot.getValue(Attendance.class);
+                    entity.setAid(childSnapshot.getKey());
+                    attendances.add(entity);
+                }
         }
         return attendances;
     }

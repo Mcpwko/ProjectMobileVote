@@ -32,11 +32,10 @@ public class AttendanceRepository {
     }
 
 
-    public LiveData<Attendance> getAttendance(final String id) {
+    public LiveData<Attendance> getAttendance(final String idMeeting, final String idUser) {
         DatabaseReference reference = FirebaseDatabase.getInstance()
-                .getReference("votes")
-                .child(id);
-        return new AttendanceLiveData(reference);
+                .getReference("answers");
+        return new AttendanceLiveData(idMeeting, idUser, reference);
     }
 
     // A voir comment faire
@@ -45,17 +44,17 @@ public class AttendanceRepository {
     }*/
 
 
-    public LiveData<List<Attendance>> getAttendances() {
+    public LiveData<List<Attendance>> getAttendances(String idMeeting) {
         DatabaseReference reference = FirebaseDatabase.getInstance()
-                .getReference("votes");
-        return new AttendanceListLiveData(reference);
+                .getReference("answers");
+        return new AttendanceListLiveData(idMeeting,reference);
     }
 
 
     public void insertAttendance(final Attendance attendance, final OnAsyncEventListener callback) {
         String id = FirebaseDatabase.getInstance().getReference("votes").push().getKey();
         FirebaseDatabase.getInstance()
-                .getReference("votes")
+                .getReference("answers")
                 .child(id)
                 .setValue(attendance, (databaseError, databaseReference) -> {
                     if (databaseError != null) {
@@ -66,9 +65,9 @@ public class AttendanceRepository {
                 });
     }
 
-    /*public void deleteAttendance(final Attendance attendance, final OnAsyncEventListener callback) {
+    public void deleteAttendance(final Attendance attendance, final OnAsyncEventListener callback) {
         FirebaseDatabase.getInstance()
-                .getReference("votes")
+                .getReference("answers")
                 .child(attendance.getAid())
                 .removeValue((databaseError, databaseReference) -> {
                     if (databaseError != null) {
@@ -77,7 +76,7 @@ public class AttendanceRepository {
                         callback.onSuccess();
                     }
                 });
-    }*/
+    }
 
 
 }

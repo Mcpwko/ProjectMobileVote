@@ -9,8 +9,11 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.mytestapp.db.entities.Poll;
+import com.example.mytestapp.db.entities.PossibleAnswers;
 import com.example.mytestapp.db.repository.PollRepository;
 import com.example.mytestapp.db.repository.PossibleAnswersRepository;
+
+import java.util.List;
 
 public class PollSelectedViewModel extends AndroidViewModel {
     private Application application;
@@ -19,7 +22,7 @@ public class PollSelectedViewModel extends AndroidViewModel {
 
 
     private final LiveData<Poll> observablePoll;
-    //private final LiveData<List<PossibleAnswers>> observableAnswers;
+    private final LiveData<List<PossibleAnswers>> observableAnswers;
 
     public PollSelectedViewModel(@NonNull Application application, final String idPoll,
                                     PollRepository pollRepository, PossibleAnswersRepository possibleAnswersRepository) {
@@ -32,7 +35,7 @@ public class PollSelectedViewModel extends AndroidViewModel {
 
 
         observablePoll = pollRepository.getPoll(idPoll);
-        //observableAnswers = possibleAnswersRepository.getPossibleAnswersByPoll(idPoll,application);
+        observableAnswers = possibleAnswersRepository.getPossibleAnswersByPoll(idPoll);
     }
 
     /**
@@ -67,9 +70,9 @@ public class PollSelectedViewModel extends AndroidViewModel {
     public LiveData<Poll> getPoll() {
         return observablePoll;
     }
-    /*
+
     public LiveData<List<PossibleAnswers>> getPossibleAnswers(){ return observableAnswers; }
-*/
+
 
     public static PollRepository getPollRepository(){ return PollRepository.getInstance(); }
     public static PossibleAnswersRepository getPossibleAnswersRepository(){ return PossibleAnswersRepository.getInstance(); }

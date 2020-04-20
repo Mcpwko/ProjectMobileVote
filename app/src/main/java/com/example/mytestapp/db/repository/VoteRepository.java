@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData;
 import com.example.mytestapp.db.entities.Vote;
 import com.example.mytestapp.db.firebase.VoteListLiveData;
 import com.example.mytestapp.util.OnAsyncEventListener;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -29,10 +30,10 @@ public class VoteRepository {
     }
 
 
-    public LiveData<List<Vote>> getVote() {
+    public LiveData<List<Vote>> getVote(final String idPoll, String idUser) {
         DatabaseReference reference = FirebaseDatabase.getInstance()
-                .getReference("votes");
-        return new VoteListLiveData(reference);
+                .getReference("answers");
+        return new VoteListLiveData(idPoll, idUser, reference);
     }
 
     // A voir comment faire
@@ -41,10 +42,13 @@ public class VoteRepository {
     }*/
 
     public void insertVote(final Vote vote, final OnAsyncEventListener callback) {
-        String id = FirebaseDatabase.getInstance().getReference("votes").push().getKey();
-        FirebaseDatabase.getInstance()
+        DatabaseReference reference = FirebaseDatabase.getInstance()
                 .getReference("votes")
-                .child(id)
+                .child(vote.getPoll_id());
+        String key = reference.push().getKey();
+        FirebaseDatabase.getInstance()
+                .getReference("answers")
+                .child(key)
                 .setValue(vote, (databaseError, databaseReference) -> {
                     if (databaseError != null) {
                         callback.onFailure(databaseError.toException());
@@ -53,4 +57,19 @@ public class VoteRepository {
                     }
                 });
     }
+
+    public void deleteVote(final Vote vote, final OnAsyncEventListener callback) {
+        FirebaseDatabase.getInstance()
+                .getReference("answers")
+                .child(vote.getVid())
+                .removeValue((databaseError, databaseReference) -> {
+                    if (databaseError != null) {
+                        callback.onFailure(databaseError.toException());
+                    } else {
+                        callback.onSuccess();
+                    }
+                });
+    }
+
+
 }

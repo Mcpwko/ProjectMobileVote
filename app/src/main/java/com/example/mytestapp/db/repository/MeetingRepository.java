@@ -1,6 +1,9 @@
 package com.example.mytestapp.db.repository;
 
+import android.content.SharedPreferences;
+
 import androidx.lifecycle.LiveData;
+import androidx.preference.PreferenceManager;
 
 import com.example.mytestapp.db.entities.Meeting;
 import com.example.mytestapp.db.firebase.MeetingListLiveData;
@@ -53,23 +56,6 @@ public class MeetingRepository {
                 .getReference("votes")
                 .child(id);
         return new MeetingLiveData(reference);
-    }
-
-
-
-
-    public void insertMeeting(final Meeting meeting, final OnAsyncEventListener callback) {
-        String id = FirebaseDatabase.getInstance().getReference("votes").push().getKey();
-        FirebaseDatabase.getInstance()
-                .getReference("votes")
-                .child(id)
-                .setValue(meeting, (databaseError, databaseReference) -> {
-                    if (databaseError != null) {
-                        callback.onFailure(databaseError.toException());
-                    } else {
-                        callback.onSuccess();
-                    }
-                });
     }
 
 

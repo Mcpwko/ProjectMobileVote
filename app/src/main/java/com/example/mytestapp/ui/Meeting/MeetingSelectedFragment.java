@@ -23,13 +23,16 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.mytestapp.R;
+import com.example.mytestapp.db.entities.Attendance;
 import com.example.mytestapp.db.entities.User;
 
+import com.example.mytestapp.db.repository.AttendanceRepository;
 import com.example.mytestapp.db.repository.UserRepository;
 import com.example.mytestapp.util.OnAsyncEventListener;
 
 import com.example.mytestapp.viewmodel.UserViewModel;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.gson.Gson;
 
 import java.text.DateFormat;
@@ -45,6 +48,7 @@ public class MeetingSelectedFragment extends Fragment {
     private MeetingSelectedViewModel mViewModel;
     private UserViewModel userViewModel;
     private UserRepository userRepository;
+    private AttendanceRepository attendanceRepository;
     private User user;
 
     public MeetingSelectedFragment(){
@@ -63,9 +67,17 @@ public class MeetingSelectedFragment extends Fragment {
 
         String idMeeting = PreferenceManager.getDefaultSharedPreferences(getActivity()).getString("SelectedItem", "NotFound");
 
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("MeetingId", idMeeting);
+        editor.apply();
+
         userRepository = getUserRepository();
+        attendanceRepository = getAttendanceRepository();
+        FirebaseUser actual = FirebaseAuth.getInstance().getCurrentUser();
+
         MeetingSelectedViewModel.Factory factory = new MeetingSelectedViewModel.Factory(
-                getActivity().getApplication(),idMeeting);
+                getActivity().getApplication(),idMeeting,actual.getUid());
 
         mViewModel = ViewModelProviders.of(this,factory).get(MeetingSelectedViewModel.class);
 
@@ -99,8 +111,7 @@ public class MeetingSelectedFragment extends Fragment {
                             meeting.getUser_id()
 
                     );
-                    String salut = meeting.getUser_id();
-                    System.out.println("SALUT");
+
                     userViewModel = new ViewModelProvider(this, factory2).get(UserViewModel.class);
 
                     userViewModel.getUser().observe(getActivity(), accountEntity -> {
@@ -121,7 +132,7 @@ public class MeetingSelectedFragment extends Fragment {
 
                     Button btnEdit = root.findViewById(R.id.editmeeting);
 
-                    /*mViewModel.getAttendance().observe(getActivity(), attendance -> {
+                    mViewModel.getAttendance().observe(getActivity(), attendance -> {
 
 
 
@@ -143,19 +154,22 @@ public class MeetingSelectedFragment extends Fragment {
                                     btnEdit.setVisibility(View.GONE);
                                     response.setVisibility(View.GONE);
 
-
-                                    //We then proceed with the deletion of the Attendance
-                                    new DeleteAttendance(getActivity().getApplication(), new OnAsyncEventListener() {
+                                    OnAsyncEventListener callback = new OnAsyncEventListener() {
                                         @Override
                                         public void onSuccess() {
-                                            Log.d(TAG, "createUserWithEmail: success");
+
                                         }
 
                                         @Override
                                         public void onFailure(Exception e) {
-                                            Log.d(TAG, "createUserWithEmail: failure", e);
+
                                         }
-                                    }).execute(attendance);
+                                    };
+
+                                    // DELETE ATTENDANCE
+                                    attendanceRepository.deleteAttendance(attendance,callback);
+
+
 
 
 
@@ -177,8 +191,7 @@ public class MeetingSelectedFragment extends Fragment {
                             btnEdit.setVisibility(View.GONE);
                             response.setVisibility(View.GONE);
 
-                            btnyes.setId(meeting.getMid());
-                            btnNo.setId(meeting.getMid());
+
 
 
                         } else {
@@ -197,10 +210,10 @@ public class MeetingSelectedFragment extends Fragment {
                             btnNo.setVisibility(View.GONE);
                             btnEdit.setVisibility(View.VISIBLE);
                             response.setVisibility(View.VISIBLE);
-                            btnEdit.setId(attendance.getAid());
+                            //btnEdit.setHint(attendance.getAid());
                         }
 
-                    });*/
+                    });
         });
 
 
@@ -216,6 +229,8 @@ public class MeetingSelectedFragment extends Fragment {
     }
 
     public UserRepository getUserRepository(){return UserRepository.getInstance();}
+    public AttendanceRepository getAttendanceRepository(){return AttendanceRepository.getInstance();
+    }
 
 
 

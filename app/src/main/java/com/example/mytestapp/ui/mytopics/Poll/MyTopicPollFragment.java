@@ -7,6 +7,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.preference.PreferenceManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,11 +23,9 @@ import com.example.mytestapp.viewmodel.VoteListViewModel;
 public class MyTopicPollFragment extends Fragment {
 
     private PollSelectedViewModel mViewModel;
-    private String idPoll;
     private static final String TAG = "MyTopicPollFragment";
     private VoteListViewModel voteListViewModel;
-    public MyTopicPollFragment(String idPoll){
-        this.idPoll = idPoll;
+    public MyTopicPollFragment(){
     }
 
 
@@ -37,7 +36,7 @@ public class MyTopicPollFragment extends Fragment {
             container.removeAllViews();
         }
         View root = inflater.inflate(R.layout.fragmentmy_topic_poll, container, false);
-
+        String idPoll = PreferenceManager.getDefaultSharedPreferences(getActivity()).getString("SelectedMyItem", "NotFound");
         LinearLayout linearLayout = root.findViewById(R.id.linearLayoutPollsMyTopics);
         Button delete = root.findViewById(R.id.deletePoll);
 

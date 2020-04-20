@@ -1,8 +1,12 @@
 package com.example.mytestapp.ui.Poll;
 
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -11,31 +15,42 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.preference.PreferenceManager;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.mytestapp.MainActivity;
 import com.example.mytestapp.R;
 
 import com.example.mytestapp.db.entities.User;
 
+import com.example.mytestapp.db.entities.Vote;
 import com.example.mytestapp.db.repository.PollRepository;
 import com.example.mytestapp.db.repository.PossibleAnswersRepository;
 import com.example.mytestapp.db.repository.UserRepository;
 import com.example.mytestapp.db.repository.VoteRepository;
 
+import com.example.mytestapp.ui.home.HomeFragment;
+import com.example.mytestapp.util.OnAsyncEventListener;
 import com.example.mytestapp.viewmodel.UserViewModel;
 import com.example.mytestapp.viewmodel.VoteViewModel;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.gson.Gson;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -65,6 +80,8 @@ public class PollSelectedFragment extends Fragment {
         }
         View root = inflater.inflate(R.layout.fragment_selected_poll, container, false);
         setHasOptionsMenu(true);
+
+        voteRep = getVoteRepository();
 
         String idPoll = PreferenceManager.getDefaultSharedPreferences(getActivity()).getString("SelectedItem", "NotFound");
 
@@ -122,11 +139,77 @@ public class PollSelectedFragment extends Fragment {
 
             //We do the same as above and we get the data from the possibleAnswers table
 
-            /*mViewModel.getPossibleAnswers().observe(getActivity(),possibleAnswers -> {
 
-                VoteViewModel.Factory factoryVote = new VoteViewModel.Factory(getActivity().getApplication(),actualUser.getUid(),poll.getPid());
+            /*mViewModel.getPossibleAnswers().observe(getActivity(), possibleAnswers -> {
+                List<CheckBox> list = new ArrayList<CheckBox>();
+
+                for(int i =0 ; i<possibleAnswers.size();i++) {
+                    if (isAdded()) {
+                        CheckBox button = new CheckBox(getActivity());
+
+                        button.setText(possibleAnswers.get(i).getAnswer());
+                        button.setHint(possibleAnswers.get(i).getPaid());
+                        //button.setId(possibleAnswers.get(i).getPaid());
+                        list.add(button);
+                        linearLayout.addView(button);
+                    }
+                }
+
+                        validate.setOnClickListener(new View.OnClickListener() {
+                            public void onClick(View v) {
+
+
+                                List<String> listChoosenAnswers = new ArrayList<String>();
+
+                                for (int i = 0; i < list.size(); i++) {
+                                    if (list.get(i).isChecked() == true) {
+                                        listChoosenAnswers.add((String)list.get(i).getHint());
+
+                                        Vote vote = new Vote();
+
+                                        FirebaseUser actual = FirebaseAuth.getInstance().getCurrentUser();
+                                        vote.setUser_id(actual.getUid());
+                                        vote.setPossaid((String)list.get(i).getHint());
+                                        vote.setPoll_id(poll.getPid());
+
+
+                                        //CREATE VOTE
+                                        OnAsyncEventListener callback = new OnAsyncEventListener() {
+                                            @Override
+                                            public void onSuccess() {
+                                                Activity a = getActivity();
+                                                Intent intent = new Intent(a, MainActivity.class);
+                                                startActivity(intent);
+                                                a.finish();
+                                            }
+
+                                            @Override
+                                            public void onFailure(Exception e) {
+
+                                            }
+                                        };
+                                        voteRep.insertVote(vote,callback);
+
+
+                                    }
+                                }
+                            }
+                        });
+
+            });*/
+
+
+
+
+
+
+
+
+            mViewModel.getPossibleAnswers().observe(getActivity(),possibleAnswers -> {
+                FirebaseUser actual = FirebaseAuth.getInstance().getCurrentUser();
+                VoteViewModel.Factory factoryVote = new VoteViewModel.Factory(getActivity().getApplication(),actual.getUid(),poll.getPid());
                 voteViewModel = ViewModelProviders.of(this, factoryVote).get(VoteViewModel.class);
-                if(this.isVisible())
+
                 voteViewModel.getVotes().observe(getActivity(), votes -> {
                     //If there is more than 1 vote, we create a list
                     if(votes.size()>=1){
@@ -137,7 +220,7 @@ public class PollSelectedFragment extends Fragment {
                             //We go through the votes and if a possible answers matches with Possible
                             //Answers in the DB, we can say it exist
                             for (Vote vote : votes) {
-                                if (vote.getPossaid()==possibleAnswers.get(i).getPaid()) {
+                                if (vote.getPossaid().equals(possibleAnswers.get(i).getPaid())) {
                                     exist = true;
                                 }
                             }
@@ -146,7 +229,7 @@ public class PollSelectedFragment extends Fragment {
                             if(exist){
                                 CheckBox button = new CheckBox(getActivity());
                                 button.setText(possibleAnswers.get(i).getAnswer());
-                                button.setId(possibleAnswers.get(i).getPaid());
+                                button.setHint(possibleAnswers.get(i).getPaid());
                                 button.setChecked(true);
                                 button.setEnabled(false);
                                 list.add(button);
@@ -157,7 +240,7 @@ public class PollSelectedFragment extends Fragment {
                                 CheckBox button = new CheckBox(getActivity());
                                 button.setEnabled(false);
                                 button.setText(possibleAnswers.get(i).getAnswer());
-                                button.setId(possibleAnswers.get(i).getPaid());
+                                button.setHint(possibleAnswers.get(i).getPaid());
                                 list.add(button);
 
                                 linearLayout.addView(button);
@@ -207,17 +290,22 @@ public class PollSelectedFragment extends Fragment {
 
                                     for(Vote vote : votes) {
 
-                                        new DeleteVote(getActivity().getApplication(), new OnAsyncEventListener() {
+                                        OnAsyncEventListener callback3 = new OnAsyncEventListener() {
                                             @Override
                                             public void onSuccess() {
-                                                Log.d(TAG, "createUserWithEmail: success");
+
                                             }
 
                                             @Override
                                             public void onFailure(Exception e) {
-                                                Log.d(TAG, "createUserWithEmail: failure", e);
                                             }
-                                        }).execute(vote);
+                                        };
+
+                                        //DELETE ALL THE ANSWERS
+                                        voteRep.deleteVote(vote,callback3);
+
+
+
                                     }
 
 
@@ -227,40 +315,43 @@ public class PollSelectedFragment extends Fragment {
                                     //In this part we create a list of the answers chosen by the
                                     //user and we put the data of the list of checkboxes in it
 
-                                    List<Integer> listChoosenAnswers = new ArrayList<Integer>();
+                                    List<String> listChoosenAnswers = new ArrayList<String>();
 
                                     for(int i=0;i<list.size();i++){
                                         if(list.get(i).isChecked()==true){
-                                            listChoosenAnswers.add(list.get(i).getId());
+                                            listChoosenAnswers.add((String)list.get(i).getHint());
 
                                             Vote vote = new Vote();
 
 
-                                            vote.setUser_id(actualUser.getUid());
-                                            vote.setPossaid(list.get(i).getId());
+                                            vote.setUser_id(actual.getUid());
+                                            vote.setPossaid((String)list.get(i).getHint());
                                             vote.setPoll_id(poll.getPid());
 
 
-                                            new CreateVote(getActivity().getApplication(), new OnAsyncEventListener() {
+                                            // CREATE THE NEW ANSWERS
+                                            OnAsyncEventListener callback2 = new OnAsyncEventListener() {
                                                 @Override
                                                 public void onSuccess() {
-                                                    Log.d(TAG, "createUserWithEmail: success");
+                                                    Activity a = getActivity();
+                                                    Intent intent = new Intent(a, MainActivity.class);
+                                                    startActivity(intent);
+                                                    a.finish();
                                                 }
 
                                                 @Override
                                                 public void onFailure(Exception e) {
-                                                    Log.d(TAG, "createUserWithEmail: failure", e);
+
                                                 }
-                                            }).execute(vote);
+                                            };
+                                            voteRep.insertVote(vote,callback2);
 
 
 
                                         }
                                     }
 
-                                    FragmentTransaction transaction;
-                                    transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                                    transaction.replace(R.id.home, new HomeFragment()).commit();
+
 
 
                                 }
@@ -285,17 +376,23 @@ public class PollSelectedFragment extends Fragment {
                                         //We delete each votes
                                         for(Vote vote : votes) {
 
-                                            new DeleteVote(getActivity().getApplication(), new OnAsyncEventListener() {
+                                            //DELETE VOTE
+                                            OnAsyncEventListener callback4 = new OnAsyncEventListener() {
                                                 @Override
                                                 public void onSuccess() {
-                                                    Log.d(TAG, "createUserWithEmail: success");
                                                 }
 
                                                 @Override
                                                 public void onFailure(Exception e) {
-                                                    Log.d(TAG, "createUserWithEmail: failure", e);
                                                 }
-                                            }).execute(vote);
+                                            };
+
+                                            //DELETE ALL THE ANSWERS
+                                            voteRep.deleteVote(vote,callback4);
+
+
+
+
                                         }
                                         updatePoll.setVisibility(View.GONE);
                                         editPoll.setVisibility(View.GONE);
@@ -335,7 +432,7 @@ public class PollSelectedFragment extends Fragment {
                                 CheckBox button = new CheckBox(getActivity());
 
                                 button.setText(possibleAnswers.get(i).getAnswer());
-                                button.setId(possibleAnswers.get(i).getPaid());
+                                button.setHint(possibleAnswers.get(i).getPaid());
                                 list.add(button);
                                 linearLayout.addView(button);
                             }
@@ -347,55 +444,46 @@ public class PollSelectedFragment extends Fragment {
                             public void onClick(View v) {
 
 
+                                List<String> listChoosenAnswers = new ArrayList<String>();
 
-                                List<Integer> listChoosenAnswers = new ArrayList<Integer>();
-
-                                for(int i=0;i<list.size();i++){
-                                    if(list.get(i).isChecked()==true){
-                                        listChoosenAnswers.add(list.get(i).getId());
+                                for (int i = 0; i < list.size(); i++) {
+                                    if (list.get(i).isChecked() == true) {
+                                        listChoosenAnswers.add((String)list.get(i).getHint());
 
                                         Vote vote = new Vote();
 
 
-                                        vote.setUser_id(actualUser.getUid());
-                                        vote.setPossaid(list.get(i).getId());
+                                        vote.setUser_id(actual.getUid());
+                                        vote.setPossaid((String)list.get(i).getHint());
                                         vote.setPoll_id(poll.getPid());
 
 
-                                        new CreateVote(getActivity().getApplication(), new OnAsyncEventListener() {
+                                        //CREATE VOTE
+                                        OnAsyncEventListener callback = new OnAsyncEventListener() {
                                             @Override
                                             public void onSuccess() {
-                                                Log.d(TAG, "createUserWithEmail: success");
+                                                Activity a = getActivity();
+                                                Intent intent = new Intent(a, MainActivity.class);
+                                                startActivity(intent);
+                                                a.finish();
                                             }
 
                                             @Override
                                             public void onFailure(Exception e) {
-                                                Log.d(TAG, "createUserWithEmail: failure", e);
-                                            }
-                                        }).execute(vote);
 
+                                            }
+                                        };
+                                        voteRep.insertVote(vote,callback);
 
 
                                     }
                                 }
-
-                                //We finally get back to the main activity
-                                Activity a = getActivity();
-                                Intent intent = new Intent(a, MainActivity.class);
-                                startActivity(intent);
-                                a.finish();
-
-
-                                //FragmentTransaction transaction;
-                                //transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                                //transaction.replace(R.id.home, new HomeFragment()).commit();
                             }
-
                         });
                     }
                 });
 
-            });*/
+            });
 
         });
 
@@ -406,7 +494,11 @@ public class PollSelectedFragment extends Fragment {
     }
 
 
-    /*@Override
+
+    public VoteRepository getVoteRepository() {
+        return VoteRepository.getInstance();
+    }
+/*@Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 

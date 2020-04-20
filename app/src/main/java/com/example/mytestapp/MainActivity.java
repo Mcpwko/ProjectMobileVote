@@ -34,10 +34,12 @@ import com.example.mytestapp.db.entities.Address1;
 import com.example.mytestapp.db.entities.Attendance;
 import com.example.mytestapp.db.entities.Meeting;
 import com.example.mytestapp.db.entities.Poll;
+import com.example.mytestapp.db.entities.PossibleAnswers;
 import com.example.mytestapp.db.entities.User;
 import com.example.mytestapp.db.repository.AttendanceRepository;
 import com.example.mytestapp.db.repository.MeetingRepository;
 import com.example.mytestapp.db.repository.PollRepository;
+import com.example.mytestapp.db.repository.PossibleAnswersRepository;
 import com.example.mytestapp.db.repository.UserRepository;
 import com.example.mytestapp.ui.addVote.ChooseVoteFragment;
 import com.example.mytestapp.ui.addVote.meeting.MeetingFragment;
@@ -73,6 +75,7 @@ import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.preference.PreferenceManager;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -107,6 +110,7 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
     private PollRepository pollRepository;
     private UserRepository userRepository;
     private AttendanceRepository attendanceRepository;
+    private PossibleAnswersRepository possibleAnswersRepository;
     private boolean account;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -123,6 +127,7 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
         pollRepository = getPollRepository();
         attendanceRepository = getAttendanceRepository();
         meetingRepository = getMeetingRepository();
+        possibleAnswersRepository = getPossibleAnswersRepository();
 
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -262,6 +267,8 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
     }
 
     public MeetingRepository getMeetingRepository() { return MeetingRepository.getInstance();}
+
+    public PossibleAnswersRepository getPossibleAnswersRepository(){ return PossibleAnswersRepository.getInstance();}
 
     public void Logout(View view){
         Intent intent = new Intent(this, LoginActivity.class);
@@ -743,13 +750,12 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
                 public void onFailure(Exception e) {
                 }
             };
-            pollRepository.insert(poll, callback);
+            String idPoll = pollRepository.insert(poll, callback);
 
 
             //We get the last poll in the database and we put the data into a listwithout duplicates
 
-            /*pollRepository.getLastPoll(getApplication()).observe(MainActivity.this, pollentity -> {
-                Poll poll2 = pollentity;
+
 
 
                 for (int i = 0; i < listWithoutDuplicates.size(); i++) {
@@ -757,10 +763,12 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
                     String test = listWithoutDuplicates.get(i);
 
                     possibleAnswers.setAnswer(test);
-                    possibleAnswers.setPollid(poll2.getPid());
+                    possibleAnswers.setPollid(idPoll);
+
+                    possibleAnswersRepository.insert(possibleAnswers,callback);
+
 
                 }
-            });*/
 
             //We change the fragment
             FragmentManager fragmentManager = getSupportFragmentManager();
@@ -849,28 +857,37 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
     //Method launched when the user accept a meeting suggested
     public void acceptMeeting(View view){
         Toast.makeText(this, "Meeting accepted !", Toast.LENGTH_SHORT).show();
-        SharedPreferences userpreferences = getSharedPreferences("User", Context.MODE_PRIVATE);
-        Gson gson2 = new Gson();
-        String json2 = userpreferences.getString("User", "");
-        User user = gson2.fromJson(json2, User.class);
+        FirebaseUser actual = FirebaseAuth.getInstance().getCurrentUser();
+
+        String idMeeting = PreferenceManager.getDefaultSharedPreferences(this).getString("MeetingId", "NotFound");
 
         Attendance attendance = new Attendance();
         attendance.setAnswerAttendance(true);
-        //attendance.setUser_id(user.getUid());
-        attendance.setMeeting_id(view.getId() + "");
-
-        //METHODE CREATION ATTENDANCE
-
+        attendance.setUser_id(actual.getUid());
+        attendance.setMeeting_id(idMeeting);
 
 
         Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-        finish();
+        //METHODE CREATION ATTENDANCE
+        OnAsyncEventListener callback = new OnAsyncEventListener() {
+            @Override
+            public void onSuccess() {
+
+                startActivity(intent);
+                finish();
 
 
-        FragmentTransaction transaction;
-        transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.home, new HomeFragment()).commit();
+                FragmentTransaction transaction;
+                transaction = getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.home, new HomeFragment()).commit();
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+            }
+        };
+
+        attendanceRepository.insertAttendance(attendance,callback);
 
 
     }
@@ -879,28 +896,39 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
     //Method launched when the user refuse a meeting suggested
     public void refuseMeeting(View view){
         Toast.makeText(this, "Meeting refused !", Toast.LENGTH_SHORT).show();
-        SharedPreferences userpreferences = getSharedPreferences("User", Context.MODE_PRIVATE);
-        Gson gson2 = new Gson();
-        String json2 = userpreferences.getString("User", "");
-        User user = gson2.fromJson(json2, User.class);
+        FirebaseUser actual = FirebaseAuth.getInstance().getCurrentUser();
+        String idMeeting = PreferenceManager.getDefaultSharedPreferences(this).getString("MeetingId", "NotFound");
 
 
         Attendance attendance = new Attendance();
         attendance.setAnswerAttendance(false);
-        //attendance.setUser_id(user.getUid());
-        attendance.setMeeting_id(view.getId()+ "");
+        attendance.setUser_id(actual.getUid());
+        attendance.setMeeting_id(idMeeting);
         //We create an attendance anyway
 
         //METHODE CREATION ATTENDANCE
-
-
         Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-        finish();
+        //METHODE CREATION ATTENDANCE
+        OnAsyncEventListener callback = new OnAsyncEventListener() {
+            @Override
+            public void onSuccess() {
 
-        FragmentTransaction transaction;
-        transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.home, new HomeFragment()).commit();
+                startActivity(intent);
+                finish();
+
+
+                FragmentTransaction transaction;
+                transaction = getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.home, new HomeFragment()).commit();
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+            }
+        };
+
+        attendanceRepository.insertAttendance(attendance,callback);
+
 
     }
 

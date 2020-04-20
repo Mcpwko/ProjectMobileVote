@@ -11,6 +11,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.preference.PreferenceManager;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,10 +28,14 @@ import com.example.mytestapp.R;
 import com.example.mytestapp.db.entities.Attendance;
 
 import com.example.mytestapp.db.entities.User;
+import com.example.mytestapp.db.repository.AttendanceRepository;
+import com.example.mytestapp.db.repository.MeetingRepository;
 import com.example.mytestapp.ui.Meeting.MeetingSelectedViewModel;
 import com.example.mytestapp.ui.mytopics.MyTopicsFragment;
 import com.example.mytestapp.util.OnAsyncEventListener;
 import com.example.mytestapp.viewmodel.AttendanceViewModel;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.gson.Gson;
 
 
@@ -46,10 +51,10 @@ public class MyTopicMeetingFragment extends Fragment {
 
     private MeetingSelectedViewModel mViewModel;
     private AttendanceViewModel attendanceViewModel;
-    private int idMeeting;
+    private MeetingRepository meetingRepository;
+    private AttendanceRepository attendanceRepository;
     private static final String TAG = "MyTopicMeetingFragment";
-    public MyTopicMeetingFragment(int idMeeting){
-        this.idMeeting = idMeeting;
+    public MyTopicMeetingFragment(){
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -61,18 +66,15 @@ public class MyTopicMeetingFragment extends Fragment {
             container.removeAllViews();
         }
         View root = inflater.inflate(R.layout.fragmentmy_topic_meeting, container, false);
-
-        //The sharedPreferences is always used to keep the information of the User (especially his name)
-        SharedPreferences preferences = getActivity().getSharedPreferences("User", MODE_PRIVATE);
-        Gson gson = new Gson();
-        String json = preferences.getString("User", "");
-        User actualUser = gson.fromJson(json, User.class);
-
+        String idMeeting = PreferenceManager.getDefaultSharedPreferences(getActivity()).getString("SelectedMyItem", "NotFound");
+        meetingRepository = getMeetingRepository();
+        attendanceRepository = getAttendanceRepository();
+        FirebaseUser actual = FirebaseAuth.getInstance().getCurrentUser();
         AttendanceViewModel.Factory factoryAttendance = new AttendanceViewModel.Factory(idMeeting, getActivity().getApplication());
         attendanceViewModel = ViewModelProviders.of(this,factoryAttendance).get(AttendanceViewModel.class);
 
-        /*MeetingSelectedViewModel.Factory factory = new MeetingSelectedViewModel.Factory(
-                getActivity().getApplication(),idMeeting,actualUser.getUid());
+        MeetingSelectedViewModel.Factory factory = new MeetingSelectedViewModel.Factory(
+                getActivity().getApplication(),idMeeting,actual.getUid());
 
         mViewModel = ViewModelProviders.of(this,factory).get(MeetingSelectedViewModel.class);
 
@@ -166,17 +168,23 @@ public class MyTopicMeetingFragment extends Fragment {
 
 
 
-                    new UpdateMeeting(getActivity().getApplication(), new OnAsyncEventListener() {
+                    //UPDATE INFOS DU MEETING
+                    OnAsyncEventListener callback = new OnAsyncEventListener() {
                         @Override
                         public void onSuccess() {
-                            Log.d(TAG, "updateMeeting: success");
+
                         }
 
                         @Override
                         public void onFailure(Exception e) {
-                            Log.d(TAG, "updateMeeting: failure", e);
+
                         }
-                    }).execute(meeting);
+                    };
+
+                    meetingRepository.updateMeeting(meeting,callback);
+
+
+
                 }
             });
 
@@ -184,18 +192,31 @@ public class MyTopicMeetingFragment extends Fragment {
             delete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //DELETE
-                    new DeleteMeeting(getActivity().getApplication(), new OnAsyncEventListener() {
+                    //DELETE MEETING
+                    OnAsyncEventListener callback = new OnAsyncEventListener() {
                         @Override
                         public void onSuccess() {
-                            Log.d(TAG, "deleteMeeting: success");
+
                         }
 
                         @Override
                         public void onFailure(Exception e) {
-                            Log.d(TAG, "deleteMeeting: failure", e);
+
                         }
-                    }).execute(meeting);
+                    };
+
+                        meetingRepository.deleteMeeting(meeting,callback);
+
+                    attendanceViewModel.getAttendances().observe(getActivity(), attendances -> {
+
+                        //Delete each attendance from the meeting
+                        for(Attendance attendance : attendances){
+                            attendanceRepository.deleteAttendance(attendance,callback);
+                        }
+
+                    });
+
+
 
                     //We go back to My topics
                     FragmentTransaction transaction;
@@ -225,11 +246,14 @@ public class MyTopicMeetingFragment extends Fragment {
             }
 
 
-        });*/
+        });
 
 
         return root;
     }
+
+    public MeetingRepository getMeetingRepository(){ return MeetingRepository.getInstance(); }
+    public AttendanceRepository getAttendanceRepository(){return AttendanceRepository.getInstance();}
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {

@@ -36,9 +36,11 @@ public class MeetingLiveData extends LiveData<Meeting> {
     private class MyValueEventListener implements ValueEventListener {
         @Override
         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-            Meeting entity = dataSnapshot.getValue(Meeting.class);
-            entity.setMid(dataSnapshot.getKey());
-            setValue(entity);
+            if (dataSnapshot.exists()) {
+                Meeting entity = dataSnapshot.getValue(Meeting.class);
+                entity.setMid(dataSnapshot.getKey());
+                setValue(entity);
+            }
         }
 
         @Override

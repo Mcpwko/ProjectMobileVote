@@ -32,17 +32,8 @@ public class PollRepository {
     }
 
 
-    /*// A voir comment faire
-    public LiveData<Poll> getLastPoll( Context context) {
-        return AppDatabase.getInstance(context).pollDao().getLastPoll();
-    }
 
-    // A voir comment faire
-    public LiveData<List<Poll>> getMyPolls (int id, Context context) {
-        return AppDatabase.getInstance(context).pollDao().getMyPolls(id);
-    }*/
 
-    //FAIT
 
 
     public LiveData<Poll> getPoll(final String id) {
@@ -62,7 +53,7 @@ public class PollRepository {
  //FAIT  INSERT, UPDATE ET DELETE
 
 
-    public void insert(final Poll poll, final OnAsyncEventListener callback) {
+    public String insert(final Poll poll, final OnAsyncEventListener callback) {
         DatabaseReference reference = FirebaseDatabase.getInstance()
                 .getReference("users")
                 .child(poll.getUser_id());
@@ -77,6 +68,7 @@ public class PollRepository {
                         callback.onSuccess();
                     }
                 });
+        return key;
     }
 
 
