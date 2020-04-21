@@ -6,51 +6,73 @@
     android:layout_height="match_parent"
     tools:context=".ui.mytopics.Poll.MyTopicPollFragment">
 
-    <TextView
+    <Button
+        android:id="@+id/savePollMyTopic"
+        android:layout_width="111dp"
+        android:layout_height="37dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginBottom="28dp"
+        android:text="@string/saveChangesAccount"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/deletePoll"
+        app:layout_constraintHorizontal_bias="0.318"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/scrollView2"
+        app:layout_constraintVertical_bias="0.567" />
+
+    <EditText
         android:id="@+id/titlePollMyTopic"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="309dp"
+        android:layout_height="42dp"
         android:layout_marginTop="16dp"
+        android:enabled="false"
         android:text="TextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
+    <DatePicker
         android:id="@+id/deadlinePollMyTopic"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="271dp"
+        android:layout_height="102dp"
         android:layout_marginTop="16dp"
+        android:calendarViewShown="false"
+        android:clickable="false"
+        android:datePickerMode="spinner"
+        android:enabled="false"
         android:text="TextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/titlePollMyTopic" />
 
-    <TextView
+    <EditText
         android:id="@+id/descPollMyTopic"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="314dp"
+        android:layout_height="56dp"
         android:layout_marginTop="16dp"
+        android:enabled="false"
         android:text="TextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/categoryPollMyTopic" />
 
-    <TextView
+    <Spinner
         android:id="@+id/categoryPollMyTopic"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="201dp"
+        android:layout_height="36dp"
         android:layout_marginTop="16dp"
         android:text="TextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/deadlinePollMyTopic" />
 
+
     <ScrollView
         android:id="@+id/scrollView2"
         android:layout_width="405dp"
-        android:layout_height="325dp"
-        android:layout_marginTop="32dp"
+        android:layout_height="274dp"
+        android:layout_marginTop="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/descPollMyTopic">
@@ -60,23 +82,34 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
-            android:orientation="vertical"/>
+            android:orientation="vertical" />
 
     </ScrollView>
-
-
 
     <Button
         android:id="@+id/deletePoll"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="88dp"
+        android:layout_marginEnd="40dp"
+        android:background="@color/design_default_color_error"
         android:text="@string/delete"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintTop_toBottomOf="@+id/scrollView2"
+        app:layout_constraintVertical_bias="0.569" />
+
+    <Button
+        android:id="@+id/editPollMyTopic"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="24dp"
+        android:drawableTop="@drawable/edit"
+        android:text="@string/edit"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/deletePoll"
+        app:layout_constraintHorizontal_bias="0.222"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/scrollView2"
-        app:layout_constraintVertical_bias="0.978" />
+        app:layout_constraintVertical_bias="0.572" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

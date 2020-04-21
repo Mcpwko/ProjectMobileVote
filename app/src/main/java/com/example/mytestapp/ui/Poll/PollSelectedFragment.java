@@ -204,7 +204,7 @@ public class PollSelectedFragment extends Fragment {
 
 
 
-
+            if(isAdded())
             mViewModel.getPossibleAnswers().observe(getActivity(),possibleAnswers -> {
                 FirebaseUser actual = FirebaseAuth.getInstance().getCurrentUser();
                 VoteViewModel.Factory factoryVote = new VoteViewModel.Factory(getActivity().getApplication(),actual.getUid(),poll.getPid());

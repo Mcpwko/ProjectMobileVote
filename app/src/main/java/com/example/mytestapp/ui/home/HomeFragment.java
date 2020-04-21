@@ -44,7 +44,9 @@ public class HomeFragment extends Fragment {
 
         if (container != null) {
             container.removeAllViews();
+
         }
+
 
         setHasOptionsMenu(true);
         View root = inflater.inflate(R.layout.fragment_home, container, false);
@@ -56,10 +58,13 @@ public class HomeFragment extends Fragment {
         HomeListViewModel.Factory factory = new HomeListViewModel.Factory(
                 getActivity().getApplication());
 
+
         homeViewModel = ViewModelProviders.of(this,factory).get(HomeListViewModel.class);
 
         //We are creating all buttons for the meetings from the Database
         homeViewModel.getMeetings().observe(getActivity(), list-> {
+
+
 
                         //The IF is used to avoid the NullPointerException which returns true if the
                         //fragment has been explicitly detached from the UI

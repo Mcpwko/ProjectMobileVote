@@ -39,6 +39,7 @@ public class MeetingListLiveData extends LiveData<List<Meeting>> {
     private class MyValueEventListener implements ValueEventListener {
         @Override
         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            if(dataSnapshot.exists())
             setValue(getMeetings(dataSnapshot));
         }
 

@@ -72,6 +72,7 @@ public class MyTopicsFragment extends Fragment {
                 }
 
             for (int i = 0; i < myPolls.size(); i++) {
+                if(isAdded()){
                 Button button = new Button(getActivity());
                 button.setText(myPolls.get(i).getTitlePoll());
                 int x = i;
@@ -87,6 +88,7 @@ public class MyTopicsFragment extends Fragment {
                     }
                 });
                 linearLayout.addView(button);
+                }
             }
         }
         });
@@ -103,7 +105,8 @@ public class MyTopicsFragment extends Fragment {
                 }
 
                 for (int i = 0; i < myMeetings.size(); i++) {
-                    Button button = new Button(getActivity());
+                    if (isAdded()){
+                        Button button = new Button(getActivity());
                     button.setText(myMeetings.get(i).getTitleMeeting());
                     button.setTextColor(getResources().getColor(R.color.TopicsHome));
                     int x = i;
@@ -119,6 +122,7 @@ public class MyTopicsFragment extends Fragment {
                         }
                     });
                     linearLayout.addView(button);
+                }
                 }
             }
 
