@@ -23,7 +23,6 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 
-import android.widget.Toast;
 
 import com.example.mytestapp.db.entities.Address1;
 import com.example.mytestapp.db.entities.User;
@@ -32,11 +31,7 @@ import com.example.mytestapp.ui.about.AboutFragment;
 import com.example.mytestapp.ui.login.LoginFragment;
 import com.example.mytestapp.ui.register.RegisterFragment;
 import com.example.mytestapp.util.OnAsyncEventListener;
-import com.google.gson.Gson;
-
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 
 //This activity is represented by the login menu at the beginning of the app
@@ -116,58 +111,6 @@ public class LoginActivity extends AppCompatActivity {
                 password.setText("");
             }
         });
-
-        //We try to match what he wrote to what there is in the database
-
-
-
-        /*repository.getUser(email, getApplication()).observe(LoginActivity.this, userEntity -> {
-            if (userEntity != null) {
-                if (userEntity.getPassword().equals(password1)) {
-
-                    sharedPreferences = getApplicationContext().getSharedPreferences("User", MODE_PRIVATE);
-                    SharedPreferences.Editor edt = sharedPreferences.edit();
-
-                    Gson gson = new Gson();
-                    String json = gson.toJson(userEntity);
-                    edt.putString("User", json);
-                    edt.apply();
-
-
-
-                    Intent intent = new Intent(this, MainActivity.class);
-                    startActivity(intent);
-
-                } else {
-                    //If he couldn't connect we put an alertDialog message to notfiy it
-                    password.setText("");
-                    final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-                    alertDialog.setTitle(getString(R.string.warning));
-                    alertDialog.setCancelable(false);
-                    alertDialog.setMessage(getString(R.string.wronginformation));
-                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, getString(R.string.okbutton), (dialog, which) -> {
-                        alertDialog.dismiss();
-
-                    });
-                    alertDialog.show();
-
-                }
-
-            } else {
-                password.setText("");
-                final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-                alertDialog.setTitle(getString(R.string.warning));
-                alertDialog.setCancelable(false);
-                alertDialog.setMessage(getString(R.string.wronginformation));
-                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, getString(R.string.okbutton), (dialog, which) -> {
-                    alertDialog.dismiss();
-
-                });
-                alertDialog.show();
-            }
-        });*/
-
-
 
 
     }
@@ -250,11 +193,6 @@ public class LoginActivity extends AppCompatActivity {
                 });
                 alertDialog.show();
 
-                //////
-
-
-
-
 
 
 
@@ -277,46 +215,11 @@ public class LoginActivity extends AppCompatActivity {
                         email.requestFocus();
                     }
                 });
-
-                //This is what we do if the mail is already in the database
-                /*userRepository.getUser(emailAdress, getApplication()).observe(LoginActivity.this, userEntity -> {
-                    if(userEntity!=null){
-                        Toast.makeText(this, "Email already used !", Toast.LENGTH_SHORT).show();
-                    }else{
-                        //Create a User if everything went well
-                        new CreateUser(getApplication(), new OnAsyncEventListener() {
-                            @Override
-                            public void onSuccess() {
-                                Log.d(TAG, "createUserWithEmail: success");
-                            }
-
-                            @Override
-                            public void onFailure(Exception e) {
-                                Log.d(TAG, "createUserWithEmail: failure", e);
-                            }
-                        }).execute(user);
-                        Toast.makeText(this, "Account created !", Toast.LENGTH_SHORT).show();
-
-                        FragmentTransaction transaction;
-                        transaction = getSupportFragmentManager().beginTransaction();
-                        transaction.replace(R.id.guest_layout, new LoginFragment()).commit();
-
-
-                    }
-
-                });*/
             }
 
         }
     }
 
-
-    private void setResponse(Boolean response) {
-
-        if (response) {
-
-        }
-    }
 
     //This method checks if the mail entered has the conventionnal form of a mail
     public final static boolean isValidEmail(EditText target1) {

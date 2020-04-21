@@ -43,7 +43,6 @@ import com.example.mytestapp.db.repository.PossibleAnswersRepository;
 import com.example.mytestapp.db.repository.UserRepository;
 import com.example.mytestapp.ui.addVote.ChooseVoteFragment;
 import com.example.mytestapp.ui.addVote.meeting.MeetingFragment;
-import com.example.mytestapp.ui.addVote.meeting.MeetingViewModel;
 import com.example.mytestapp.ui.addVote.poll.PollFragment;
 import com.example.mytestapp.ui.addVote.poll.PollStep2Fragment;
 import com.example.mytestapp.ui.home.HomeFragment;
@@ -83,7 +82,6 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.LinkedHashSet;
 import java.util.List;
 
@@ -459,9 +457,6 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
 
         EditText birthdate = findViewById(R.id.birthdateEditAccount);
         birthdate.setEnabled(false);
-        /*Calendar calendar = new GregorianCalendar();
-        Long time = calendar.getTimeInMillis();
-        user.setBirthDate();*/
 
         FirebaseUser usera = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -469,7 +464,6 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
 
 
         //Then we can update the user
-        //METHODE POUR UPDATE USER
 
         UserViewModel.Factory factory = new UserViewModel.Factory(
                 getApplication(),
@@ -735,12 +729,10 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
 
             poll.setType("Poll");
 
-            //METHODE CREATION DE POLL
 
             FirebaseUser actual = FirebaseAuth.getInstance().getCurrentUser();
             poll.setUser_id(actual.getUid());
 
-            //METHODE CREATION DE MEETING
             OnAsyncEventListener callback = new OnAsyncEventListener() {
                 @Override
                 public void onSuccess() {
@@ -826,7 +818,6 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
 
 
             Intent intent = new Intent(this, MainActivity.class);
-        //METHODE CREATION DE MEETING
             OnAsyncEventListener callback = new OnAsyncEventListener() {
                 @Override
                 public void onSuccess() {
@@ -868,7 +859,6 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
 
 
         Intent intent = new Intent(this, MainActivity.class);
-        //METHODE CREATION ATTENDANCE
         OnAsyncEventListener callback = new OnAsyncEventListener() {
             @Override
             public void onSuccess() {
@@ -906,9 +896,7 @@ public class MainActivity extends AppCompatActivity implements MenuItem.OnMenuIt
         attendance.setMeeting_id(idMeeting);
         //We create an attendance anyway
 
-        //METHODE CREATION ATTENDANCE
         Intent intent = new Intent(this, MainActivity.class);
-        //METHODE CREATION ATTENDANCE
         OnAsyncEventListener callback = new OnAsyncEventListener() {
             @Override
             public void onSuccess() {
