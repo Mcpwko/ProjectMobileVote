@@ -1,5 +1,6 @@
 package com.example.mytestapp.db.entities;
 
+//This class represents the Vote Entity
 
 import androidx.annotation.NonNull;
 
@@ -10,6 +11,9 @@ import java.util.Map;
 
 
 public class Vote implements Comparable{
+
+    //The main change we did was to change the ID, which was an int, to a String
+
 
     public String vid;
 
@@ -66,6 +70,9 @@ public class Vote implements Comparable{
     public int compareTo(@NonNull Object o) {
         return toString().compareTo(o.toString());
     }
+
+    //Used to give the value of the keys in firebase
+
 
     @Exclude
     public Map<String, Object> toMap() {

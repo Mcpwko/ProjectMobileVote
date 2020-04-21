@@ -1,7 +1,7 @@
 package com.example.mytestapp.db.entities;
 
 
-//This class represents the User Entity
+//This class represents the Poll Entity
 import androidx.annotation.NonNull;
 
 import com.google.firebase.database.Exclude;
@@ -13,6 +13,7 @@ import java.util.Map;
 
 public class Poll implements Comparable{
 
+    //The main change we did was to change the ID, which was an int, to a String
 
     private String pid;
 
@@ -102,6 +103,8 @@ public class Poll implements Comparable{
     public int compareTo(@NonNull Object o) {
         return toString().compareTo(o.toString());
     }
+
+    //Used to give the value of the keys in firebase
 
     @Exclude
     public Map<String, Object> toMap() {

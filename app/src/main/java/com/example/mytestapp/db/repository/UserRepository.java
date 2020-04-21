@@ -1,4 +1,5 @@
 package com.example.mytestapp.db.repository;
+//The repository class is called by the viewModel. It creates the connection with the database.
 
 import android.util.Log;
 
@@ -13,8 +14,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.List;
-//The class is used to transfer data from DAO to ViewModel
 
 public class UserRepository {
 
@@ -24,7 +23,8 @@ public class UserRepository {
 
     private UserRepository() {
     }
-
+    //The getInstance method checks to see if an object of that class already exists in the program.
+    // It returns null if an object exists.
     public static UserRepository getInstance() {
         if (instance == null) {
             synchronized (UserRepository.class) {
@@ -36,12 +36,15 @@ public class UserRepository {
         return instance;
     }
 
+    //This method is used to log in the app by using the FirebaseAuth class
+
     public void signIn(final String email, final String password,
                        final OnCompleteListener<AuthResult> listener) {
         FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(listener);
     }
 
+    //This method is used to get the User from the database
     public LiveData<User> getUser(final String userId) {
         DatabaseReference reference = FirebaseDatabase.getInstance()
                 .getReference("users")
@@ -49,6 +52,7 @@ public class UserRepository {
         return new UserLiveData(reference);
     }
 
+    //This method is used to register in the app by using the FirebaseAuth class
     public void register(final User user, final OnAsyncEventListener callback) {
         FirebaseAuth.getInstance().createUserWithEmailAndPassword(
                 user.getEmail(),
@@ -63,6 +67,7 @@ public class UserRepository {
         });
     }
 
+    //This method is used to insert a user into the database
     private void insert(final User user, final OnAsyncEventListener callback) {
         FirebaseDatabase.getInstance()
                 .getReference("users")
@@ -87,6 +92,7 @@ public class UserRepository {
                 });
     }
 
+    //This method is used to update a user in the database
     public void update(final User user, final OnAsyncEventListener callback) {
         FirebaseDatabase.getInstance()
                 .getReference("users")
@@ -104,6 +110,7 @@ public class UserRepository {
                 );
     }
 
+    //This method is used to delete a user in the database
     public void delete(final User user, OnAsyncEventListener callback) {
         FirebaseDatabase.getInstance()
                 .getReference("users")

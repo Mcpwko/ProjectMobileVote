@@ -1,10 +1,10 @@
 package com.example.mytestapp.db.repository;
 
+//The repository class is called by the viewModel. It creates the connection with the database.
+
 import androidx.lifecycle.LiveData;
 
-import com.example.mytestapp.db.entities.Meeting;
 import com.example.mytestapp.db.entities.Poll;
-import com.example.mytestapp.db.firebase.MeetingLiveData;
 import com.example.mytestapp.db.firebase.PollListLiveData;
 import com.example.mytestapp.db.firebase.PollLiveData;
 import com.example.mytestapp.util.OnAsyncEventListener;
@@ -19,7 +19,8 @@ public class PollRepository {
     private static PollRepository instance;
 
     private PollRepository() {}
-
+    //The getInstance method checks to see if an object of that class already exists in the program.
+    // It returns null if an object exists.
     public static PollRepository getInstance() {
         if (instance == null) {
             synchronized (PollRepository.class) {
@@ -31,10 +32,7 @@ public class PollRepository {
         return instance;
     }
 
-
-
-
-
+    //This method is used to get a poll from the database
 
     public LiveData<Poll> getPoll(final String id) {
         DatabaseReference reference = FirebaseDatabase.getInstance()
@@ -43,6 +41,8 @@ public class PollRepository {
         return new PollLiveData(reference);
     }
 
+    //This method is used to get a list of Polls from the database
+
     public LiveData<List<Poll>> getActivePolls() {
         DatabaseReference reference = FirebaseDatabase.getInstance()
                     .getReference("votes");
@@ -50,8 +50,8 @@ public class PollRepository {
     }
 
 
- //FAIT  INSERT, UPDATE ET DELETE
 
+    //This method is used to insert a Poll into the database
 
     public String insert(final Poll poll, final OnAsyncEventListener callback) {
         DatabaseReference reference = FirebaseDatabase.getInstance()
@@ -71,6 +71,7 @@ public class PollRepository {
         return key;
     }
 
+    //This method is used to update a Poll in the database
 
     public void updatePoll(final Poll poll, final OnAsyncEventListener callback) {
         FirebaseDatabase.getInstance()
@@ -85,6 +86,7 @@ public class PollRepository {
                 });
     }
 
+    //This method is used to delete a Poll in the database
 
     public void deletePoll(final Poll poll, final OnAsyncEventListener callback) {
         FirebaseDatabase.getInstance()

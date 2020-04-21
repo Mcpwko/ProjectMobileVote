@@ -1,5 +1,7 @@
 package com.example.mytestapp.db.repository;
 
+//The repository class is called by the viewModel. It creates the connection with the database.
+
 import androidx.lifecycle.LiveData;
 
 import com.example.mytestapp.db.entities.Attendance;
@@ -11,7 +13,6 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.List;
 
-//The class is used to transfer data from DAO to ViewModel
 
 public class AttendanceRepository {
 
@@ -19,7 +20,9 @@ public class AttendanceRepository {
 
     private AttendanceRepository() {}
 
-    //The method getInstance is used in the ASYNC to get data
+    //The getInstance method checks to see if an object of that class already exists in the program.
+    // It returns null if an object exists.
+
     public static AttendanceRepository getInstance() {
         if (instance == null) {
             synchronized (AttendanceRepository.class) {
@@ -31,6 +34,7 @@ public class AttendanceRepository {
         return instance;
     }
 
+    //This method is used to get an attendance from the database
 
     public LiveData<Attendance> getAttendance(final String idMeeting, final String idUser) {
         DatabaseReference reference = FirebaseDatabase.getInstance()
@@ -38,11 +42,8 @@ public class AttendanceRepository {
         return new AttendanceLiveData(idMeeting, idUser, reference);
     }
 
-    // A voir comment faire
-    /*public LiveData<Attendance> getAttendanceById (int id, Context context) {
-        return AppDatabase.getInstance(context).attendanceDao().getAttendanceById(id);
-    }*/
 
+    //This method is used to get a list of attendances from the database
 
     public LiveData<List<Attendance>> getAttendances(String idMeeting) {
         DatabaseReference reference = FirebaseDatabase.getInstance()
@@ -50,6 +51,8 @@ public class AttendanceRepository {
         return new AttendanceListLiveData(idMeeting,reference);
     }
 
+
+    //This method is used to insert an attendance into the database
 
     public void insertAttendance(final Attendance attendance, final OnAsyncEventListener callback) {
         String id = FirebaseDatabase.getInstance().getReference("votes").push().getKey();
@@ -64,6 +67,8 @@ public class AttendanceRepository {
                     }
                 });
     }
+
+    //This method is used to delete an attendance from the database
 
     public void deleteAttendance(final Attendance attendance, final OnAsyncEventListener callback) {
         FirebaseDatabase.getInstance()

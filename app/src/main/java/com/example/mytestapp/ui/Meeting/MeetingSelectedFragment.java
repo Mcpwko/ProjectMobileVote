@@ -33,7 +33,6 @@ import com.example.mytestapp.util.OnAsyncEventListener;
 import com.example.mytestapp.viewmodel.UserViewModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.gson.Gson;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

@@ -1,10 +1,9 @@
 package com.example.mytestapp.db.repository;
 
-//The class is used to transfer data from DAO to ViewModel
+//The repository class is called by the viewModel. It creates the connection with the database.
 
 import androidx.lifecycle.LiveData;
 
-import com.example.mytestapp.db.entities.Poll;
 import com.example.mytestapp.db.entities.PossibleAnswers;
 import com.example.mytestapp.db.firebase.PossibleAnswerListLiveData;
 import com.example.mytestapp.util.OnAsyncEventListener;
@@ -18,7 +17,8 @@ public class PossibleAnswersRepository {
     private static PossibleAnswersRepository instance;
 
     private PossibleAnswersRepository() {}
-
+    //The getInstance method checks to see if an object of that class already exists in the program.
+    // It returns null if an object exists.
     public static PossibleAnswersRepository getInstance() {
         if (instance == null) {
             synchronized (PossibleAnswersRepository.class) {
@@ -29,12 +29,8 @@ public class PossibleAnswersRepository {
         }
         return instance;
     }
-    //The methods below are used to get datas from the DAO
 
-    //A voir comment faire
-    /*public LiveData<List<PossibleAnswers>> getPossibleAnswersByPoll (int id, Context context) {
-        return AppDatabase.getInstance(context).possibleAnswerDao().getPossibleAnswersByPoll(id);
-    }*/
+    //This method is used to get a list of all the PossibleAnswers from the database
 
     public LiveData<List<PossibleAnswers>> getPossibleAnswersByPoll(final String idPoll) {
         DatabaseReference reference = FirebaseDatabase.getInstance()
@@ -42,8 +38,7 @@ public class PossibleAnswersRepository {
         return new PossibleAnswerListLiveData(idPoll,reference);
     }
 
-
-
+    //This method is used to insert a PossibleAnswer into the database
 
     public void insert(final PossibleAnswers possibleAnswers, final OnAsyncEventListener callback) {
         DatabaseReference reference = FirebaseDatabase.getInstance()
@@ -61,6 +56,8 @@ public class PossibleAnswersRepository {
                     }
                 });
     }
+
+    //This method is used to delete a PossibleAnswer in the database
 
     public void deletePossibleAnswers(final PossibleAnswers possibleAnswers, final OnAsyncEventListener callback) {
         FirebaseDatabase.getInstance()
